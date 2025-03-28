@@ -1,0 +1,48 @@
+﻿@model ShowRoomDetailsViewModel // viewmodel 
+@{
+    ViewData["Title"] = "Show Room Details";
+}
+
+<h1 class="text-center text-primary">Room Details</h1>
+
+<div class="container mt-4">
+    <table class="table table-bordered table-striped">
+        <tbody>
+            <tr>
+                <th>Room ID</th>
+                <td>@Model.RoomID</td>
+            </tr>
+            <tr>
+                <th>Hotel ID</th>
+                <td>@Model.HotelID</td>
+            </tr>
+            <tr>
+                <th>Hotel Name</th>
+                <td>@Model.HotelName</td>  
+            </tr>
+            <tr>
+                <th>Room Type Name</th>
+                <td>@Model.RoomTypeName</td>
+            </tr>
+            <tr>
+                <th>Price Per Night</th>
+                <td>@Model.PricePerNight</td>
+            </tr>
+            <tr>
+                <th>Capacity</th>
+                <td>@Model.Capacity</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>@Model.Description</td>
+            </tr>
+        </tbody>
+    </table>
+
+    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+    {
+        <div class="text-center mt-3">
+            <img src="@Model.ImageUrl" alt="Room Image" class="img-fluid rounded shadow" width="400" />
+        </div>
+    }
+</div>

@@ -1,0 +1,42 @@
+﻿@model Room
+
+@{
+    ViewData["Title"] = "Add Room";
+}
+
+<h2>Add Room</h2>
+
+<form asp-action="SaveRoom" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        @* <select hidden asp-for="HotelID" class="form-control" asp-items="ViewBag.Hotels"></select> *@
+        <input type="hidden" asp-for="HotelID" value="1" />
+
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TypeID" class="control-label">Room Type</label>
+        <select asp-for="TypeID" class="form-control" asp-items="ViewBag.RoomTypes"></select>
+        <span asp-validation-for="TypeID" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status" class="control-label">Room Status</label>
+        <input asp-for="Status" class="form-control" />
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ImageFile" class="control-label">Room Image</label>
+        <input asp-for="ImageFile" type="file" class="form-control" accept="image/*" />
+        <span asp-validation-for="ImageFile" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

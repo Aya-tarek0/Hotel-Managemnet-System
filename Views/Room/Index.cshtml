@@ -1,0 +1,63 @@
+﻿@model IEnumerable<mvcproj.Models.Room>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="AddRoom" asp-controller="Room">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RoomID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HotelID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TypeID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoomID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HotelID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TypeID)
+            </td>
+                <td>
+                    <img src="@Url.Content(item.image)" alt="Room Image" style="width:100px; height:100px;" />
+                </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @* @Html.ActionLink("UpdatRoomInformation", "Room", new { id = item.RoomID }) | *@
+                @Html.ActionLink("Update Room Information", "UpdatRoomInformation", "Room", new { id = item.RoomID }, null) |
+                @Html.ActionLink("Detail Room", "ShowRoomDetails", "Room", new { id = item.RoomID }, null) |
+
+                @* @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) | *@
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
