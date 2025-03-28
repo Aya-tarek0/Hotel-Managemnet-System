@@ -4,7 +4,9 @@ namespace mvcproj.Models
 {
     public class Hotel
     {
-        
+        /// <summary>
+        /// //
+        /// </summary>
         public int HotelID { get; set; }
 
        
