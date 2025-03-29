@@ -45,33 +45,46 @@ namespace mvcproj.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveRoom(Room room)
         {
+            var roomTypes = roomTypeRepo.GetRoomType();
+            ViewBag.RoomTypes = new SelectList(roomTypes, "TypeID", "Name", room.TypeID);
+
             if (ModelState.IsValid)
             {
-                if (room.ImageFile != null)
+                try
                 {
-                    string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "uploads");
-                    Directory.CreateDirectory(uploadsFolder);
-
-                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(room.ImageFile.FileName);
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    if (room.ImageFile != null && room.ImageFile.Length > 0)
                     {
-                        await room.ImageFile.CopyToAsync(fileStream);
+                        string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "uploads");
+                        if (!Directory.Exists(uploadsFolder))
+                        {
+                            Directory.CreateDirectory(uploadsFolder);
+                        }
+
+                        string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(room.ImageFile.FileName);
+                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await room.ImageFile.CopyToAsync(fileStream);
+                        }
+
+                        room.image = "/uploads/" + uniqueFileName;
                     }
 
-                    room.image = "/uploads/" + uniqueFileName;
+                    roomRepo.Insert(room);
+                    roomRepo.Save(); 
+                    return RedirectToAction("Index");
                 }
-
-                roomRepo.Insert(room);
-                return RedirectToAction("Index");
+                catch (Exception ex)
+                {
+                    // Log the error
+                    ModelState.AddModelError("", "An error occurred while saving the room: " + ex.Message);
+                }
             }
 
-            var roomTypes = roomTypeRepo.GetRoomType();
-            ViewBag.RoomTypes = new SelectList(roomTypes, "TypeID", "TypeName", room.TypeID);
-            return View("AddRoom"); // 🔹 إذا كان هناك خطأ، يعيد المستخدم لنفس الصفحة مع الأخطاء
+            // If we got this far, something failed; redisplay form
+            return View("AddRoom", room);
         }
-
         #endregion
 
         #region Edit Room Information 
