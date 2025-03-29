@@ -20,7 +20,8 @@ namespace mvcproj.Reporisatory
 
         public List<Room> GetAll()
         {
-           List<Room> rooms= context.Rooms.Where(r => !r.IsDeleted).ToList();
+           List<Room> rooms= context.Rooms.Include(r => r.RoomType).Where(r => !r.IsDeleted).ToList();
+            
             return rooms;
         }
 

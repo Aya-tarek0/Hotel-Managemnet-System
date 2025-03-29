@@ -21,6 +21,7 @@ namespace mvcproj
             });
             builder.Services.AddScoped<IRoomTypeReporisatory, RoomTypeReporisatory>();
             builder.Services.AddScoped<IRoomReporisatory, RoomReporisatory>();
+            builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {

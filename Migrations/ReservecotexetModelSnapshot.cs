@@ -237,6 +237,9 @@ namespace mvcproj.Migrations
                     b.Property<DateTime>("CheckoutDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int>("RoomNumber")
                         .HasColumnType("int");
 
@@ -364,6 +367,7 @@ namespace mvcproj.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TypeID")

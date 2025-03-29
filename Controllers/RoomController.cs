@@ -9,56 +9,90 @@ using mvcproj.View_Models;
 namespace mvcproj.Controllers
 {
     //Room/Index
-    public class RoomController : Controller
-    {
-        
-        #region Injection Database And Reporisatory
-        IRoomReporisatory roomRepo;
-        IRoomTypeReporisatory roomTypeRepo;
-        private readonly IWebHostEnvironment webHostEnvironment;
 
-        public RoomController(IRoomReporisatory roomRepo, IRoomTypeReporisatory roomTypeRepo, IWebHostEnvironment webHostEnvironment)
+        //Room/Index
+        public class RoomController : Controller
         {
-            this.roomRepo = roomRepo;
-            this.roomTypeRepo = roomTypeRepo;
-            this.webHostEnvironment = webHostEnvironment;
-        } 
-        #endregion
 
-        #region Show All Rooms
-        public IActionResult Index()
-        {
-            List<Room> roomList = roomRepo.GetAll();
-            return View("Index", roomList);
-        }
+            #region Injection Database And Reporisatory
+            IRoomReporisatory roomRepo;
+            IRoomTypeReporisatory roomTypeRepo;
+            private readonly IWebHostEnvironment webHostEnvironment;
 
-        #endregion
-
-        #region Add New Room
-
-        public IActionResult AddRoom()
-        {
-            var roomTypes = roomTypeRepo.GetRoomType();
-            ViewBag.RoomTypes = new SelectList(roomTypes, "TypeID", "Name");
-            return View("AddRoom");
-        }
-        [HttpPost]
-        public async Task<IActionResult> SaveRoom(Room room)
-        {
-            var roomTypes = roomTypeRepo.GetRoomType();
-            ViewBag.RoomTypes = new SelectList(roomTypes, "TypeID", "Name", room.TypeID);
-
-            if (ModelState.IsValid)
+            public RoomController(IRoomReporisatory roomRepo, IRoomTypeReporisatory roomTypeRepo, IWebHostEnvironment webHostEnvironment)
             {
-                try
+                this.roomRepo = roomRepo;
+                this.roomTypeRepo = roomTypeRepo;
+                this.webHostEnvironment = webHostEnvironment;
+            }
+            #endregion
+
+            #region Show All Rooms
+            /* public IActionResult Index()
+             {
+                 List<Room> roomList = roomRepo.GetAll();
+                 return View("Index", roomList);
+             }*/
+            public IActionResult Index()
+            {
+                if (roomRepo == null)
                 {
-                    if (room.ImageFile != null && room.ImageFile.Length > 0)
+                    return View("Error");
+                }
+
+                var rooms = roomRepo.GetAll();
+
+                List<ShowRoomDetailsViewModel> roomList = rooms
+                    .Select(e => new ShowRoomDetailsViewModel
+                    {
+                        HotelID = e.HotelID,
+                        ImageUrl = e.image,
+                        RoomTypeName = e.RoomType.Name,
+                        PricePerNight = e.RoomType.PricePerNight,
+                        RoomStatus = e.Status
+                    }).ToList();
+
+                string userType = GetUserType();
+
+                if (userType == "Admin")
+                {
+                    return View("Index", roomList);
+                }
+                else
+                {
+                    return View("_AllRoomsUser", roomList);
+                }
+            }
+
+
+            private string GetUserType()
+            {
+                if (User.IsInRole("Guest"))
+                    return "Guest";
+
+                return "User";
+            }
+
+
+            #endregion
+
+            #region Add New Room
+
+            public IActionResult AddRoom()
+            {
+                var roomTypes = roomTypeRepo.GetRoomType();
+                ViewBag.RoomTypes = new SelectList(roomTypes, "TypeID", "Name");
+                return View("AddRoom");
+            }
+            [HttpPost]
+            public async Task<IActionResult> SaveRoom(Room room)
+            {
+                if (ModelState.IsValid)
+                {
+                    if (room.ImageFile != null)
                     {
                         string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "uploads");
-                        if (!Directory.Exists(uploadsFolder))
-                        {
-                            Directory.CreateDirectory(uploadsFolder);
-                        }
+                        Directory.CreateDirectory(uploadsFolder);
 
                         string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(room.ImageFile.FileName);
                         string filePath = Path.Combine(uploadsFolder, uniqueFileName);
@@ -72,100 +106,95 @@ namespace mvcproj.Controllers
                     }
 
                     roomRepo.Insert(room);
-                    roomRepo.Save(); 
                     return RedirectToAction("Index");
                 }
-                catch (Exception ex)
-                {
-                    // Log the error
-                    ModelState.AddModelError("", "An error occurred while saving the room: " + ex.Message);
-                }
+
+                var roomTypes = roomTypeRepo.GetRoomType();
+                ViewBag.RoomTypes = new SelectList(roomTypes, "TypeID", "TypeName", room.TypeID);
+                return View("AddRoom"); // 🔹 إذا كان هناك خطأ، يعيد المستخدم لنفس الصفحة مع الأخطاء
             }
 
-            // If we got this far, something failed; redisplay form
-            return View("AddRoom", room);
-        }
-        #endregion
+            #endregion
 
-        #region Edit Room Information 
+            #region Edit Room Information 
 
-        public IActionResult UpdatRoomInformation(int id)
-        {
-            var room = roomRepo.GetRoomDetailsById(id);
-
-            if (room == null)
+            public IActionResult UpdatRoomInformation(int id)
             {
-                return NotFound();
-            }
-            RoomUpdateViewModel roomUpdate = new RoomUpdateViewModel
-            {
-                RoomID = room.RoomID,
-                Image = room.image,
-                Status = room.Status,
-                ImageFile = room.ImageFile,
-                TypeID = room.TypeID,
-                HotelName = room.Hotel?.Name,
-                RoomTypeList = roomTypeRepo.GetAll()
-            };
-            return View("UpdatRoomInformation", roomUpdate);
-        }
+                var room = roomRepo.GetRoomDetailsById(id);
 
-        public IActionResult SaveUpdateRoom(RoomUpdateViewModel roomUpdate)
-        {
-            if (ModelState.IsValid)
-            {
-                Room room = roomRepo.GetById(roomUpdate.RoomID);
                 if (room == null)
                 {
                     return NotFound();
                 }
-
-                room.image = roomUpdate.Image;
-                room.Status = roomUpdate.Status;
-                room.ImageFile = roomUpdate.ImageFile;
-                room.TypeID = roomUpdate.TypeID;
-
-                roomRepo.Update(room);
-                roomRepo.Save();
-
-                return RedirectToAction("Index", "Room");
+                RoomUpdateViewModel roomUpdate = new RoomUpdateViewModel
+                {
+                    RoomID = room.RoomID,
+                    Image = room.image,
+                    Status = room.Status,
+                    ImageFile = room.ImageFile,
+                    TypeID = room.TypeID,
+                    HotelName = room.Hotel?.Name,
+                    RoomTypeList = roomTypeRepo.GetAll()
+                };
+                return View("UpdatRoomInformation", roomUpdate);
             }
 
-            roomUpdate.RoomTypeList = roomTypeRepo.GetAll();
-            return View("UpdatRoomInformation", roomUpdate);
-        }
-
-        #endregion
-
-        #region Show Room Details
-        public IActionResult ShowRoomDetails(int id)
-        {
-            Room room = roomRepo.GetRoomDetailsById(id);
-            if(room== null)
+            public IActionResult SaveUpdateRoom(RoomUpdateViewModel roomUpdate)
             {
-                return NotFound();
+                if (ModelState.IsValid)
+                {
+                    Room room = roomRepo.GetById(roomUpdate.RoomID);
+                    if (room == null)
+                    {
+                        return NotFound();
+                    }
+
+                    room.image = roomUpdate.Image;
+                    room.Status = roomUpdate.Status;
+                    room.ImageFile = roomUpdate.ImageFile;
+                    room.TypeID = roomUpdate.TypeID;
+
+                    roomRepo.Update(room);
+                    roomRepo.Save();
+
+                    return RedirectToAction("Index", "Room");
+                }
+
+                roomUpdate.RoomTypeList = roomTypeRepo.GetAll();
+                return View("UpdatRoomInformation", roomUpdate);
             }
-            ShowRoomDetailsViewModel showRoomModel = new ShowRoomDetailsViewModel
+
+            #endregion
+
+            #region Show Room Details
+            public IActionResult ShowRoomDetails(int id)
             {
-                RoomID = room.RoomID,
-                HotelID = room.HotelID,
-                HotelName=room.Hotel?.Name,
-                TypeID = room.TypeID,
-                ImageUrl = room.image,
-                RoomStatus = room.Status,
-                RoomTypeName = room.RoomType?.Name,
-                Description = room.RoomType?.Description,
-                PricePerNight = room.RoomType?.PricePerNight,
-                Capacity = room.RoomType?.Capacity
-            };
-            return View("ShowRoomDetails", showRoomModel);
-        }
+                Room room = roomRepo.GetRoomDetailsById(id);
+                if (room == null)
+                {
+                    return NotFound();
+                }
+                ShowRoomDetailsViewModel showRoomModel = new ShowRoomDetailsViewModel
+                {
+                    RoomID = room.RoomID,
+                    HotelID = room.HotelID,
+                    HotelName = room.Hotel?.Name,
+                    TypeID = room.TypeID,
+                    ImageUrl = room.image,
+                    RoomStatus = room.Status,
+                    RoomTypeName = room.RoomType?.Name,
+                    Description = room.RoomType?.Description,
+                    PricePerNight = room.RoomType?.PricePerNight,
+                    Capacity = room.RoomType?.Capacity
+                };
+                return View("ShowRoomDetails", showRoomModel);
+            }
 
-        #endregion
+            #endregion
 
-        #region Delete
+            #region Delete
 
-        public IActionResult Delete(int id)
+            public IActionResult Delete(int id)
         {
             Room room = roomRepo.GetRoomDetailsById(id);
             if (room != null)

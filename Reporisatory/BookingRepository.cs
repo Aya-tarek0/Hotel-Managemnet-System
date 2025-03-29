@@ -1,37 +1,50 @@
-﻿using mvcproj.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using mvcproj.Models;
 
 namespace mvcproj.Reporisatory
 {
-    public class BookingRepository : IBookingRepository
+    public class BookingRepository : IBookingRepository , IGenericReporisatory<Booking>
     {
+        Reservecotexet context;
+        public BookingRepository(Reservecotexet context)
+        {
+            this.context = context;
+        }
+
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            Booking book = GetById(id);
+            context.Remove(book);
         }
 
         public List<Booking> GetAll()
         {
-            throw new NotImplementedException();
+
+            List<Booking> allbooking = context.Bookings.Include(b => b.Guest).Include(r => r.Room).Where(b=>!b.IsDeleted).ToList();
+            return allbooking;
         }
 
         public Booking GetById(int id)
         {
-            throw new NotImplementedException();
+            Booking book = context.Bookings.FirstOrDefault(r => r.BookingID == id);
+            return book;
         }
 
         public void Insert(Booking obj)
         {
-            throw new NotImplementedException();
+            context.Add(obj);
+            Save();
         }
 
         public void Save()
         {
-            throw new NotImplementedException();
+            context.SaveChanges();
         }
 
         public void Update(Booking obj)
         {
-            throw new NotImplementedException();
+            context.Update(obj);
         }
     }
 }
+   

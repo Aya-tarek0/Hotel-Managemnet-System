@@ -1,0 +1,24 @@
+﻿@model IEnumerable<ShowRoomDetailsViewModel>
+@{
+    Layout = "_RoomsLayout";
+}
+<div class="row no-gutters">
+    @foreach (var item in Model)
+    {
+        <div class="col-lg-6">
+            <div class="room-wrap d-md-flex ftco-animate">
+                <a href="#" class="img" style="background-image: url(images/@item.ImageUrl);"></a>
+                <div class="half left-arrow d-flex align-items-center">
+                    <div class="text p-4 text-center">
+                        <p class="star mb-0"><span class="ion-ios-star"></span><span class="ion-ios-star"></span><span class="ion-ios-star"></span><span class="ion-ios-star"></span><span class="ion-ios-star"></span></p>
+                        <p class="mb-0"><span class="price mr-1">@item.PricePerNight</span> <span class="per">per night</span></p>
+                        <h3 class="mb-3"><a href="rooms.html">@item.RoomTypeName</a></h3>
+                        <p class="pt-1"><a href="rooms-single.html" class="btn-custom px-3 py-2 rounded">View Details <span class="icon-long-arrow-right"></span></a></p>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    }
+</div>
