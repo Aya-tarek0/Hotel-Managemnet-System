@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 ///
 /////
@@ -13,15 +14,16 @@ namespace mvcproj.Models
 
         [ForeignKey("RoomType")]
         public int TypeID { get; set; }
-
-        public string? image { set; get; }
         
+        public string? image { set; get; }
+        [Required]
         public string? Status { get; set; }
 
         public Hotel ?Hotel { get; set; }
         public bool IsDeleted { get; set; } // Soft delete flag
         public RoomType? RoomType { get; set; }
-        [NotMapped] 
+        [NotMapped]
+        //[Required(ErrorMessage = "Room Image is required")]
         public IFormFile? ImageFile { get; set; }
     }
 }

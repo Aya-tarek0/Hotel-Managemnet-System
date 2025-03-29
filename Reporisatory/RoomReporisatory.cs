@@ -38,7 +38,7 @@ namespace mvcproj.Reporisatory
 
         public void Insert(Room obj)
         {
-            context.Add(obj);
+            context.Rooms.Add(obj);
             Save();
         }
 
@@ -50,6 +50,7 @@ namespace mvcproj.Reporisatory
         public void Update(Room obj)
         {
             context.Update(obj);
+            Save();
         }
 
 

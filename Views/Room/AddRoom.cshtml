@@ -4,39 +4,49 @@
     ViewData["Title"] = "Add Room";
 }
 
-<h2>Add Room</h2>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="row justify-content-center w-100">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0" style="padding: 20px;">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 style="color:white" class="mb-0">Add New Room</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="SaveRoom" method="post" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="HotelID" value="1" />
 
-<form asp-action="SaveRoom" method="post" enctype="multipart/form-data">
-    <div class="form-group">
-        @* <select hidden asp-for="HotelID" class="form-control" asp-items="ViewBag.Hotels"></select> *@
-        <input type="hidden" asp-for="HotelID" value="1" />
+                        <div class="form-group">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <label asp-for="TypeID" class="control-label font-weight-bold">Room Type</label>
+                            <select asp-for="TypeID" class="form-control border border-secondary" asp-items="ViewBag.RoomTypes" required></select>
+                            <span asp-validation-for="TypeID" class="text-danger"></span>
+                        </div>
 
+                        <div class="form-group">
+                            <label asp-for="Status" class="control-label font-weight-bold">Room Status</label>
+                            <input asp-for="Status" class="form-control border border-secondary" placeholder="Enter room status..." required />
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="ImageFile" class="control-label"></label>
+                            <input asp-for="ImageFile" type="file" class="form-control" />
+                            <span asp-validation-for="ImageFile" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group text-center mt-4">
+                            <button type="submit" class="btn btn-success px-4">Add Room</button>
+                            <a asp-action="Index" class="btn btn-secondary px-4">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="form-group">
-        <label asp-for="TypeID" class="control-label">Room Type</label>
-        <select asp-for="TypeID" class="form-control" asp-items="ViewBag.RoomTypes"></select>
-        <span asp-validation-for="TypeID" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Status" class="control-label">Room Status</label>
-        <input asp-for="Status" class="form-control" />
-        <span asp-validation-for="Status" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="ImageFile" class="control-label">Room Image</label>
-        <input asp-for="ImageFile" type="file" class="form-control" accept="image/*" />
-        <span asp-validation-for="ImageFile" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Add</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-</form>
-
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }

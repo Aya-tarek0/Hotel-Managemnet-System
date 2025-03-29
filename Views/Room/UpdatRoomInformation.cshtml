@@ -1,60 +1,77 @@
 ﻿@model RoomUpdateViewModel
 
 @{
-    ViewData["Title"] = "UpdatRoomInformation";
-    SelectList RoomTypeOptoin = new SelectList(Model.RoomTypeList, "RoomTypeId", "Name");
+    ViewData["Title"] = "Update Room Information";
+    SelectList RoomTypeOption = new SelectList(Model.RoomTypeList, "RoomTypeId", "Name");
 }
 
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="row justify-content-center w-100">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 class="mb-0">Update Room Information</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="SaveUpdateRoom" asp-controller="Room" method="post" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="RoomID" />
 
-<div class="container mt-4">
-    <h2 class="text-center mb-4">Update Room Information</h2>
+                        <!-- Room ID -->
+                        <div class="form-group">
+                            @* <label asp-for="RoomID" class="control-label font-weight-bold">Room ID</label> *@
+                            <input hidden asp-for="RoomID" class="form-control border border-secondary" readonly style="background-color: #f8f9fa; color: black;" />
+                        </div>
 
+                        <!-- Room Status -->
+                        <div class="form-group">
+                            <label asp-for="Status" class="control-label font-weight-bold">Room Status</label>
+                            <input asp-for="Status" class="form-control border border-secondary" placeholder="Enter room status..." required />
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                        </div>
 
-    <form asp-action="SaveUpdateRoom" asp-controller="Room" method="post">
-        <input type="hidden" name="id" value="@Model.RoomID" />
-        <div class="mb-3">
-            <label asp-for="RoomID"> </label>
-            <input class="form form-control" asp-for="RoomID" />
+                        
+
+                        <!-- Hotel Name -->
+                        <div class="form-group">
+                            @* <label asp-for="HotelName" class="control-label font-weight-bold">Hotel Name</label> *@
+                            <input hidden asp-for="HotelName" class="form-control border border-secondary" readonly style="background-color: #f8f9fa; color: black;" />
+                        </div>
+
+                        <!-- Room Type -->
+                        <div class="form-group">
+                            <label asp-for="TypeID" class="control-label font-weight-bold">Room Type</label>
+                            <select asp-for="TypeID" class="form-control border border-secondary" asp-items="RoomTypeOption">
+                                <option value=""> -- Select Room Type -- </option>
+                            </select>
+                            <span asp-validation-for="TypeID" class="text-danger"></span>
+                        </div>
+                        <!-- Current Image -->
+                        <div class="form-group">
+                            <label asp-for="Image" class="control-label font-weight-bold">Current Image</label>
+                            <input asp-for="Image" class="form-control border border-secondary" readonly style="background-color: #f8f9fa; color: black;" />
+                        </div>
+
+                        <!-- Upload New Image -->
+                        <div class="form-group">
+                            <label asp-for="ImageFile" class="control-label font-weight-bold">Upload New Image</label>
+                            <div class="custom-file">
+                                <input asp-for="ImageFile" type="file" class="custom-file-input border border-secondary" accept="image/*">
+                                <label class="custom-file-label">Choose file...</label>
+                            </div>
+                            <span asp-validation-for="ImageFile" class="text-danger"></span>
+                        </div>
+                        <!-- Buttons -->
+                        <div class="form-group text-center mt-4">
+                            <button type="submit" class="btn btn-success px-4">💾 Save Updates</button>
+                            <a asp-action="Index" asp-controller="Room" class="btn btn-secondary px-4">↩ Back to List</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-
-        <div class="mb-3">
-            <label asp-for="Image"> </label>
-            <input class="form form-control" asp-for="Image" />
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="Status"> </label>
-            <input class="form form-control" asp-for="Status" />
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="ImageFile"> </label>
-            <input class="form form-control" asp-for="ImageFile" />
-        </div>
-
-      
-        <div class="mb-3">
-            <label asp-for="HotelName" ></label>
-            <input class="form form-control" asp-for="HotelName" readonly />
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="TypeID"></label>
-            <select class="form form-control" asp-for="TypeID" asp-items="RoomTypeOptoin">
-                <option value=""> -- Select Room Type --</option>
-            </select>
-        </div>
-
-        <div class="text-center">
-            <button type="submit" class="btn btn-success">
-                Save Updates
-            </button>
-        </div>
-
-
-    </form>
-
+    </div>
 </div>
-<a asp-action="Index" asp-controller="Room" class="btn btn-primary">
-    back to list Of Rooms 
-</a>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

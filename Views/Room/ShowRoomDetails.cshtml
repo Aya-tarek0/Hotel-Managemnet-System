@@ -1,48 +1,42 @@
-﻿@model ShowRoomDetailsViewModel // viewmodel 
+﻿@model ShowRoomDetailsViewModel
 @{
-    ViewData["Title"] = "Show Room Details";
+    ViewData["Title"] = "Room Details";
 }
 
-<h1 class="text-center text-primary">Room Details</h1>
+<div class="container mt-5">
+    <h1 class="text-center text-primary font-weight-bold mb-4"> Room Details</h1>
 
-<div class="container mt-4">
-    <table class="table table-bordered table-striped">
-        <tbody>
-            <tr>
-                <th>Room ID</th>
-                <td>@Model.RoomID</td>
-            </tr>
-            <tr>
-                <th>Hotel ID</th>
-                <td>@Model.HotelID</td>
-            </tr>
-            <tr>
-                <th>Hotel Name</th>
-                <td>@Model.HotelName</td>  
-            </tr>
-            <tr>
-                <th>Room Type Name</th>
-                <td>@Model.RoomTypeName</td>
-            </tr>
-            <tr>
-                <th>Price Per Night</th>
-                <td>@Model.PricePerNight</td>
-            </tr>
-            <tr>
-                <th>Capacity</th>
-                <td>@Model.Capacity</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>@Model.Description</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row align-items-stretch">
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <div class="col-md-5 d-flex">
+                <div class="card border-0 shadow-lg rounded-lg overflow-hidden w-100">
+                    <img src="@Model.ImageUrl" alt="Room Image" class="img-fluid w-100 h-100" style="object-fit: cover;">
+                </div>
+            </div>
+        }
 
-    @if (!string.IsNullOrEmpty(Model.ImageUrl))
-    {
-        <div class="text-center mt-3">
-            <img src="@Model.ImageUrl" alt="Room Image" class="img-fluid rounded shadow" width="400" />
+        <div class="col-md-7 d-flex">
+            <div class="card border-0 shadow-sm p-4 rounded-lg bg-white w-100">
+                <h4 class="text-primary font-weight-bold mb-3"> Room Information</h4>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Hotel Name:</strong> @Model.HotelName</li>
+                    <li class="list-group-item"><strong>Room Type:</strong> @Model.RoomTypeName</li>
+                    <li class="list-group-item"><strong>Capacity:</strong> @Model.Capacity Guests</li>
+                    <li class="list-group-item"><strong>Price Per Night:</strong> <span class="text-success font-weight-bold">$@Model.PricePerNight</span></li>
+                    @* <li class="list-group-item"><strong>Hotel ID:</strong> @Model.HotelID</li> *@
+                    @* <li class="list-group-item"><strong>Room ID:</strong> @Model.RoomID</li> *@
+                </ul>
+            </div>
         </div>
-    }
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm p-4 rounded-lg bg-light">
+                <h4 class="text-primary font-weight-bold mb-3"> Room Description</h4>
+                <p class="text-dark text-left">@Model.Description</p>
+            </div>
+        </div>
+    </div>
 </div>
