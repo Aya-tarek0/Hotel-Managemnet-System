@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using mvcproj.Models;
 
@@ -19,7 +20,7 @@ namespace mvcproj.Reporisatory
 
         public List<Room> GetAll()
         {
-           List<Room> rooms= context.Rooms.ToList();
+           List<Room> rooms= context.Rooms.Where(r => !r.IsDeleted).ToList();
             return rooms;
         }
 

@@ -19,6 +19,7 @@ namespace mvcproj.Models
         public string? Status { get; set; }
 
         public Hotel ?Hotel { get; set; }
+        public bool IsDeleted { get; set; } // Soft delete flag
         public RoomType? RoomType { get; set; }
         [NotMapped] 
         public IFormFile? ImageFile { get; set; }

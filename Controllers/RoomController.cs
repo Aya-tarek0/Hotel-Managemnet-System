@@ -150,6 +150,47 @@ namespace mvcproj.Controllers
 
         #endregion
 
+        #region Delete
+
+        public IActionResult Delete(int id)
+        {
+            Room room = roomRepo.GetRoomDetailsById(id);
+            if (room != null)
+            {
+                ShowRoomDetailsViewModel RoomViewModel = new ShowRoomDetailsViewModel()
+                {
+                    RoomID = room.RoomID,
+                    HotelID = room.HotelID,
+                    HotelName = room.Hotel?.Name,
+                    TypeID = room.TypeID,
+                    ImageUrl = room.image,
+                    RoomStatus = room.Status,
+                    RoomTypeName = room.RoomType?.Name,
+                    Description = room.RoomType?.Description,
+                    PricePerNight = room.RoomType?.PricePerNight,
+                    Capacity = room.RoomType?.Capacity
+                };
+                return View("Delete", RoomViewModel);
+            }
+            return NotFound("Room doesn't Exist");
+        }
+
+        public IActionResult SaveDelete(int id)
+        {
+            Room room = roomRepo.GetById(id);
+            if (room != null)
+            {
+                room.IsDeleted = true;
+                roomRepo.Save();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return NotFound("Room doesn't Exist");
+            }
+        }
+
+        #endregion
 
     }
 }
