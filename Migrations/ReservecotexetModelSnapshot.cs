@@ -256,7 +256,7 @@ namespace mvcproj.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Bookings");
+                    b.ToTable("Bookings", (string)null);
                 });
 
             modelBuilder.Entity("mvcproj.Models.Comment", b =>
@@ -315,7 +315,7 @@ namespace mvcproj.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Guests");
+                    b.ToTable("Guests", (string)null);
                 });
 
             modelBuilder.Entity("mvcproj.Models.Hotel", b =>
@@ -352,7 +352,7 @@ namespace mvcproj.Migrations
 
                     b.HasKey("HotelID");
 
-                    b.ToTable("Hotels");
+                    b.ToTable("Hotels", (string)null);
                 });
 
             modelBuilder.Entity("mvcproj.Models.Payment", b =>
@@ -379,7 +379,7 @@ namespace mvcproj.Migrations
 
                     b.HasIndex("BookingID");
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("mvcproj.Models.Room", b =>
@@ -412,7 +412,7 @@ namespace mvcproj.Migrations
 
                     b.HasIndex("TypeID");
 
-                    b.ToTable("Rooms");
+                    b.ToTable("Rooms", (string)null);
                 });
 
             modelBuilder.Entity("mvcproj.Models.RoomType", b =>
@@ -440,7 +440,7 @@ namespace mvcproj.Migrations
 
                     b.HasKey("RoomTypeId");
 
-                    b.ToTable("RoomTypes");
+                    b.ToTable("RoomTypes", (string)null);
                 });
 
             modelBuilder.Entity("mvcproj.Models.Staff", b =>
@@ -480,7 +480,7 @@ namespace mvcproj.Migrations
 
                     b.HasIndex("HotelID");
 
-                    b.ToTable("Staffs");
+                    b.ToTable("Staffs", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

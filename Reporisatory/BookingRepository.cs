@@ -11,6 +11,11 @@ namespace mvcproj.Reporisatory
             this.context = context;
         }
 
+        public int CalcTotalPrice(int DaysNo, int PricePerDay)
+        {
+            return DaysNo * PricePerDay;
+        }
+
         public void Delete(int id)
         {
             Booking book = GetById(id);
@@ -20,7 +25,11 @@ namespace mvcproj.Reporisatory
         public List<Booking> GetAll()
         {
 
-            List<Booking> allbooking = context.Bookings.Include(b => b.Guest).Include(r => r.Room).Where(b=>!b.IsDeleted).ToList();
+            List<Booking> allbooking = context.Bookings
+                .Include(b => b.Guest).
+                Include(r => r.Room).
+                Where(b=>!b.IsDeleted).ToList();
+
             return allbooking;
         }
 

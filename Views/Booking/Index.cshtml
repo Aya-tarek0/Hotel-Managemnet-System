@@ -1,4 +1,4 @@
-﻿@model BookingViewModel
+﻿@model IEnumerable<BookingViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -7,7 +7,7 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Add">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -32,28 +32,20 @@
     </thead>
     <tbody>
 
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => Model.Guest)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => Model.CheckinDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => Model.CheckoutDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => Model.TotalPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => Model.Room)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="Model.BookingID">Edit</a> |
-                <a asp-action="Details" asp-route-id="Model.BookingID">Details</a> |
-                <a asp-action="Delete" asp-route-id="Model.BookingID">Delete</a>
-            </td>
-        </tr>
-
+        @foreach (var booking in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => booking.Guest)</td>
+                <td>@Html.DisplayFor(modelItem => booking.CheckinDate)</td>
+                <td>@Html.DisplayFor(modelItem => booking.CheckoutDate)</td>
+                <td>@Html.DisplayFor(modelItem => booking.TotalPrice)</td>
+                <td>@Html.DisplayFor(modelItem => booking.Room)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@booking.BookingID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@booking.BookingID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@booking.BookingID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
