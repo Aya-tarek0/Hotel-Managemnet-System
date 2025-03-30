@@ -25,5 +25,8 @@ namespace mvcproj.Models
         [NotMapped]
         //[Required(ErrorMessage = "Room Image is required")]
         public IFormFile? ImageFile { get; set; }
+
+        //collection of comments 
+        public ICollection<Comment> comments { get; set; } = new List<Comment>();
     }
 }

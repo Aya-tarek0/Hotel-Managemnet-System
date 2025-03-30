@@ -17,13 +17,15 @@ namespace mvcproj.Controllers
             #region Injection Database And Reporisatory
             IRoomReporisatory roomRepo;
             IRoomTypeReporisatory roomTypeRepo;
+            ICommentReporisatory commentRepo; 
             private readonly IWebHostEnvironment webHostEnvironment;
 
-            public RoomController(IRoomReporisatory roomRepo, IRoomTypeReporisatory roomTypeRepo, IWebHostEnvironment webHostEnvironment)
+            public RoomController(IRoomReporisatory roomRepo, IRoomTypeReporisatory roomTypeRepo, IWebHostEnvironment webHostEnvironment, ICommentReporisatory commentRepo)
             {
                 this.roomRepo = roomRepo;
                 this.roomTypeRepo = roomTypeRepo;
                 this.webHostEnvironment = webHostEnvironment;
+                this.commentRepo = commentRepo;
             }
             #endregion
 
@@ -45,24 +47,27 @@ namespace mvcproj.Controllers
                 List<ShowRoomDetailsViewModel> roomList = rooms
                     .Select(e => new ShowRoomDetailsViewModel
                     {
-                        HotelID = e.HotelID,
+                        
+                        RoomID=e.RoomID,
                         ImageUrl = e.image,
-                        RoomTypeName = e.RoomType.Name,
+                        
+                        RoomTypeName = e.RoomType?.Name,
                         PricePerNight = e.RoomType.PricePerNight,
                         RoomStatus = e.Status
                     }).ToList();
 
-                string userType = GetUserType();
+            string userType = GetUserType();
 
-                if (userType == "Admin")
-                {
-                    return View("Index", roomList);
-                }
-                else
-                {
-                    return View("_AllRoomsUser", roomList);
-                }
+            if (userType == "Admin")
+            {
+                return View("Index", roomList);
             }
+            else
+            {
+                return View("_AllRoomsUser", roomList);
+            }
+            //return View("Index", roomList);
+        }
 
 
             private string GetUserType()
@@ -174,7 +179,9 @@ namespace mvcproj.Controllers
                 {
                     return NotFound();
                 }
-                ShowRoomDetailsViewModel showRoomModel = new ShowRoomDetailsViewModel
+            var comments = commentRepo.GetCommentsByRoomId(id);
+
+            ShowRoomDetailsViewModel showRoomModel = new ShowRoomDetailsViewModel
                 {
                     RoomID = room.RoomID,
                     HotelID = room.HotelID,
@@ -187,14 +194,16 @@ namespace mvcproj.Controllers
                     PricePerNight = room.RoomType?.PricePerNight,
                     Capacity = room.RoomType?.Capacity
                 };
-                return View("ShowRoomDetails", showRoomModel);
-            }
+            //return View("ShowRoomDetails", showRoomModel);// show details for Admin 
+            return View("~/Views/Room/User/ShowRoomDetailsUser.cshtml", showRoomModel); //show details for user 
 
-            #endregion
+        }
 
-            #region Delete
+        #endregion
 
-            public IActionResult Delete(int id)
+        #region Delete
+
+        public IActionResult Delete(int id)
         {
             Room room = roomRepo.GetRoomDetailsById(id);
             if (room != null)

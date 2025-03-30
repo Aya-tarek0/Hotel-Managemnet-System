@@ -16,6 +16,7 @@ namespace mvcproj.Models
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Staff> Staffs { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
 
       

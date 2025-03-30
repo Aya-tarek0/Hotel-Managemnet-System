@@ -20,11 +20,12 @@
             <div class="card border-0 shadow-sm p-4 rounded-lg bg-white w-100">
                 <h4 class="text-primary font-weight-bold mb-3"> Room Information</h4>
                 <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Room Number</strong> @Model.RoomID</li>
                     <li class="list-group-item"><strong>Hotel Name:</strong> @Model.HotelName</li>
                     <li class="list-group-item"><strong>Room Type:</strong> @Model.RoomTypeName</li>
                     <li class="list-group-item"><strong>Capacity:</strong> @Model.Capacity Guests</li>
+                    <li class="list-group-item"><strong>Status:</strong> @Model.RoomStatus</li>
                     <li class="list-group-item"><strong>Price Per Night:</strong> <span class="text-success font-weight-bold">$@Model.PricePerNight</span></li>
-                    @* <li class="list-group-item"><strong>Hotel ID:</strong> @Model.HotelID</li> *@
                     @* <li class="list-group-item"><strong>Room ID:</strong> @Model.RoomID</li> *@
                 </ul>
             </div>
@@ -40,3 +41,8 @@
         </div>
     </div>
 </div>
+
+<div class="d-flex justify-content-center mt-4">
+    <a asp-action="Index" asp-controller="Room" class="btn btn-secondary px-4">↩ Back to List</a>
+</div>
+

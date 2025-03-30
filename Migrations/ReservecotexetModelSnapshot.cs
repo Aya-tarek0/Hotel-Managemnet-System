@@ -259,6 +259,36 @@ namespace mvcproj.Migrations
                     b.ToTable("Bookings");
                 });
 
+            modelBuilder.Entity("mvcproj.Models.Comment", b =>
+                {
+                    b.Property<int>("CommentID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentID"));
+
+                    b.Property<DateTime>("CommentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CommentText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GuestID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("RoomID")
+                        .HasColumnType("int");
+
+                    b.HasKey("CommentID");
+
+                    b.HasIndex("GuestID");
+
+                    b.HasIndex("RoomID");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("mvcproj.Models.Guest", b =>
                 {
                     b.Property<string>("UserId")
@@ -523,6 +553,23 @@ namespace mvcproj.Migrations
                     b.Navigation("Room");
                 });
 
+            modelBuilder.Entity("mvcproj.Models.Comment", b =>
+                {
+                    b.HasOne("mvcproj.Models.Guest", "Guest")
+                        .WithMany()
+                        .HasForeignKey("GuestID");
+
+                    b.HasOne("mvcproj.Models.Room", "Room")
+                        .WithMany("comments")
+                        .HasForeignKey("RoomID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Guest");
+
+                    b.Navigation("Room");
+                });
+
             modelBuilder.Entity("mvcproj.Models.Guest", b =>
                 {
                     b.HasOne("mvcproj.Models.ApplicationUser", "User")
@@ -607,6 +654,11 @@ namespace mvcproj.Migrations
                     b.Navigation("Rooms");
 
                     b.Navigation("Staffs");
+                });
+
+            modelBuilder.Entity("mvcproj.Models.Room", b =>
+                {
+                    b.Navigation("comments");
                 });
 
             modelBuilder.Entity("mvcproj.Models.RoomType", b =>

@@ -12,8 +12,8 @@ using mvcproj.Models;
 namespace mvcproj.Migrations
 {
     [DbContext(typeof(Reservecotexet))]
-    [Migration("20250329022009_IsDeletedInBooking&RoomsModel")]
-    partial class IsDeletedInBookingRoomsModel
+    [Migration("20250329122956_ks")]
+    partial class ks
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

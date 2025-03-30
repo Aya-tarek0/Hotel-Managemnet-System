@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using mvcproj.Hubs;
 using mvcproj.Models;
 using mvcproj.Reporisatory;
 
@@ -22,6 +23,9 @@ namespace mvcproj
             builder.Services.AddScoped<IRoomTypeReporisatory, RoomTypeReporisatory>();
             builder.Services.AddScoped<IRoomReporisatory, RoomReporisatory>();
             builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+            builder.Services.AddScoped<ICommentReporisatory, CommentReporisatory>();
+
+            builder.Services.AddSignalR();
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
@@ -46,6 +50,8 @@ namespace mvcproj
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.MapHub<CommentsHub>("/CommentHub");
 
             app.UseAuthorization();
 

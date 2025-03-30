@@ -12,8 +12,8 @@ using mvcproj.Models;
 namespace mvcproj.Migrations
 {
     [DbContext(typeof(Reservecotexet))]
-    [Migration("20250324105810_addproduct")]
-    partial class addproduct
+    [Migration("20250329212317_AddComment")]
+    partial class AddComment
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -166,6 +166,9 @@ namespace mvcproj.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -237,8 +240,8 @@ namespace mvcproj.Migrations
                     b.Property<DateTime>("CheckoutDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("GuestID")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("RoomNumber")
                         .HasColumnType("int");
@@ -246,67 +249,60 @@ namespace mvcproj.Migrations
                     b.Property<int>("TotalPrice")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("BookingID");
 
-                    b.HasIndex("GuestID");
-
                     b.HasIndex("RoomNumber");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Bookings");
                 });
 
-            modelBuilder.Entity("mvcproj.Models.Guest", b =>
+            modelBuilder.Entity("mvcproj.Models.Comment", b =>
                 {
-                    b.Property<int>("GuestID")
+                    b.Property<int>("CommentID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GuestID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentID"));
+
+                    b.Property<DateTime>("CommentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CommentText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GuestID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("RoomID")
+                        .HasColumnType("int");
+
+                    b.HasKey("CommentID");
+
+                    b.HasIndex("GuestID");
+
+                    b.HasIndex("RoomID");
+
+                    b.ToTable("Comment");
+                });
+
+            modelBuilder.Entity("mvcproj.Models.Guest", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("GuestID");
-
-                    b.ToTable("Guests");
-                });
-
-            modelBuilder.Entity("mvcproj.Models.Hotel", b =>
-                {
-                    b.Property<int>("HotelID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HotelID"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CheckinTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CheckoutTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -321,11 +317,41 @@ namespace mvcproj.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Stars")
+                    b.HasKey("UserId");
+
+                    b.ToTable("Guests");
+                });
+
+            modelBuilder.Entity("mvcproj.Models.Hotel", b =>
+                {
+                    b.Property<int>("HotelID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HotelID"));
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CheckinTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CheckoutTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Stars")
                         .HasColumnType("int");
 
                     b.Property<string>("image")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("HotelID");
@@ -351,7 +377,6 @@ namespace mvcproj.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PaymentMethod")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PaymentID");
@@ -372,6 +397,9 @@ namespace mvcproj.Migrations
                     b.Property<int>("HotelID")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -380,7 +408,6 @@ namespace mvcproj.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("image")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("RoomID");
@@ -400,18 +427,16 @@ namespace mvcproj.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoomTypeId"));
 
-                    b.Property<int>("Capacity")
+                    b.Property<int?>("Capacity")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PricePerNight")
+                    b.Property<int?>("PricePerNight")
                         .HasColumnType("int");
 
                     b.Property<int>("TypeID")
@@ -424,20 +449,13 @@ namespace mvcproj.Migrations
 
             modelBuilder.Entity("mvcproj.Models.Staff", b =>
                 {
-                    b.Property<int>("StaffID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StaffID"));
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -447,7 +465,7 @@ namespace mvcproj.Migrations
                     b.Property<int>("HotelID")
                         .HasColumnType("int");
 
-                    b.Property<string>("LastName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -462,7 +480,7 @@ namespace mvcproj.Migrations
                     b.Property<int>("Salary")
                         .HasColumnType("int");
 
-                    b.HasKey("StaffID");
+                    b.HasKey("UserId");
 
                     b.HasIndex("HotelID");
 
@@ -522,21 +540,51 @@ namespace mvcproj.Migrations
 
             modelBuilder.Entity("mvcproj.Models.Booking", b =>
                 {
-                    b.HasOne("mvcproj.Models.Guest", "Guest")
-                        .WithMany("Bookings")
-                        .HasForeignKey("GuestID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("mvcproj.Models.Room", "Room")
                         .WithMany()
                         .HasForeignKey("RoomNumber")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("mvcproj.Models.Guest", "Guest")
+                        .WithMany("Bookings")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Guest");
 
                     b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("mvcproj.Models.Comment", b =>
+                {
+                    b.HasOne("mvcproj.Models.Guest", "Guest")
+                        .WithMany()
+                        .HasForeignKey("GuestID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("mvcproj.Models.Room", "Room")
+                        .WithMany("comments")
+                        .HasForeignKey("RoomID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Guest");
+
+                    b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("mvcproj.Models.Guest", b =>
+                {
+                    b.HasOne("mvcproj.Models.ApplicationUser", "User")
+                        .WithOne("GuestProfile")
+                        .HasForeignKey("mvcproj.Models.Guest", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("mvcproj.Models.Payment", b =>
@@ -577,7 +625,24 @@ namespace mvcproj.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("mvcproj.Models.ApplicationUser", "User")
+                        .WithOne("StaffProfile")
+                        .HasForeignKey("mvcproj.Models.Staff", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Hotel");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("mvcproj.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("GuestProfile")
+                        .IsRequired();
+
+                    b.Navigation("StaffProfile")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("mvcproj.Models.Booking", b =>
@@ -595,6 +660,11 @@ namespace mvcproj.Migrations
                     b.Navigation("Rooms");
 
                     b.Navigation("Staffs");
+                });
+
+            modelBuilder.Entity("mvcproj.Models.Room", b =>
+                {
+                    b.Navigation("comments");
                 });
 
             modelBuilder.Entity("mvcproj.Models.RoomType", b =>

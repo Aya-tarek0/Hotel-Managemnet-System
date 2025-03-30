@@ -1,0 +1,161 @@
+﻿@model ShowRoomDetailsViewModel
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<partial name="_HeadPartialView" />
+
+<body>
+
+    <partial name="_NavPartial" />
+
+    <div class="hero-wrap" style="background-image: url('/images/bg_3.jpg');">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text d-flex align-itemd-center justify-content-center">
+                <div class="col-md-9 ftco-animate text-center d-flex align-items-end justify-content-center">
+                    <div class="text">
+                        <p class="breadcrumbs mb-2"><span class="mr-2"><a href="index.html">Home</a></span> <span class="mr-2"><a href="rooms.html">Rooms</a></span> <span>Rooms Single</span></p>
+                        <h1 class="mb-4 bread">Rooms Details</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form action="#" class="search-form">
+                    <div class="form-group">
+                        <span class="icon ion-ios-search"></span>
+                        <input type="text" class="form-control" placeholder="Search...">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="row">
+
+                        <div class="col-md-12 ftco-animate">
+                            <div class="single-slider owl-carousel">
+                                @* <div class="item"> *@
+                                @*     <div class="room-img" style="background-image: url(/images/room-4.jpg);"></div> *@
+                                @* </div> *@
+                                @* <div class="item"> *@
+                                @*     <div class="room-img" style="background-image: url(/images/room-5.jpg);"></div> *@
+                                @* </div> *@
+                                <div class="item">
+                                    <div class="room-img" style="background-image: url('/images/@Model.ImageUrl');"></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-12 room-single mt-4 mb-5 ftco-animate">
+                            <h2 class="mb-4">Luxury Room <span>- (4 Available rooms)</span></h2>
+
+                            <div class="d-md-flex mt-5 mb-5">
+                                <ul class="list">
+                                    <li><span class="text-dark font-weight-bold mb-3" style="letter-spacing: 1px;">Hotel Name:</span> @Model.HotelName</li>
+                                    <li><span class="text-dark font-weight-bold mb-3" style="letter-spacing: 1px;">Room Number:</span> @Model.RoomID</li>
+                                    <li>
+                                        <span class="text-dark font-weight-bold mb-3" style="letter-spacing: 1px;">Status:</span>
+                                        <span class="badge @(Model.RoomStatus == "Available" ? "badge-success" : "badge-danger")">
+                                            @Model.RoomStatus
+                                        </span>
+                                    </li>
+                                </ul>
+                                <ul class="list ml-md-5">
+                                    <li><span class="text-dark font-weight-bold mb-3" style="letter-spacing: 1px;">Room Type:</span> @Model.RoomTypeName </li>
+                                    <li><span class="text-dark font-weight-bold mb-3" style="letter-spacing: 1px;">Capacity:</span> @Model.Capacity</li>
+                                    <li>
+                                        <span class ="text-dark font-weight-bold mb-3" style="letter-spacing: 1px;"> Price per Night:</span>
+                                        <strong style="color: #e67e22;">$@Model.PricePerNight</strong>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div >
+                                <h3 class="text-dark font-weight-bold mb-3" style="letter-spacing: 1px;"> Description :</h3>
+                                <p class="text-muted" style="font-size: 18px; font-style: italic;">@Model.Description</p>
+                            </div>
+
+                        </div>
+
+     
+                        <div class="col-md-12 properties-single ftco-animate mb-5 mt-4">
+                            <h4 class="mb-4">Review &amp; Ratings</h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <form method="post" class="star-rating">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                            <label class="form-check-label" for="exampleCheck1">
+                                                <p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i> 100 Ratings</span></p>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                            <label class="form-check-label" for="exampleCheck1">
+                                                <p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-o"></i> 30 Ratings</span></p>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                            <label class="form-check-label" for="exampleCheck1">
+                                                <p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-o"></i><i class="icon-star-o"></i> 5 Ratings</span></p>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                            <label class="form-check-label" for="exampleCheck1">
+                                                <p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star-o"></i><i class="icon-star-o"></i><i class="icon-star-o"></i> 0 Ratings</span></p>
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                            <label class="form-check-label" for="exampleCheck1">
+                                                <p class="rate"><span><i class="icon-star"></i><i class="icon-star-o"></i><i class="icon-star-o"></i><i class="icon-star-o"></i><i class="icon-star-o"></i> 0 Ratings</span></p>
+                                            </label>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div> <!-- .col-md-8 -->
+                          
+                </div>
+            </div>
+    </section> <!-- .section -->
+
+    <div class="text-center mt-4">
+        <button onclick="history.back()" class="btn btn-primary" style="background-color: #3498db ; border: none; padding: 10px 20px; font-size: 18px; border-radius: 8px;">
+            <i class="icon-arrow-left"></i> Back To All Rooms
+        </button>
+    </div>
+
+    
+
+    @* <a asp-action="Index" asp-controller="Room" class="btn btn-primary"> *@
+    @*     Back to List of All Instructors *@
+    @* </a> *@
+
+    @* <partial name= "~/Views/Room/User/_CommentsPartial.cshtml" /> *@
+
+
+    <br />
+    <partial name="_FooterPartial" />
+
+    <partial name="_ImportantLinksPartial" />
+
+</body>
+</html>
