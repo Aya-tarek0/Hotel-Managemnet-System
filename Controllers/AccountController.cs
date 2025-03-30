@@ -115,7 +115,14 @@ namespace mvcproj.Controllers
 
                         await signInManager.SignInWithClaimsAsync(appFromDb, userFromRequest.RememberMe, claims);
 
-                        return RedirectToAction("Index", "Room");
+                        if (roles.Contains("Admin"))
+                        {
+                            return RedirectToAction("Index", "Admin"); 
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Guest"); 
+                        }
                     }
                 }
 
