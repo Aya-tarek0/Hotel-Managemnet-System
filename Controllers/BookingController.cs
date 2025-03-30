@@ -53,7 +53,28 @@ namespace mvcproj.Controllers
         //}
         #endregion
 
+        #region details
+        public IActionResult details(int id)
+        {
+            Booking book = bookingRepository.GetdetailsById(id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+            BookingViewModel showbookmodel = new BookingViewModel
+            {
+                BookingID = book.BookingID,
+                UserId = book.UserId,
+                Guest = book.Guest?.Name,
+                RoomNumber = book.RoomNumber,
+                CheckinDate = book.CheckinDate,
+                CheckoutDate = book.CheckoutDate,
+                TotalPrice = book.TotalPrice,
+            };
+            return View("details", showbookmodel);
 
+        }
+        #endregion
 
         #region AddBooking
 
@@ -82,7 +103,8 @@ namespace mvcproj.Controllers
             };
           
             bookingRepository.Insert(booking);
-            return View("Add");
+            //return View("Add");
+            return RedirectToAction("details", new { id = booking.BookingID });
         }
 
         #endregion

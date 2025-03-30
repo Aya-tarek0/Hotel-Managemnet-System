@@ -39,6 +39,14 @@ namespace mvcproj.Reporisatory
             return book;
         }
 
+        public Booking GetdetailsById(int id)
+        {
+            return context.Bookings
+                .Where(b => b.BookingID == id)
+                .Include(b => b.Guest) // Ensure Guest name is accessible
+                .Include(b => b.Room) // Include Room details if needed
+                .FirstOrDefault();
+        }
         public void Insert(Booking obj)
         {
             context.Add(obj);

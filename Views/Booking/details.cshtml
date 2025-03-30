@@ -1,0 +1,58 @@
+﻿
+@* @{
+    ViewData["Title"] = "details";
+}
+
+<h1>details</h1> *@
+
+@model mvcproj.View_Models.BookingViewModel
+
+@{
+    ViewData["Title"] = "Booking Details";
+	Layout = "_RoomsLayout";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-lg p-4">
+        <h2 class="text-center mb-4">📄 Booking Details</h2>
+
+        <table class="table table-bordered table-striped">
+            <tbody>
+                <tr>
+                    <th>Booking ID</th>
+                    <td>@Model.BookingID</td>
+                </tr>
+                <tr>
+                    <th>User ID</th>
+                    <td>@Model.UserId</td>
+                </tr>
+                <tr>
+                    <th>Guest Name</th>
+                    <td>@Model.Guest</td>
+                </tr>
+                <tr>
+                    <th>Room Number</th>
+                    <td>@Model.RoomNumber</td>
+                </tr>
+                <tr>
+                    <th>Check-in Date</th>
+                    <td>@Model.CheckinDate</td>
+                </tr>
+                <tr>
+                    <th>Check-out Date</th>
+                    <td>@Model.CheckoutDate</td>
+                </tr>
+                <tr>
+                    <th>Total Price</th>
+                    <td>$@Model.TotalPrice</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="text-center mt-4">
+            <a asp-action="Index" asp-controller="Room" class="btn btn-secondary px-4">🔙 Back</a>
+        </div>
+    </div>
+</div>
+
+
