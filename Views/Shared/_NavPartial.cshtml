@@ -1,19 +1,40 @@
 ﻿<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
     <div class="container">
-        <a class="navbar-brand" href="index.html">Harbor<span>lights</span></a>
+        <a class="navbar-brand" href="/Home/Index">Harbor<span>lights</span></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="oi oi-menu"></span> Menu
         </button>
 
         <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="/Home/Index" class="nav-link">Home</a></li>
                 <li class="nav-item active"><a href="/Room" class="nav-link">Our Rooms</a></li>
                 <li class="nav-item"><a href="restaurant.html" class="nav-link">Restaurant</a></li>
                 <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
                 <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
                 <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
             </ul>
+
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <div class="d-flex gap-2">
+                    <a asp-action="Register" asp-controller="Account" class="btn btn-outline-light fw-bold px-4 py-2">Register</a>
+                    <a asp-action="Login" asp-controller="Account" class="btn btn-dark fw-bold px-4 py-2">Login</a>
+                </div>
+            }
+            else
+            {
+                <form asp-action="Logout" asp-controller="Account" method="post">
+                    <button type="submit" class="btn btn-group d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box-arrow-right me-2" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M6 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V3zm1-1A2 2 0 0 0 5 3v10a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H7z" />
+                            <path fill-rule="evenodd" d="M11.5 8a.5.5 0 0 1-.5.5H3.707l1.647 1.646a.5.5 0 0 1-.708.708l-2.5-2.5a.5.5 0 0 1 0-.708l2.5-2.5a.5.5 0 1 1 .708.708L3.707 7.5H11a.5.5 0 0 1 .5.5z" />
+                        </svg>
+                        Logout
+                    </button>
+                </form>
+            }
+
         </div>
     </div>
 </nav>

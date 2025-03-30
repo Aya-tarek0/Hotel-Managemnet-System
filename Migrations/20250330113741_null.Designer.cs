@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mvcproj.Models;
 
@@ -11,9 +12,11 @@ using mvcproj.Models;
 namespace mvcproj.Migrations
 {
     [DbContext(typeof(Reservecotexet))]
-    partial class ReservecotexetModelSnapshot : ModelSnapshot
+    [Migration("20250330113741_null")]
+    partial class @null
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -458,7 +461,7 @@ namespace mvcproj.Migrations
                     b.Property<DateTime>("HireDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("HotelID")
+                    b.Property<int>("HotelID")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -612,15 +615,19 @@ namespace mvcproj.Migrations
 
             modelBuilder.Entity("mvcproj.Models.Staff", b =>
                 {
-                    b.HasOne("mvcproj.Models.Hotel", null)
+                    b.HasOne("mvcproj.Models.Hotel", "Hotel")
                         .WithMany("Staffs")
-                        .HasForeignKey("HotelID");
+                        .HasForeignKey("HotelID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("mvcproj.Models.ApplicationUser", "User")
                         .WithOne("StaffProfile")
                         .HasForeignKey("mvcproj.Models.Staff", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Hotel");
 
                     b.Navigation("User");
                 });

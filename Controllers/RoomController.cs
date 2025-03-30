@@ -70,20 +70,23 @@ namespace mvcproj.Controllers
         }
 
 
-            private string GetUserType()
-            {
-                if (User.IsInRole("Guest"))
-                    return "Guest";
+        private string GetUserType()
+        {
+            if (User.IsInRole("Admin"))
+                return "Admin"; 
+            if (User.IsInRole("Guest"))
+                return "Guest";
 
-                return "User";
-            }
+            return "User";
+        }
 
 
-            #endregion
 
-            #region Add New Room
+        #endregion
 
-            public IActionResult AddRoom()
+        #region Add New Room
+
+        public IActionResult AddRoom()
             {
                 var roomTypes = roomTypeRepo.GetRoomType();
                 ViewBag.RoomTypes = new SelectList(roomTypes, "TypeID", "Name");

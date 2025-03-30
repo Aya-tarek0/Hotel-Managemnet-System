@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using mvcproj.Models;
 using mvcproj.Reporisatory;
@@ -10,9 +12,11 @@ namespace mvcproj.Controllers
     {
         private readonly IBookingRepository bookingRepository;
         private readonly IRoomTypeReporisatory roomTypeReporisatory;
-
-        public BookingController(IBookingRepository bookingRepository,IRoomTypeReporisatory roomTypeReporisatory)
+        private readonly UserManager<ApplicationUser> user;
+        public BookingController(IBookingRepository bookingRepository,IRoomTypeReporisatory roomTypeReporisatory,UserManager<ApplicationUser> userManager)
         {
+           user = userManager;
+
             this.bookingRepository = bookingRepository;
             this.roomTypeReporisatory = roomTypeReporisatory;
         }
@@ -78,7 +82,7 @@ namespace mvcproj.Controllers
 
         #region AddBooking
 
-
+        [Authorize]
         public IActionResult Add()
         {
             ViewBag.RoomTypes = new SelectList(roomTypeReporisatory.GetAll(), "RoomTypeId", "Name");
@@ -91,10 +95,13 @@ namespace mvcproj.Controllers
             
 
             int noOfDays = (bookingVM.CheckoutDate.GetValueOrDefault() - bookingVM.CheckinDate.GetValueOrDefault()).Days;
+            var userId = user.GetUserId(User);
+
             Booking booking = new Booking()
             {
+                UserId = userId,
+
                
-                UserId = bookingVM.UserId,
                 RoomNumber = bookingVM.RoomNumber??0,
                 CheckinDate = bookingVM.CheckinDate??DateTime.Now,
                 CheckoutDate = bookingVM.CheckoutDate??DateTime.Now,

@@ -11,12 +11,10 @@ namespace mvcproj.Models
         [ForeignKey("UserId")]
         public ApplicationUser User { get; set; }
 
-        [ForeignKey("Hotel")]
-        public int HotelID { get; set; }
-        public Hotel Hotel { get; set; }
+    
 
         public string Name { get; set; }
-        public string Position { get; set; }
+        public string? Position { get; set; }
         public int Salary { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Phone { get; set; }

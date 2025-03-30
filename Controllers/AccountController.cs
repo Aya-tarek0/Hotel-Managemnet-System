@@ -23,6 +23,8 @@ namespace mvcproj.Controllers
             _context = context;
         }
 
+        #region Register Guest
+
         [HttpGet]
         public IActionResult Register()
         {
@@ -75,8 +77,9 @@ namespace mvcproj.Controllers
 
             await signInManager.SignInAsync(user, isPersistent: false);
 
-            return Ok("Guest registered successfully!");
+            return RedirectToAction("Index","Room");
         }
+        #endregion
 
         #region Login
         public IActionResult Login()
@@ -112,7 +115,7 @@ namespace mvcproj.Controllers
 
                         await signInManager.SignInWithClaimsAsync(appFromDb, userFromRequest.RememberMe, claims);
 
-                        return Ok("Login success");
+                        return RedirectToAction("Index", "Room");
                     }
                 }
 
@@ -123,7 +126,7 @@ namespace mvcproj.Controllers
         }
         #endregion
 
-
+        #region Register Admin
         [HttpGet]
         public IActionResult RegisterAdmin()
         {
@@ -174,7 +177,16 @@ namespace mvcproj.Controllers
 
             await signInManager.SignInAsync(user, isPersistent: false);
 
-            return Ok("Staff registered successfully!");
+            TempData["SuccessMessage"] = "Admin registered successfully!";
+            return RedirectToAction("RegisterAdmin");
         }
+        #endregion
+        #region LogOut
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Index","Room");
+        }
+        #endregion
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mvcproj.Models;
 
@@ -11,9 +12,11 @@ using mvcproj.Models;
 namespace mvcproj.Migrations
 {
     [DbContext(typeof(Reservecotexet))]
-    partial class ReservecotexetModelSnapshot : ModelSnapshot
+    [Migration("20250329151229_new")]
+    partial class @new
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -259,36 +262,6 @@ namespace mvcproj.Migrations
                     b.ToTable("Bookings");
                 });
 
-            modelBuilder.Entity("mvcproj.Models.Comment", b =>
-                {
-                    b.Property<int>("CommentID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentID"));
-
-                    b.Property<DateTime>("CommentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CommentText")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GuestID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("RoomID")
-                        .HasColumnType("int");
-
-                    b.HasKey("CommentID");
-
-                    b.HasIndex("GuestID");
-
-                    b.HasIndex("RoomID");
-
-                    b.ToTable("Comments");
-                });
-
             modelBuilder.Entity("mvcproj.Models.Guest", b =>
                 {
                     b.Property<string>("UserId")
@@ -458,7 +431,7 @@ namespace mvcproj.Migrations
                     b.Property<DateTime>("HireDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("HotelID")
+                    b.Property<int>("HotelID")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -470,6 +443,7 @@ namespace mvcproj.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Position")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Salary")
@@ -552,23 +526,6 @@ namespace mvcproj.Migrations
                     b.Navigation("Room");
                 });
 
-            modelBuilder.Entity("mvcproj.Models.Comment", b =>
-                {
-                    b.HasOne("mvcproj.Models.Guest", "Guest")
-                        .WithMany()
-                        .HasForeignKey("GuestID");
-
-                    b.HasOne("mvcproj.Models.Room", "Room")
-                        .WithMany("comments")
-                        .HasForeignKey("RoomID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Guest");
-
-                    b.Navigation("Room");
-                });
-
             modelBuilder.Entity("mvcproj.Models.Guest", b =>
                 {
                     b.HasOne("mvcproj.Models.ApplicationUser", "User")
@@ -612,15 +569,19 @@ namespace mvcproj.Migrations
 
             modelBuilder.Entity("mvcproj.Models.Staff", b =>
                 {
-                    b.HasOne("mvcproj.Models.Hotel", null)
+                    b.HasOne("mvcproj.Models.Hotel", "Hotel")
                         .WithMany("Staffs")
-                        .HasForeignKey("HotelID");
+                        .HasForeignKey("HotelID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("mvcproj.Models.ApplicationUser", "User")
                         .WithOne("StaffProfile")
                         .HasForeignKey("mvcproj.Models.Staff", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Hotel");
 
                     b.Navigation("User");
                 });
@@ -649,11 +610,6 @@ namespace mvcproj.Migrations
                     b.Navigation("Rooms");
 
                     b.Navigation("Staffs");
-                });
-
-            modelBuilder.Entity("mvcproj.Models.Room", b =>
-                {
-                    b.Navigation("comments");
                 });
 
             modelBuilder.Entity("mvcproj.Models.RoomType", b =>
