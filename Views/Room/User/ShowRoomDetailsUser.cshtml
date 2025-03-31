@@ -1,4 +1,4 @@
-﻿@model ShowRoomDetailsViewModel
+﻿@model ShowRoomDetailsWithCommentsViewModel
 
 <!DOCTYPE html>
 <html lang="en">
@@ -89,7 +89,7 @@
 
                             <div>
                                 <a class="btn btn-success" href="/Booking/Add">Book Now</a>
-                                </div>
+                            </div>
 
                         </div>
 
@@ -141,19 +141,23 @@
             </div>
     </section> <!-- .section -->
 
-    <div class="text-center mt-4">
-        <button onclick="history.back()" class="btn btn-primary" style="background-color: #3498db ; border: none; padding: 10px 20px; font-size: 18px; border-radius: 8px;">
-            <i class="icon-arrow-left"></i> Back To All Rooms
-        </button>
-    </div>
+    @* <div class="text-center mt-4"> *@
+    @*     <button onclick="history.back()" class="btn btn-primary" style="background-color: #3498db ; border: none; padding: 10px 20px; font-size: 18px; border-radius: 8px;"> *@
+    @*         <i class="icon-arrow-left"></i> Back To All Rooms *@
+    @*     </button> *@
+    @* </div> *@
 
     
+    <div class="text-center mt-4">
+        <a asp-action="Index" asp-controller="Room" class="btn btn-primary" style="background-color: #3498db ; border: none; padding: 10px 20px; font-size: 18px; border-radius: 8px;">
+        Back To All Rooms
+    </a>
 
-    @* <a asp-action="Index" asp-controller="Room" class="btn btn-primary"> *@
-    @*     Back to List of All Instructors *@
-    @* </a> *@
-
-    @* <partial name= "~/Views/Room/User/_CommentsPartial.cshtml" /> *@
+    </div>
+    @* <partial name= "~/Views/Room/User/_CommentsPartial.cshtml" />  *@
+   
+    @* this for show Comments *@
+    @await Html.PartialAsync("~/Views/Room/User/_CommentsPartial.cshtml", Model.Comments)
 
 
     <br />

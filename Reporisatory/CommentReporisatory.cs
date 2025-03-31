@@ -1,4 +1,6 @@
-﻿using mvcproj.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using mvcproj.Models;
+using mvcproj.View_Models;
 
 namespace mvcproj.Reporisatory
 {
@@ -28,16 +30,26 @@ namespace mvcproj.Reporisatory
             return _context.Comments.FirstOrDefault(c => c.CommentID == id);
         }
 
-        public List<Comment> GetCommentsByRoomId(int id)
+        public List<CommentsWithRoomIDViewModel> GetCommentsByRoomId(int id)
         {
             return _context.Comments
                 .Where(c => c.RoomID == id)
+                .OrderByDescending(c => c.CommentDate)
+                .Include(c=>c.Guest)
+                .Select(c=> new CommentsWithRoomIDViewModel
+                {
+                     CommentText =c.CommentText,
+                     CreatedAt =c.CommentDate,
+                     RoomID =c.RoomID,
+                     GuestName=c.Guest!=null?c.Guest.Name : "Anonymous",
+                     GuestEmail =c.Guest!=null?c.Guest.Email: "No Email",
+                })
                 .ToList();
         }
 
         public void Insert(Comment obj)
         {
-            _context.Add(obj);
+            _context.Comments.Add(obj);
         }
 
         public void Save()
@@ -55,5 +67,7 @@ namespace mvcproj.Reporisatory
         {
             _context.Update(obj);
         }
+
+    
     }
 }

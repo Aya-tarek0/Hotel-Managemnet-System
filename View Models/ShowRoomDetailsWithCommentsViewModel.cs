@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace mvcproj.View_Models
 {
-    public class ShowRoomDetailsViewModel
+    public class ShowRoomDetailsWithCommentsViewModel
     {
 
         public int RoomID { get; set; }
@@ -17,6 +17,7 @@ namespace mvcproj.View_Models
         public int? Capacity { get; set; }
         public string? HotelName { get; set; }
 
+        public List<CommentsWithRoomIDViewModel> Comments { get; set; }
 
     }
 }

@@ -44,8 +44,8 @@ namespace mvcproj.Controllers
 
                 var rooms = roomRepo.GetAll();
 
-                List<ShowRoomDetailsViewModel> roomList = rooms
-                    .Select(e => new ShowRoomDetailsViewModel
+                List<ShowRoomDetailsWithCommentsViewModel> roomList = rooms
+                    .Select(e => new ShowRoomDetailsWithCommentsViewModel
                     {
                         
                         RoomID=e.RoomID,
@@ -84,7 +84,7 @@ namespace mvcproj.Controllers
 
         #endregion
 
-        #region Add New Room
+            #region Add New Room
 
         public IActionResult AddRoom()
             {
@@ -184,7 +184,7 @@ namespace mvcproj.Controllers
                 }
             var comments = commentRepo.GetCommentsByRoomId(id);
 
-            ShowRoomDetailsViewModel showRoomModel = new ShowRoomDetailsViewModel
+            ShowRoomDetailsWithCommentsViewModel showRoomModel = new ShowRoomDetailsWithCommentsViewModel
                 {
                     RoomID = room.RoomID,
                     HotelID = room.HotelID,
@@ -195,7 +195,9 @@ namespace mvcproj.Controllers
                     RoomTypeName = room.RoomType?.Name,
                     Description = room.RoomType?.Description,
                     PricePerNight = room.RoomType?.PricePerNight,
-                    Capacity = room.RoomType?.Capacity
+                    Capacity = room.RoomType?.Capacity,
+                    Comments=comments,
+
                 };
             //return View("ShowRoomDetails", showRoomModel);// show details for Admin 
             return View("~/Views/Room/User/ShowRoomDetailsUser.cshtml", showRoomModel); //show details for user 
@@ -204,14 +206,14 @@ namespace mvcproj.Controllers
 
         #endregion
 
-        #region Delete
+            #region Delete
 
         public IActionResult Delete(int id)
         {
             Room room = roomRepo.GetRoomDetailsById(id);
             if (room != null)
             {
-                ShowRoomDetailsViewModel RoomViewModel = new ShowRoomDetailsViewModel()
+                ShowRoomDetailsWithCommentsViewModel RoomViewModel = new ShowRoomDetailsWithCommentsViewModel()
                 {
                     RoomID = room.RoomID,
                     HotelID = room.HotelID,

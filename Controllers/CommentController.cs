@@ -26,9 +26,6 @@ namespace mvcproj.Controllers
         [HttpPost]
         public async Task<IActionResult> AddComment(CommentsWithRoomIDViewModel CommentModel)
         {
-            //var comment = commentReporisatory.GetCommentsByRoomId(id);
-
-            //var CommentInformation = 
             if (!ModelState.IsValid)
             {
                 return View(CommentModel);
@@ -43,8 +40,12 @@ namespace mvcproj.Controllers
                     GuestID = "1",
                 };
                 commentReporisatory.Insert(comment);
+                //return RedirectToAction("ShowRoomDetails", "Room", new { id = CommentModel.RoomID });
+
                 await commentReporisatory.SaveAsync();
-                _hubContext.Clients.All.SendAsync("ReceiveComment", CommentModel.GuestName, CommentModel.GuestEmail, CommentModel.CommentText);
+
+                _hubContext.Clients.All.SendAsync("ReceiveComment"
+                    , CommentModel.GuestName, CommentModel.GuestEmail,CommentModel.CreatedAt, CommentModel.CommentText);
 
                 return Ok(new { message = "Comment added successfully" });
             }

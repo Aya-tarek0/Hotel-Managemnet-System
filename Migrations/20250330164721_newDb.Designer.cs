@@ -12,8 +12,8 @@ using mvcproj.Models;
 namespace mvcproj.Migrations
 {
     [DbContext(typeof(Reservecotexet))]
-    [Migration("20250329212317_AddComment")]
-    partial class AddComment
+    [Migration("20250330164721_newDb")]
+    partial class newDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -278,7 +278,6 @@ namespace mvcproj.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("GuestID")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("RoomID")
@@ -290,7 +289,7 @@ namespace mvcproj.Migrations
 
                     b.HasIndex("RoomID");
 
-                    b.ToTable("Comment");
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("mvcproj.Models.Guest", b =>
@@ -462,7 +461,7 @@ namespace mvcproj.Migrations
                     b.Property<DateTime>("HireDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("HotelID")
+                    b.Property<int?>("HotelID")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -474,7 +473,6 @@ namespace mvcproj.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Position")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Salary")
@@ -561,9 +559,7 @@ namespace mvcproj.Migrations
                 {
                     b.HasOne("mvcproj.Models.Guest", "Guest")
                         .WithMany()
-                        .HasForeignKey("GuestID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GuestID");
 
                     b.HasOne("mvcproj.Models.Room", "Room")
                         .WithMany("comments")
@@ -619,19 +615,15 @@ namespace mvcproj.Migrations
 
             modelBuilder.Entity("mvcproj.Models.Staff", b =>
                 {
-                    b.HasOne("mvcproj.Models.Hotel", "Hotel")
+                    b.HasOne("mvcproj.Models.Hotel", null)
                         .WithMany("Staffs")
-                        .HasForeignKey("HotelID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("HotelID");
 
                     b.HasOne("mvcproj.Models.ApplicationUser", "User")
                         .WithOne("StaffProfile")
                         .HasForeignKey("mvcproj.Models.Staff", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Hotel");
 
                     b.Navigation("User");
                 });

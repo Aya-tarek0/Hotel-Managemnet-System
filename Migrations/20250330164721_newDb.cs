@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace mvcproj.Migrations
 {
     /// <inheritdoc />
-    public partial class @new : Migration
+    public partial class newDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -221,14 +221,14 @@ namespace mvcproj.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    HotelID = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Position = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Position = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Salary = table.Column<int>(type: "int", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HireDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    HireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    HotelID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -243,8 +243,7 @@ namespace mvcproj.Migrations
                         name: "FK_Staffs_Hotels_HotelID",
                         column: x => x.HotelID,
                         principalTable: "Hotels",
-                        principalColumn: "HotelID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "HotelID");
                 });
 
             migrationBuilder.CreateTable(
@@ -301,6 +300,33 @@ namespace mvcproj.Migrations
                     table.ForeignKey(
                         name: "FK_Bookings_Rooms_RoomNumber",
                         column: x => x.RoomNumber,
+                        principalTable: "Rooms",
+                        principalColumn: "RoomID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    CommentID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CommentText = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CommentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RoomID = table.Column<int>(type: "int", nullable: false),
+                    GuestID = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.CommentID);
+                    table.ForeignKey(
+                        name: "FK_Comments_Guests_GuestID",
+                        column: x => x.GuestID,
+                        principalTable: "Guests",
+                        principalColumn: "UserId");
+                    table.ForeignKey(
+                        name: "FK_Comments_Rooms_RoomID",
+                        column: x => x.RoomID,
                         principalTable: "Rooms",
                         principalColumn: "RoomID",
                         onDelete: ReferentialAction.Cascade);
@@ -378,6 +404,16 @@ namespace mvcproj.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comments_GuestID",
+                table: "Comments",
+                column: "GuestID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_RoomID",
+                table: "Comments",
+                column: "RoomID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Payments_BookingID",
                 table: "Payments",
                 column: "BookingID");
@@ -415,6 +451,9 @@ namespace mvcproj.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "Payments");

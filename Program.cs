@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using mvcproj.Hubs;
 using mvcproj.Models;
 using mvcproj.Reporisatory;
+using System.Security.Policy;
 
 namespace mvcproj
 {
@@ -34,7 +35,17 @@ namespace mvcproj
 
 
             }).AddEntityFrameworkStores<Reservecotexet>();
-            
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .SetIsOriginAllowed(Url => true)
+                    .AllowCredentials();
+                });
+            });
 
             var app = builder.Build();
 
@@ -49,9 +60,12 @@ namespace mvcproj
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseCors();
+            
+            app.MapHub<CommentsHub>("/CommentHub");
+
             app.UseRouting();
 
-            app.MapHub<CommentsHub>("/CommentHub");
 
             app.UseAuthorization();
 

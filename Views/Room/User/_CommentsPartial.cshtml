@@ -1,15 +1,18 @@
 ﻿@model List<CommentsWithRoomIDViewModel>
 
+
 <div class="pt-5 mt-5">
+    @* show comments  *@
     <h3 class="mb-5">Comments</h3>
     <ul class="comment-list">    
         @foreach (var comment in Model)
         {
             <li class="comment">
                 <div class="comment-body">
-                    <h3>@comment.GuestName</h3>
+                    <h2>@comment.GuestName</h2>
+                    <p>@comment.GuestEmail</p>
                     <div class="meta">@comment.CreatedAt.ToString("MMM dd, yyyy hh:mm tt")</div>
-                    <p>@comment.CommentText</p>
+                    <h3>@comment.CommentText</h3>
                     <p><a href="#" class="reply">Reply</a></p>
                 </div>
             </li>
@@ -19,39 +22,78 @@
 
     <!-- END comment-list -->
 
+
+    <!-- write new comment  -->
+
     <div class="comment-form-wrap pt-5">
         <h3 class="mb-5">Leave a comment</h3>
-        <form action="#" class="p-5 bg-light">
-            <div class="form-group">
-                <label for="name">Name *</label>
-                <input type="text" class="form-control" id="name">
-            </div>
-            <div class="form-group">
-                <label for="email">Email *</label>
-                <input type="email" class="form-control" id="email">
-            </div>
-            <div class="form-group">
-                <label for="website">Website</label>
-                <input type="url" class="form-control" id="website">
-            </div>
 
             <div class="form-group">
                 <label for="message">Message</label>
-                <textarea name="" id="message" cols="30" rows="10" class="form-control"></textarea>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Post Comment" class="btn py-3 px-4 btn-primary">
+                <textarea id="message" cols="30" rows="10" class="form-control"></textarea>
             </div>
 
-        </form>
+            <div class="form-group">
+            <input type="button" value="Send Comment" class="btn py-3 px-4 btn-primary" onclick="SendComment()">
+            </div>
+      
     </div>
+
 </div>
 
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
-<script>
 
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"
+        integrity="sha512-7SRCYIJtR6F8ocwW7UxW6wGKqbSyqREDbfCORCbGLatU0iugBLwyOXpzhkPyHIFdBO0K2VCu57fvP2Twgx1o2A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+     //1
+     var hub = new signalR.HubConnectionBuilder()
+     .withUrl("/CommentHub")
+     .build();
+     //2
+     hub.start().then(
+         function(){
+            console.log("Hub Connect Opened Success");
+         }
+     ).catch(
+         function(error){
+              console.log("Error while connecting: ", error);
+         });
+
+    //3
+       hub.on("ReceiveComment", function (guestName, guestEmail, CreatedAt, commentText) {
+        var commentList = document.querySelector(".comment-list");
+        var newComment = document.createElement("li");
+        newComment.classList.add("comment");
+        newComment.innerHTML = `
+            <div class="comment-body">
+                <h2>${guestName}</h2>
+                <p>${guestEmail}</p>
+                <div class="meta">${new Date(CreatedAt).toLocaleString()}</div>
+                <h3>${commentText}</h3>
+                <p><a href="#" class="reply">Reply</a></p>
+            </div>
+        `;
+        commentList.appendChild(newComment);
+    });
+
+     function SendComment(){
+         var messageText = $("#message").val();
+          var guestName= "Areege";
+          var guestEmail ="a@gmail.com";
+          var CreatedAt = new Date().toISOString();
+
+         hub.invoke("NewComment", guestName, guestEmail, CreatedAt, messageText)
+              .then(()=>{
+               console.log("Comment sent successfully");
+          })
+          .catch(error=>{
+               console.error("Error sending comment:", error);
+          });
+     }
 
 
 
