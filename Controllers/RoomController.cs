@@ -27,47 +27,57 @@ namespace mvcproj.Controllers
                 this.webHostEnvironment = webHostEnvironment;
                 this.commentRepo = commentRepo;
             }
-            #endregion
+        #endregion
 
-            #region Show All Rooms
-            /* public IActionResult Index()
-             {
-                 List<Room> roomList = roomRepo.GetAll();
-                 return View("Index", roomList);
-             }*/
-            public IActionResult Index()
+        #region Show All Rooms
+        /* public IActionResult Index()
+         {
+             List<Room> roomList = roomRepo.GetAll();
+             return View("Index", roomList);
+         }*/
+        public IActionResult Index(int page = 1)
+        {
+            if (roomRepo == null)
             {
-                if (roomRepo == null)
+                return View("Error");
+            }
+
+            var rooms = roomRepo.GetAll();
+
+            List<ShowRoomDetailsWithCommentsViewModel> roomList = rooms
+                .Select(e => new ShowRoomDetailsWithCommentsViewModel
                 {
-                    return View("Error");
-                }
+                    RoomID = e.RoomID,
+                    ImageUrl = e.image,
+                    RoomTypeName = e.RoomType?.Name,
+                    TypeID=e.TypeID,
+                    HotelID=e.HotelID,
 
-                var rooms = roomRepo.GetAll();
+                    PricePerNight = e.RoomType.PricePerNight,
+                    RoomStatus = e.Status
+                }).ToList();
 
-                List<ShowRoomDetailsWithCommentsViewModel> roomList = rooms
-                    .Select(e => new ShowRoomDetailsWithCommentsViewModel
-                    {
-                        
-                        RoomID=e.RoomID,
-                        ImageUrl = e.image,
-                        
-                        RoomTypeName = e.RoomType?.Name,
-                        PricePerNight = e.RoomType.PricePerNight,
-                        RoomStatus = e.Status
-                    }).ToList();
+            int pageSize = 4;
+            int totalRooms = roomList.Count;
+            int totalPages = (int)Math.Ceiling((double)totalRooms / pageSize);
+
+            var paginatedRooms = roomList.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
 
             string userType = GetUserType();
 
             if (userType == "Admin")
             {
-                return View("Index", roomList);
+                return View("Index", paginatedRooms);
             }
             else
             {
-                return View("_AllRoomsUser", roomList);
+                return View("_AllRoomsUser", paginatedRooms);
             }
-            //return View("Index", roomList);
         }
+
 
 
         private string GetUserType()

@@ -6,19 +6,22 @@
 
 }
 
-<h1 class="text-center my-4">Available Rooms</h1>
+<h1 class="text-center my-4 text-primary fw-bold">🏨 Available Rooms</h1>
 
-<p class="text-center">
-    <a asp-action="AddRoom" asp-controller="Room" class="btn btn-primary btn-lg">
+<div class="d-flex justify-content-center mb-4">
+    <a asp-action="AddRoom" asp-controller="Room" class="btn btn-primary btn-lg shadow-sm fw-bold d-flex align-items-center px-4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus-circle me-2" viewBox="0 0 16 16">
+            <path d="M8 0a8 8 0 1 0 8 8A8 8 0 0 0 8 0zm1 4a.5.5 0 0 1 .5.5V7h2.5a.5.5 0 0 1 0 1H9.5v2.5a.5.5 0 0 1-1 0V8H6a.5.5 0 0 1 0-1h2.5V4.5a.5.5 0 0 1 .5-.5z" />
+        </svg>
         Create New Room
     </a>
-</p>
+</div>
 
 <div class="table-responsive">
     <table class="table table-hover table-bordered shadow-sm align-middle text-center">
         <thead class="table-primary">
-            <tr>
-                <th>Room Number</th>
+            <tr class="fw-bold text-uppercase">
+                <th>#</th>
                 <th>Hotel ID</th>
                 <th>Type</th>
                 <th>Room Type</th>
@@ -30,33 +33,44 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>@Html.DisplayFor(modelItem => item.RoomID)</td>
+                <tr class="align-middle">
+                    <td class="fw-bold text-secondary">@Html.DisplayFor(modelItem => item.RoomID)</td>
                     <td>@Html.DisplayFor(modelItem => item.HotelID)</td>
                     <td>@Html.DisplayFor(modelItem => item.TypeID)</td>
-                    <td>@Html.DisplayFor(modelItem => item.RoomTypeName)</td>
+                    <td class="fw-bold text-dark">@Html.DisplayFor(modelItem => item.RoomTypeName)</td>
 
                     <td>
-                        <img src="@Url.Content(item.ImageUrl)" alt="Room Image" class="rounded img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
+                        <img src="@Url.Content(item.ImageUrl)" alt="Room Image" class="rounded img-thumbnail shadow-sm" style="width: 100px; height: 100px; object-fit: cover;">
                     </td>
+
                     <td>
-                        <span style="color:white" class="badge @(item.RoomStatus == "Available" ? "bg-primary" : "bg-dark") fs-6 py-2 px-3">
+                        <span class="badge @(item.RoomStatus == "Available" ? "bg-success" : "bg-danger") fs-6 py-2 px-3 text-white shadow-sm">
                             @Html.DisplayFor(modelItem => item.RoomStatus)
                         </span>
                     </td>
+
                     <td>
-                        <a asp-action="UpdatRoomInformation" asp-controller="Room" asp-route-id="@item.RoomID" class="btn  btn-outline-primary btn-sm">✏️ Update</a>
-                        <a asp-action="ShowRoomDetails" asp-controller="Room" asp-route-id="@item.RoomID" class="btn  btn-outline-info btn-sm">🔍 Details</a>
-                        <a asp-action="Delete" asp-controller="Room" asp-route-id="@item.RoomID" class="btn btn-outline-danger btn-sm">🗑️ Delete</a>
+                        <div class="d-flex justify-content-center gap-2">
+                            <a asp-action="UpdatRoomInformation" asp-controller="Room" asp-route-id="@item.RoomID" class="btn btn-outline-primary btn-sm d-flex align-items-center">
+                                ✏️ Update
+                            </a>
+                            <a asp-action="ShowRoomDetails" asp-controller="Room" asp-route-id="@item.RoomID" class="btn btn-outline-info btn-sm d-flex align-items-center">
+                                🔍 Details
+                            </a>
+                            <a asp-action="Delete" asp-controller="Room" asp-route-id="@item.RoomID" class="btn btn-outline-danger btn-sm d-flex align-items-center">
+                                🗑️ Delete
+                            </a>
+                        </div>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+
     <div class="d-flex justify-content-center gap-3 mt-4">
         <form asp-action="Logout" asp-controller="Account" method="post">
-            <button type="submit" class="btn btn-danger btn-lg d-flex align-items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box-arrow-right me-2" viewBox="0 0 16 16">
+            <button type="submit" class="btn btn-danger btn-lg shadow-sm d-flex align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box-arrow-right me-2" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M6 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V3zm1-1A2 2 0 0 0 5 3v10a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H7z" />
                     <path fill-rule="evenodd" d="M11.5 8a.5.5 0 0 1-.5.5H3.707l1.647 1.646a.5.5 0 0 1-.708.708l-2.5-2.5a.5.5 0 0 1 0-.708l2.5-2.5a.5.5 0 1 1 .708.708L3.707 7.5H11a.5.5 0 0 1 .5.5z" />
                 </svg>
@@ -64,14 +78,11 @@
             </button>
         </form>
 
-        <a asp-action="RegisterAdmin" asp-controller="Account" class="btn btn-success btn-lg d-flex align-items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-plus me-2" viewBox="0 0 16 16">
+        <a asp-action="RegisterAdmin" asp-controller="Account" class="btn btn-success btn-lg shadow-sm d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-plus me-2" viewBox="0 0 16 16">
                 <path d="M6 8c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM2 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H2zm10.5-6a.5.5 0 0 1 .5.5V10h1.5a.5.5 0 0 1 0 1H13v1.5a.5.5 0 0 1-1 0V11H10.5a.5.5 0 0 1 0-1H12V8.5a.5.5 0 0 1 .5-.5z" />
             </svg>
             Add New Admin
         </a>
     </div>
-
-
-
 </div>
