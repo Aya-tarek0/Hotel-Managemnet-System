@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace mvcproj.Models
 {
@@ -16,7 +17,8 @@ namespace mvcproj.Models
 
         [Required]
         public double Price { get; set; }
-
-        public string ImageUrl { get; set; }  
+        public string? ImageUrl { get; set; }
+        [NotMapped]
+        public IFormFile ImageFile { get; set; }
     }
 }
