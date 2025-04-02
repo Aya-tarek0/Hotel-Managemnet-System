@@ -129,7 +129,7 @@ namespace mvcproj.Controllers
 
                 var roomTypes = roomTypeRepo.GetRoomType();
                 ViewBag.RoomTypes = new SelectList(roomTypes, "TypeID", "TypeName", room.TypeID);
-                return View("AddRoom"); // 🔹 إذا كان هناك خطأ، يعيد المستخدم لنفس الصفحة مع الأخطاء
+                return View("AddRoom"); 
             }
 
             #endregion
