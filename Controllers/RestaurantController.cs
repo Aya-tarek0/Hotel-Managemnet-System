@@ -108,5 +108,17 @@ public class RestaurantController : Controller
         return View("UpdateDish", restaurantUpdated);
     }
 
+    public async Task<IActionResult> Delete(int id)
+    {
+        Restaurant res = restaurantRepository.GetById(id);
 
+        if(res != null)
+        {
+            restaurantRepository.Delete(id);
+            restaurantRepository.Save();
+            return RedirectToAction("ShowAllFood");
+        }
+
+        return NotFound("not found");
+    }
 }
