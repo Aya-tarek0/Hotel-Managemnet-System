@@ -52,28 +52,40 @@
 
     <div class="container">
         <div class="form-container">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
             <h2>Create New Account</h2>
             <form asp-controller="Account" asp-action="Register" method="post">
                 <div class="mb-3">
                     <label asp-for="UserName" class="form-label">Name</label>
                     <input type="text" class="form-control" asp-for="UserName" required>
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+
                 </div>
                 <div class="mb-3">
                     <label asp-for="Email" class="form-label">Email</label>
                     <input type="email" class="form-control" asp-for="Email" required>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+
                 </div>
                 <div class="mb-3">
                     <label asp-for="Phone" class="form-label">Phone</label>
                     <input type="text" class="form-control" asp-for="Phone" required>
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+
                 </div>
                 <div class="mb-3">
                     <label asp-for="Password" class="form-label">Password</label>
                     <input type="password" class="form-control" asp-for="Password" required>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+
                 </div>
 
                 <div class="mb-3">
                     <label asp-for="Address" class="form-label">Address</label>
                     <input type="text" class="form-control" asp-for="Address" required>
+                    <span asp-validation-for="Address" class="text-danger"></span>
+
                 </div>
                 <div class="form-check mb-3">
                     <input class="form-check-input" type="checkbox" id="iAgree" required>
@@ -93,3 +105,6 @@
     </div>
 </body>
 </html>
+<script src="/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

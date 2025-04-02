@@ -37,7 +37,7 @@ namespace mvcproj.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid data");
+                return View(model);
             }
 
             var user = new ApplicationUser
@@ -45,14 +45,18 @@ namespace mvcproj.Controllers
                 UserName = model.UserName,
                 Email = model.Email,
                 PhoneNumber = model.Phone,
-                Address= model.Address
+                Address = model.Address
             };
 
             var result = await userManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
             {
-                return BadRequest(result.Errors);
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return View(model);
             }
 
             if (!await roleManager.RoleExistsAsync("Guest"))
@@ -64,12 +68,11 @@ namespace mvcproj.Controllers
 
             var guest = new Guest
             {
-                UserId = user.Id, 
+                UserId = user.Id,
                 Name = model.UserName,
                 Phone = model.Phone,
                 Email = model.Email,
-                Address =model.Address
-                
+                Address = model.Address
             };
 
             _context.Guests.Add(guest);
@@ -77,8 +80,9 @@ namespace mvcproj.Controllers
 
             await signInManager.SignInAsync(user, isPersistent: false);
 
-            return RedirectToAction("Index","Room");
+            return RedirectToAction("Index", "Room");
         }
+
         #endregion
 
         #region Login
@@ -146,7 +150,7 @@ namespace mvcproj.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid data");
+                return View(model);
             }
 
             var user = new ApplicationUser
@@ -160,7 +164,11 @@ namespace mvcproj.Controllers
 
             if (!result.Succeeded)
             {
-                return BadRequest(result.Errors);
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return View(model);
             }
 
             if (!await roleManager.RoleExistsAsync("Admin"))
