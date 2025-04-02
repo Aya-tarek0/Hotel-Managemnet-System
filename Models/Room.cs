@@ -28,5 +28,6 @@ namespace mvcproj.Models
 
         //collection of comments 
         public ICollection<Comment> comments { get; set; } = new List<Comment>();
+        public virtual ICollection<Booking>? Bookings { get; set; }
     }
 }
