@@ -1,0 +1,58 @@
+﻿@model List<Restaurant>
+
+@{
+    ViewData["Title"] = "Menu";
+    Layout = "_sidebar";
+}
+
+<h1 class="text-center my-4 text-primary fw-bold">Menu</h1>
+
+<div class="d-flex justify-content-center mb-4">
+    <a asp-action="AddDish" asp-controller="Restaurant" class="btn btn-primary btn-lg shadow-sm fw-bold d-flex align-items-center px-4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus-circle me-2" viewBox="0 0 16 16">
+            <path d="M8 0a8 8 0 1 0 8 8A8 8 0 0 0 8 0zm1 4a.5.5 0 0 1 .5.5V7h2.5a.5.5 0 0 1 0 1H9.5v2.5a.5.5 0 0 1-1 0V8H6a.5.5 0 0 1 0-1h2.5V4.5a.5.5 0 0 1 .5-.5z" />
+        </svg>
+        Add a new dish
+    </a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover table-bordered shadow-sm align-middle text-center">
+        <thead class="table-primary">
+            <tr class="fw-bold text-uppercase">
+                <th>ID</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var dish in Model)
+            {
+                <tr class="align-middle">
+                    <td class="fw-bold text-secondary">@dish.RestaurantId</td>
+                    <td><img src="@dish.ImageUrl" alt="@dish.Name" width="100" /></td>
+                    <td class="fw-bold text-dark">@dish.Name</td>
+                    <td>@dish.Description</td>
+                    <td>@dish.Price $</td>
+                    <td>
+                        <div class="d-flex justify-content-center gap-2">
+                            <a asp-action="UpdateDish" asp-controller="Restaurant" asp-route-id="@dish.RestaurantId" class="btn btn-outline-primary btn-sm d-flex align-items-center">
+                                ✏️ Update
+                            </a>
+                            <a asp-action="ShowDishDetails" asp-controller="Restaurant" asp-route-id="@dish.RestaurantId" class="btn btn-outline-info btn-sm d-flex align-items-center">
+                                🔍 Details
+                            </a>
+                            <a asp-action="DeleteDish" asp-controller="Restaurant" asp-route-id="@dish.RestaurantId" class="btn btn-outline-danger btn-sm d-flex align-items-center">
+                                🗑️ Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

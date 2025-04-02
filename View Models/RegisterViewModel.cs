@@ -4,6 +4,7 @@ namespace mvcproj.View_Models
 {
     public class RegisterViewModel
     {
+        
         public string UserName { get; set; }
 
         [DataType(DataType.Password)]

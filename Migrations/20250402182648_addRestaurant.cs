@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace mvcproj.Migrations
 {
     /// <inheritdoc />
-    public partial class @as : Migration
+    public partial class addRestaurant : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -12,8 +12,8 @@ using mvcproj.Models;
 namespace mvcproj.Migrations
 {
     [DbContext(typeof(Reservecotexet))]
-    [Migration("20250402174041_as")]
-    partial class @as
+    [Migration("20250402182648_addRestaurant")]
+    partial class addRestaurant
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

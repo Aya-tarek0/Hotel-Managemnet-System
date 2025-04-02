@@ -12,8 +12,8 @@ using mvcproj.Models;
 namespace mvcproj.Migrations
 {
     [DbContext(typeof(Reservecotexet))]
-    [Migration("20250402174138_asds")]
-    partial class asds
+    [Migration("20250402191905_addRestaurantt")]
+    partial class addRestaurantt
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -385,32 +385,34 @@ namespace mvcproj.Migrations
                     b.ToTable("Payments");
                 });
 
-            modelBuilder.Entity("mvcproj.Models.Resturatnt", b =>
+            modelBuilder.Entity("mvcproj.Models.Restaurant", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("RestaurantId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RestaurantId"));
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("Image")
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
-                    b.HasKey("Id");
+                    b.HasKey("RestaurantId");
 
-                    b.ToTable("Resturatnts");
+                    b.ToTable("restaurants");
                 });
 
             modelBuilder.Entity("mvcproj.Models.Room", b =>

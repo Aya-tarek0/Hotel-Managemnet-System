@@ -18,7 +18,7 @@ namespace mvcproj.Models
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Comment> Comments { get; set; }
 
-        public DbSet<Resturatnt> Resturatnts { set; get; }
+        public DbSet<Restaurant> restaurants { set; get; }
 
 
 

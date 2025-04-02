@@ -25,6 +25,8 @@ namespace mvcproj
             builder.Services.AddScoped<IRoomReporisatory, RoomReporisatory>();
             builder.Services.AddScoped<IBookingRepository, BookingRepository>();
             builder.Services.AddScoped<ICommentReporisatory, CommentReporisatory>();
+            builder.Services.AddScoped<IRestaurantRepository, RestaurantRepository>();
+
 
             builder.Services.AddSignalR();
 
