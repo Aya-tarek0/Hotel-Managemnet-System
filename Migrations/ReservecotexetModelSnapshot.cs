@@ -382,6 +382,34 @@ namespace mvcproj.Migrations
                     b.ToTable("Payments");
                 });
 
+            modelBuilder.Entity("mvcproj.Models.Resturatnt", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Resturatnts");
+                });
+
             modelBuilder.Entity("mvcproj.Models.Room", b =>
                 {
                     b.Property<int>("RoomID")
@@ -536,7 +564,7 @@ namespace mvcproj.Migrations
             modelBuilder.Entity("mvcproj.Models.Booking", b =>
                 {
                     b.HasOne("mvcproj.Models.Room", "Room")
-                        .WithMany()
+                        .WithMany("Bookings")
                         .HasForeignKey("RoomNumber")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -653,6 +681,8 @@ namespace mvcproj.Migrations
 
             modelBuilder.Entity("mvcproj.Models.Room", b =>
                 {
+                    b.Navigation("Bookings");
+
                     b.Navigation("comments");
                 });
 

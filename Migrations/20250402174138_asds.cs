@@ -5,7 +5,7 @@
 namespace mvcproj.Migrations
 {
     /// <inheritdoc />
-    public partial class sql : Migration
+    public partial class asds : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

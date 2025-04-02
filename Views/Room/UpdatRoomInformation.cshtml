@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Update Room Information";
     SelectList RoomTypeOption = new SelectList(Model.RoomTypeList, "RoomTypeId", "Name");
+    Layout = "_sidebar";
+
 }
 
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
