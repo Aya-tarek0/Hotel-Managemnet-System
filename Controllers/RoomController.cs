@@ -29,7 +29,7 @@ namespace mvcproj.Controllers
             }
         #endregion
 
-        #region Show All Rooms
+            #region Show All Rooms
         /* public IActionResult Index()
          {
              List<Room> roomList = roomRepo.GetAll();
@@ -258,5 +258,30 @@ namespace mvcproj.Controllers
 
         #endregion
 
+            #region chack availability
+       
+            public IActionResult GetAvailableRooms(DateTime checkIn,DateTime checkOut,int roomTypeId, int capacity)
+            {
+                var availableRooms = roomRepo.CheckAvailability(checkIn, checkOut, roomTypeId, capacity);
+            
+
+                var roomViewModels = availableRooms.Select(room => new ShowRoomDetailsWithCommentsViewModel
+                {
+                    RoomID = room.RoomID,
+                    ImageUrl = room.image,
+                    RoomTypeName = room.RoomType?.Name ,
+                    TypeID = room.TypeID,
+                    HotelID = room.HotelID,
+                    PricePerNight = room.RoomType?.PricePerNight ,
+                    RoomStatus = room.Status
+                }).ToList();
+
+                return roomViewModels.Any()
+                ? View("_AllRoomsUser", roomViewModels)
+                : Content("no available rooms");
+            }
+            #endregion
+
     }
 }
+

@@ -64,7 +64,21 @@ namespace mvcproj.Reporisatory
                 .Include(r => r.RoomType)
                 .FirstOrDefault();
         }
-        
-     
+
+        public List<Room> CheckAvailability(DateTime checkIn, DateTime checkOut, int roomTypeId, int capacity)
+        {
+            List<Room> availableRooms = context.Rooms
+                 .Include(r => r.RoomType) 
+                 .Include(r => r.Bookings)
+                 .Where(r => r.TypeID == roomTypeId)
+                 .Where(r => r.RoomType.Capacity >= capacity)
+                 .Where(r => !r.Bookings.Any(b =>
+                     b.CheckinDate < checkOut &&
+                     b.CheckoutDate > checkIn
+                 )).ToList();
+            return availableRooms;
+                
+
+        }
     }
 }

@@ -66,13 +66,15 @@
         <div class="container">
             <div class="row no-gutters">
                 <div class="col-lg-12">
-                    <form action="#" class="booking-form aside-stretch">
+                    <!-- #region check availability --> 
+
+                    <form asp-action="GetAvailableRooms" asp-controller="Room" class="booking-form aside-stretch">
                         <div class="row">
                             <div class="col-md d-flex py-md-4">
                                 <div class="form-group align-self-stretch d-flex align-items-end">
                                     <div class="wrap align-self-stretch py-3 px-4">
                                         <label for="#">Check-in Date</label>
-                                        <input type="text" class="form-control checkin_date" placeholder="Check-in date">
+                                        <input name="checkIn" type="datetime" class="form-control checkin_date" placeholder="Check-in date">
                                     </div>
                                 </div>
                             </div>
@@ -80,7 +82,7 @@
                                 <div class="form-group align-self-stretch d-flex align-items-end">
                                     <div class="wrap align-self-stretch py-3 px-4">
                                         <label for="#">Check-out Date</label>
-                                        <input type="text" class="form-control checkout_date" placeholder="Check-out date">
+                                        <input name="checkOut" type="datetime" class="form-control checkout_date" placeholder="Check-out date">
                                     </div>
                                 </div>
                             </div>
@@ -91,13 +93,11 @@
                                         <div class="form-field">
                                             <div class="select-wrap">
                                                 <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                                <select name="" id="" class="form-control">
-                                                    <option value="">Suite</option>
-                                                    <option value="">Family Room</option>
-                                                    <option value="">Deluxe Room</option>
-                                                    <option value="">Classic Room</option>
-                                                    <option value="">Superior Room</option>
-                                                    <option value="">Luxury Room</option>
+                                                <select name="roomTypeId" id="" class="form-control">
+                                                    <option value="1">Deluxe Room</option>
+                                                    <option value="2">Standard Room</option>
+                                                    <option value="3">Suite</option>
+                                                    
                                                 </select>
                                             </div>
                                         </div>
@@ -111,7 +111,7 @@
                                         <div class="form-field">
                                             <div class="select-wrap">
                                                 <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                                <select name="" id="" class="form-control">
+                                                <select name="capacity" id="" class="form-control">
                                                     <option value="">1 Adult</option>
                                                     <option value="">2 Adult</option>
                                                     <option value="">3 Adult</option>
@@ -125,16 +125,23 @@
                                 </div>
                             </div>
                             <div class="col-md d-flex">
-                                <div class="form-group d-flex align-self-stretch">
-                                    <a href="#" class="btn btn-primary py-5 py-md-3 px-4 align-self-stretch d-block"><span>Check Availability <small>Best Price Guaranteed!</small></span></a>
-                                </div>
+                                <button type="submit" class="btn btn-primary py-5 py-md-3 px-4 align-self-stretch d-block">
+                                    Check Availability <small>Best Price Guaranteed!</small>
+                                </button>
                             </div>
                         </div>
                     </form>
+
+                    <!-- #endregion -->
+
+
+
+
                 </div>
             </div>
         </div>
     </section>
+
 
 
     <section class="ftco-section">
@@ -584,11 +591,17 @@
     <!-- loader -->
     <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" /><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" /></svg></div>
 
-
+    <!-- jQuery أولًا -->
     <script src="~/js/jquery.min.js"></script>
+
+    <!-- jQuery Migrate (لو بتستخدمه) -->
     <script src="~/js/jquery-migrate-3.0.1.min.js"></script>
+
+    <!-- مكتبات Bootstrap -->
     <script src="~/js/popper.min.js"></script>
     <script src="~/js/bootstrap.min.js"></script>
+
+    <!-- مكتبات jQuery الإضافية -->
     <script src="~/js/jquery.easing.1.3.js"></script>
     <script src="~/js/jquery.waypoints.min.js"></script>
     <script src="~/js/jquery.stellar.min.js"></script>
@@ -598,8 +611,26 @@
     <script src="~/js/jquery.animateNumber.min.js"></script>
     <script src="~/js/bootstrap-datepicker.js"></script>
     <script src="~/js/scrollax.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+
+    <!-- تحميل Google Maps API بشكل صحيح -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s"></script>
+
+    <!-- تأكد من تحميل Google Maps قبل استخدامه -->
+    <script>
+        window.onload = function () {
+            if (typeof google === 'object' && typeof google.maps === 'object') {
+                console.log("Google Maps API Loaded Successfully");
+                initMap(); // استدعاء دالة الخريطة فقط إذا تم تحميل Google Maps
+            } else {
+                console.error("Google Maps API failed to load.");
+            }
+        };
+    </script>
+
+    <!-- كود جوجل ماب -->
     <script src="~/js/google-map.js"></script>
+
+    <!-- الكود الرئيسي للتطبيق -->
     <script src="~/js/main.js"></script>
 
 </body>
