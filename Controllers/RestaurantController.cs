@@ -52,4 +52,61 @@ public class RestaurantController : Controller
     {
         return View();
     }
+    public IActionResult UpdateDish(int id)
+    {
+        // Get the existing restaurant from the repository
+        Restaurant restaurant = restaurantRepository.GetById(id);
+
+        // If the restaurant does not exist, redirect to an error page or show a not found view
+        if (restaurant == null)
+        {
+            return NotFound();
+        }
+
+        // Return the current restaurant data to the view for editing
+        return View("UpdateDish", restaurant);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> SaveUpdateDish(Restaurant restaurantUpdated, IFormFile ImageFile)
+    {
+        if (ModelState.IsValid)
+        {
+            Restaurant restaurant = restaurantRepository.GetById(restaurantUpdated.RestaurantId);
+
+            if (restaurant != null)
+            {
+                restaurant.Name = restaurantUpdated.Name;
+                restaurant.Price = restaurantUpdated.Price;
+                restaurant.Description = restaurantUpdated.Description;
+
+                if (ImageFile != null)
+                {
+                    string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "uploads");
+                    Directory.CreateDirectory(uploadsFolder); 
+
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(ImageFile.FileName);
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await ImageFile.CopyToAsync(fileStream); 
+                    }
+
+                    restaurant.ImageUrl = "/uploads/" + uniqueFileName; 
+                }
+                else
+                {
+                    restaurant.ImageUrl = restaurant.ImageUrl ?? restaurantUpdated.ImageUrl;
+                }
+                restaurantRepository.Update(restaurant);
+                restaurantRepository.Save();
+                return RedirectToAction("ShowAllFood", "Restaurant");
+            }
+        }
+
+        return View("UpdateDish", restaurantUpdated);
+    }
+
+
 }
