@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using mvcproj.Models;
+using mvcproj.Reporisatory;
 using System.Diagnostics;
 
 namespace mvcproj.Controllers
@@ -7,15 +8,19 @@ namespace mvcproj.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IRestaurantRepository restaurantRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,IRestaurantRepository restaurantRepository)
         {
             _logger = logger;
+            this.restaurantRepository = restaurantRepository;
         }
 
         public IActionResult Index()
         {
-            return View();
+
+            var food = restaurantRepository.GetAll();
+            return View(food);
         }
 
         public IActionResult Privacy()
