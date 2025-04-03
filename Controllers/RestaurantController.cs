@@ -140,7 +140,39 @@ namespace mvcproj.Controllers
 
             return View("UpdateDish", restaurantUpdated);
         }
+        public async Task<IActionResult> Delete(int id)
+        {
+            Restaurant res = restaurantRepository.GetById(id);
 
+            if (res != null)
+            {
+                restaurantRepository.Delete(id);
+                restaurantRepository.Save();
+                return RedirectToAction("ShowAllFood");
+            }
 
+            return NotFound("not found");
+        }
     }
+
+
 }
+//<<<<<<< HEAD
+//}
+//=======
+
+//    public async Task<IActionResult> Delete(int id)
+//    {
+//        Restaurant res = restaurantRepository.GetById(id);
+
+//        if(res != null)
+//        {
+//            restaurantRepository.Delete(id);
+//            restaurantRepository.Save();
+//            return RedirectToAction("ShowAllFood");
+//        }
+
+//        return NotFound("not found");
+//    }
+//}
+//>>>>>>> 861567ed359e85badf9ecc793d1fe03b30ccb320

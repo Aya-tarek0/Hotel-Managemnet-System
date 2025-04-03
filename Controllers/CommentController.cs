@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using mvcproj.Hubs;
 using mvcproj.Models;
@@ -12,8 +13,10 @@ namespace mvcproj.Controllers
     {
         ICommentReporisatory commentReporisatory;
         IHubContext<CommentsHub> _hubContext;
-        public CommentController(ICommentReporisatory commentRepo , IHubContext<CommentsHub> hubContext)
+        UserManager<ApplicationUser> user;
+        public CommentController(ICommentReporisatory commentRepo , IHubContext<CommentsHub> hubContext,UserManager<ApplicationUser> userr)
         {
+            user = userr;
             commentReporisatory = commentRepo;
             _hubContext = hubContext;
         }
@@ -32,20 +35,22 @@ namespace mvcproj.Controllers
             }
             try
             {
+
                 var comment = new Comment
                 {
                     CommentText = CommentModel.CommentText,
                     RoomID = CommentModel.RoomID,
                     CommentDate = CommentModel.CreatedAt,
-                    GuestID = "1",
+                    GuestID = user.GetUserId(User)
                 };
                 commentReporisatory.Insert(comment);
+
                 //return RedirectToAction("ShowRoomDetails", "Room", new { id = CommentModel.RoomID });
 
                 await commentReporisatory.SaveAsync();
-
+                var name = user.GetUserName(User);
                 _hubContext.Clients.All.SendAsync("ReceiveComment"
-                    , CommentModel.GuestName, CommentModel.GuestEmail,CommentModel.CreatedAt, CommentModel.CommentText);
+                    ,name,CommentModel.CreatedAt, CommentModel.CommentText);
 
                 return Ok(new { message = "Comment added successfully" });
             }
