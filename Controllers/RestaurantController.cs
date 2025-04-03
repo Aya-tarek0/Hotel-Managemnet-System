@@ -46,12 +46,6 @@ namespace mvcproj.Controllers
             return View("User/ViewAllMenu", food);
         }
 
-
-
-
-
-
-
         [HttpPost]
         public async Task<IActionResult> SaveDish(Restaurant restaurant, IFormFile ImageFile)
         {
@@ -153,9 +147,9 @@ namespace mvcproj.Controllers
 
             return NotFound("not found");
         }
+
+
     }
-
-
 }
 //<<<<<<< HEAD
 //}
