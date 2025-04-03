@@ -6,5 +6,7 @@ namespace mvcproj.Reporisatory
     {
         int CalcTotalPrice(int DaysNo , int PricePerDay);
         public Booking GetdetailsById(int id);
+
+        public List<Booking> GetBookingsByUserId(string userId);
     }
 }

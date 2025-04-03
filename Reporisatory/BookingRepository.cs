@@ -43,8 +43,9 @@ namespace mvcproj.Reporisatory
         {
             return context.Bookings
                 .Where(b => b.BookingID == id)
-                .Include(b => b.Guest) // Ensure Guest name is accessible
-                .Include(b => b.Room) // Include Room details if needed
+                .Include(b => b.Guest) 
+                .Include(b => b.Room) 
+                
                 .FirstOrDefault();
         }
         public void Insert(Booking obj)
@@ -61,6 +62,15 @@ namespace mvcproj.Reporisatory
         public void Update(Booking obj)
         {
             context.Update(obj);
+        }
+
+        public List<Booking> GetBookingsByUserId(string userId)
+        {
+            return context.Bookings
+                .Include(b => b.Guest)
+                .Include(b => b.Room)
+                .Where(b => b.UserId == userId && !b.IsDeleted) // Filter by UserId and IsDeleted
+                .ToList();
         }
     }
 }

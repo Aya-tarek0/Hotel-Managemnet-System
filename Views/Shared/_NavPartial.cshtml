@@ -1,4 +1,10 @@
-﻿<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+﻿@using System.Security.Claims
+
+@{
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+}
+
+<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
     <div class="container">
         <a class="navbar-brand" href="/Home/Index">Harbor<span>lights</span></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,6 +21,13 @@
                 <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
                 <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
                 <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+
+                    <li class="nav-item"><a asp-action="GetBookingsById" asp-controller="Booking" asp-route-userId="@userId" class="nav-link">My Bookings</a></li>
+                }
+
             </ul>
 
             @if (!User.Identity.IsAuthenticated)
