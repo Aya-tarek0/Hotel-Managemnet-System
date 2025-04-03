@@ -54,22 +54,23 @@ public class RestaurantController : Controller
     }
     public IActionResult UpdateDish(int id)
     {
-        // Get the existing restaurant from the repository
         Restaurant restaurant = restaurantRepository.GetById(id);
 
-        // If the restaurant does not exist, redirect to an error page or show a not found view
         if (restaurant == null)
         {
             return NotFound();
         }
-
-        // Return the current restaurant data to the view for editing
         return View("UpdateDish", restaurant);
     }
 
     [HttpPost]
     public async Task<IActionResult> SaveUpdateDish(Restaurant restaurantUpdated, IFormFile ImageFile)
     {
+        if (ImageFile == null)
+        {
+            ModelState.Remove("ImageFile"); // إزالة التحقق من الحقل
+        }
+
         if (ModelState.IsValid)
         {
             Restaurant restaurant = restaurantRepository.GetById(restaurantUpdated.RestaurantId);
@@ -94,10 +95,6 @@ public class RestaurantController : Controller
                     }
 
                     restaurant.ImageUrl = "/uploads/" + uniqueFileName; 
-                }
-                else
-                {
-                    restaurant.ImageUrl = restaurant.ImageUrl ?? restaurantUpdated.ImageUrl;
                 }
                 restaurantRepository.Update(restaurant);
                 restaurantRepository.Save();

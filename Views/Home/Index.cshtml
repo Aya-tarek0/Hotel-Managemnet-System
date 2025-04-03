@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model List<RoomType> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Harborlights - Free Bootstrap 4 Template by Colorlib</title>
@@ -27,7 +28,7 @@
     <link rel="stylesheet" href="~/css/style.css">
 </head>
 <body>
-
+    
     <partial name="_NavPartial" />
     <!-- END nav -->
     <div class="hero">
@@ -93,10 +94,15 @@
                                         <div class="form-field">
                                             <div class="select-wrap">
                                                 <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                                <select name="roomTypeId" id="" class="form-control">
-                                                    <option value="1">Deluxe Room</option>
-                                                    <option value="2">Standard Room</option>
-                                                    <option value="3">Suite</option>
+                                                <select name="roomTypeId" class="form-control">
+                                                    <option value="">SelectRoomType</option>
+                                                    @foreach (var type in Model)
+                                                    {
+                                                        <option value="@type.RoomTypeId">@type.Name</option>
+                                                    }
+                                                    @* <option value="1">Deluxe Room</option> *@
+                                                    @* <option value="2">Standard Room</option> *@
+                                                    @* <option value="3">Suite</option> *@
                                                     
                                                 </select>
                                             </div>
@@ -112,12 +118,17 @@
                                             <div class="select-wrap">
                                                 <div class="icon"><span class="ion-ios-arrow-down"></span></div>
                                                 <select name="capacity" id="" class="form-control">
-                                                    <option value="">1 Adult</option>
-                                                    <option value="">2 Adult</option>
-                                                    <option value="">3 Adult</option>
-                                                    <option value="">4 Adult</option>
-                                                    <option value="">5 Adult</option>
-                                                    <option value="">6 Adult</option>
+                                                    <option value="">SelectNoguests</option>
+                                                    @for(int i =1; i<=10 ; i++)
+                                                    {
+                                                        <option value="">@i guest</option>
+                                                    }
+                                                    @* <option value="">1 Adult</option> *@
+                                                    @* <option value="">2 Adult</option> *@
+                                                    @* <option value="">3 Adult</option> *@
+                                                    @* <option value="">4 Adult</option> *@
+                                                    @* <option value="">5 Adult</option> *@
+                                                    @* <option value="">6 Adult</option> *@
                                                 </select>
                                             </div>
                                         </div>

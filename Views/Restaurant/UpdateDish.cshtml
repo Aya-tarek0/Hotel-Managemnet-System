@@ -64,7 +64,7 @@
                         <div class="form-group">
                             <label class="control-label font-weight-bold">Upload New Image</label>
                             <div class="custom-file">
-                                <input asp-for="ImageFile" type="file" class="custom-file-input border border-secondary" accept="image/*">
+                                <input asp-for="ImageFile" type="file" class="custom-file-input border border-secondary" accept="image/*">                       
                                 <label class="custom-file-label">Choose file...</label>
                             </div>
                             <span asp-validation-for="ImageFile" class="text-danger"></span>
@@ -72,7 +72,7 @@
 
                         <!-- Save Button -->
                         <div class="form-group text-center mt-4">
-                            <button type="submit" class="btn btn-success px-4">💾 Save Updates</button>
+                            <button type="submit" class="btn btn-success px-4"> Save Updates</button>
                             <a asp-action="ShowAllFood" class="btn btn-secondary px-4">↩ Back to List</a>
                         </div>
                     </form>

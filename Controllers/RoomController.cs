@@ -105,6 +105,7 @@ namespace mvcproj.Controllers
             [HttpPost]
             public async Task<IActionResult> SaveRoom(Room room)
             {
+                
                 if (ModelState.IsValid)
                 {
                     if (room.ImageFile != null)
@@ -275,6 +276,7 @@ namespace mvcproj.Controllers
                     PricePerNight = room.RoomType?.PricePerNight ,
                     RoomStatus = room.Status
                 }).ToList();
+
 
                 return roomViewModels.Any()
                 ? View("_AllRoomsUser", roomViewModels)

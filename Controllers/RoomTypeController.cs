@@ -14,7 +14,7 @@ namespace mvcproj.Controllers
         public IActionResult Index()
         {
             var roomTypes = roomTypeRepo.GetAll(); 
-            return View("Index", roomTypes);
+            return View("~/Views/Home/Index.cshtml", roomTypes);
         }
     }
 }

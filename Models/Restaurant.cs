@@ -19,6 +19,6 @@ namespace mvcproj.Models
         public double Price { get; set; }
         public string? ImageUrl { get; set; }
         [NotMapped]
-        public IFormFile ImageFile { get; set; }
+        public IFormFile? ImageFile { get; set; }
     }
 }
