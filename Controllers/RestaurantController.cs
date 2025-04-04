@@ -30,15 +30,15 @@ namespace mvcproj.Controllers
             var food = restaurantRepository.GetAll();
             string userType = GetUserType();
 
-            //if (userType == "Admin")
-            //{
-            //    return View("Admin/ShowAllFood", food);
-            //}
-            //else
-            //{
-            //    return PartialView("_RestaurantMenuPartial", food);
-            //}
-            return View("Admin/ShowAllFood", food);
+            if (userType == "Admin")
+            {
+                return View("Admin/ShowAllFood", food);
+            }
+            else
+            {
+                return PartialView("_RestaurantMenuPartial", food);
+            }
+            //return View("Admin/ShowAllFood", food);
         }
         public IActionResult ViewAllMenu()
         {

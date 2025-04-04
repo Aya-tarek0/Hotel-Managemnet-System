@@ -13,10 +13,10 @@ namespace mvcproj.Controllers
     {
         ICommentReporisatory commentReporisatory;
         IHubContext<CommentsHub> _hubContext;
-        UserManager<ApplicationUser> user;
-        public CommentController(ICommentReporisatory commentRepo , IHubContext<CommentsHub> hubContext,UserManager<ApplicationUser> userr)
+        UserManager<ApplicationUser> _userManager;
+        public CommentController(ICommentReporisatory commentRepo , IHubContext<CommentsHub> hubContext,UserManager<ApplicationUser> userManager)
         {
-            user = userr;
+            _userManager = userManager;
             commentReporisatory = commentRepo;
             _hubContext = hubContext;
         }
@@ -26,6 +26,7 @@ namespace mvcproj.Controllers
             return View("~/Views/Room/User/_CommentsPartial.cshtml", comments);
         }
 
+        
         [HttpPost]
         public async Task<IActionResult> AddComment(CommentsWithRoomIDViewModel CommentModel)
         {
@@ -33,31 +34,40 @@ namespace mvcproj.Controllers
             {
                 return View(CommentModel);
             }
+
             try
             {
+                // جلب المستخدم الحالي
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return Unauthorized(); // إذا لم يكن المستخدم مسجّل الدخول
+                }
 
                 var comment = new Comment
                 {
                     CommentText = CommentModel.CommentText,
                     RoomID = CommentModel.RoomID,
                     CommentDate = CommentModel.CreatedAt,
-                    GuestID = user.GetUserId(User)
+                    GuestID = user.Id
                 };
+
                 commentReporisatory.Insert(comment);
-
-                //return RedirectToAction("ShowRoomDetails", "Room", new { id = CommentModel.RoomID });
-
                 await commentReporisatory.SaveAsync();
-                var name = user.GetUserName(User);
-                _hubContext.Clients.All.SendAsync("ReceiveComment"
-                    ,name,CommentModel.CreatedAt, CommentModel.CommentText);
 
-                return Ok(new { message = "Comment added successfully" });
+                var comments = commentReporisatory.GetCommentsByRoomId(CommentModel.RoomID);
+
+
+                await _hubContext.Clients.All.SendAsync("ReceiveComment",
+                    user.UserName, user.Email, CommentModel.CreatedAt, CommentModel.CommentText);
+
+                return Ok(new { message = "Comment added successfully"  });
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, "Error when save comment");
+                return StatusCode(500, $"Error when saving comment: {ex.Message}");
             }
         }
+
     }
 }
