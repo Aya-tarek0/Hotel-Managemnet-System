@@ -126,8 +126,8 @@ namespace mvcproj.Controllers
                         else
                         {
                         
-                            //return RedirectToAction("Index", "Guest"); 
-                            return RedirectToAction("Index", "Home"); 
+                            return RedirectToAction("Index", "Guest"); 
+                           // return RedirectToAction("Index", "Home"); 
 
                         }
                     }

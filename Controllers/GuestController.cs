@@ -6,7 +6,7 @@ namespace mvcproj.Controllers
     {
         public IActionResult Index()
         {
-            return View("~/Views/Home/Index.cshtml");
+            return RedirectToAction("Index","Home");
         }
     }
 }
