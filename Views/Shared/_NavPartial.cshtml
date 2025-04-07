@@ -24,7 +24,11 @@
 
                 @if (User.Identity.IsAuthenticated)
                 {
-
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="Messages" class="nav-link">
+                            Chat
+                        </a>
+                    </li>
                     <li class="nav-item"><a asp-action="GetBookingsById" asp-controller="Booking" asp-route-userId="@userId" class="nav-link">My Bookings</a></li>
                 }
 
@@ -39,6 +43,8 @@
             }
             else
             {
+
+           
                 <form asp-action="Logout" asp-controller="Account" method="post">
                     <button type="submit" class="btn btn-group d-flex align-items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box-arrow-right me-2" viewBox="0 0 16 16">
