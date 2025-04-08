@@ -1,0 +1,60 @@
+﻿
+
+
+@model List<BookingViewModel>
+
+@{
+    ViewData["Title"] = "User Bookings";
+    Layout = "_RoomsLayout";
+}
+
+<h2 class="mb-4">Your Bookings</h2>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>#</th>
+                <th>Guest Name</th>
+                <th>Room Number</th>
+                <th>Check-in Date</th>
+                <th>Check-out Date</th>
+                <th>Total Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@Model[i].Guest</td>
+                    <td>@Model[i].RoomNumber</td>
+                    <td>@(Model[i].CheckinDate.HasValue ? Model[i].CheckinDate.Value.ToString("yyyy-MM-dd") : "N/A")</td>
+                    <td>@(Model[i].CheckoutDate.HasValue ? Model[i].CheckoutDate.Value.ToString("yyyy-MM-dd") : "N/A")</td>
+                    <td>@(Model[i].TotalPrice != null ? Model[i].TotalPrice.Value.ToString("C") : "N/A")</td>
+                   
+                    <td>
+                        <a href="@Url.Action("delete", "Booking", new { id = Model[i].BookingID })" class="btn btn-danger btn-sm" onclick="confirmDelete(event)">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info" role="alert">
+        No bookings found for this user.
+    </div>
+}
+
+<a onclick="history.back()" style="color:white" class="btn btn-primary mt-3">Back to Home</a>
+<br />
+<br />
+
+
+

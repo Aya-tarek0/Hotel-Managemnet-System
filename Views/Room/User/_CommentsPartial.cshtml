@@ -10,9 +10,10 @@
             <li class="comment">
                 <div class="comment-body">
                     <h2>@comment.GuestName</h2>
-                    <div class="meta">@comment.CreatedAt.ToString("MMM dd, yyyy hh:mm tt")</div>
+                    <h5>@comment.GuestEmail</h5>
+                    <div class="meta">@comment.CreatedAt.ToString("MMM dd, yyyy hh:mm tt") </div>
                     <h3>@comment.CommentText</h3>
-                    <p><a href="#" class="reply">Reply</a></p>
+                    <hr />
                 </div>
             </li>
         }
@@ -21,11 +22,12 @@
 
     <!-- END comment-list -->
 
-
     <!-- write new comment  -->
 
-    <div class="comment-form-wrap pt-5">
+    <div class="comment-form-wrap pt-5" >
         <h3 class="mb-5">Leave a comment</h3>
+
+        @* <input type="hidden" id="roomID" value="@Model.FirstOrDefault()?.RoomID"> *@
 
             <div class="form-group">
                 <label for="message">Message</label>
@@ -33,7 +35,7 @@
             </div>
 
             <div class="form-group">
-            <input type="button" value="Send Comment" class="btn py-3 px-4 btn-primary" onclick="SendComment()">
+            <input type="submit" value="Send Comment" class="btn py-3 px-4 btn-primary " onclick="SendComment()">
             </div>
       
     </div>
@@ -41,12 +43,12 @@
 </div>
 
 
+ <p>Room ID from Razor: @Model.FirstOrDefault()?.RoomID</p> 
 
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"
         integrity="sha512-7SRCYIJtR6F8ocwW7UxW6wGKqbSyqREDbfCORCbGLatU0iugBLwyOXpzhkPyHIFdBO0K2VCu57fvP2Twgx1o2A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
 <script>
      //1
      var hub = new signalR.HubConnectionBuilder()
@@ -63,35 +65,65 @@
          });
 
     //3
-       hub.on("ReceiveComment", function (guestName, CreatedAt, commentText) {
+       hub.on("ReceiveComment", function (guestName,email, CreatedAt, commentText) {
         var commentList = document.querySelector(".comment-list");
         var newComment = document.createElement("li");
         newComment.classList.add("comment");
         newComment.innerHTML = `
             <div class="comment-body">
                 <h2>${guestName}</h2>
+                <h5>${email}</h2>
                 <div class="meta">${new Date(CreatedAt).toLocaleString()}</div>
                 <h3>${commentText}</h3>
-                <p><a href="#" class="reply">Reply</a></p>
             </div>
         `;
         commentList.appendChild(newComment);
+        console.log(email);  
     });
 
-     function SendComment(){
-         var messageText = $("#message").val();
-          var guestName= "@User.Identity.Name";
-          var CreatedAt = new Date().toISOString();
+        function getRoomIDFromURL() {
+        var urlParts = window.location.pathname.split('/');
+        return urlParts[urlParts.length - 1]; 
+         }
+    
+        function SendComment() {
+        var message = document.getElementById("message").value;
 
-         hub.invoke("NewComment", guestName,CreatedAt, messageText)
-              .then(()=>{
-               console.log("Comment sent successfully");
-          })
-          .catch(error=>{
-               console.error("Error sending comment:", error);
-          });
-     }
+        // var roomID = document.getElementById("roomID").value;
+        // console.log("Room ID = ", roomID);
 
+
+            var roomID = getRoomIDFromURL();
+            console.log("Room ID = ", roomID);
+
+
+        if (!message.trim()) {
+            alert("Please enter a comment.");
+            return;
+        }
+
+        $.ajax({
+            url: '/Comment/AddComment',  
+            type: 'POST',
+            data: {
+                CommentText: message,
+                CreatedAt: new Date().toISOString(),  
+                RoomID: roomID
+            },
+            success: function(response) {
+                console.log("Comment added successfullyyyyy");
+                
+
+                document.getElementById("message").value = ""; 
+            },
+            error: function(xhr, status, error) {
+                console.error("Error while adding comment:", error);
+            }
+        });
+    }
+
+
+     
 
 
 </script>

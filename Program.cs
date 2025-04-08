@@ -26,6 +26,11 @@ namespace mvcproj
             builder.Services.AddScoped<IBookingRepository, BookingRepository>();
             builder.Services.AddScoped<ICommentReporisatory, CommentReporisatory>();
             builder.Services.AddScoped<IRestaurantRepository, RestaurantRepository>();
+            builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+            builder.Services.AddScoped<IMessageService, MessageService>();
+
+
+
 
 
             builder.Services.AddSignalR();
@@ -65,6 +70,8 @@ namespace mvcproj
             app.UseCors();
             
             app.MapHub<CommentsHub>("/CommentHub");
+            app.MapHub<ChatHub>("/ChatHub");
+
 
             app.UseRouting();
 

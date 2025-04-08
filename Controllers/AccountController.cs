@@ -108,7 +108,8 @@ namespace mvcproj.Controllers
                         List<Claim> claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, appFromDb.UserName),
-                    new Claim(ClaimTypes.Email, appFromDb.Email ?? "No Email")
+                    new Claim(ClaimTypes.Email, appFromDb.Email ?? "No Email"),
+                    new Claim(ClaimTypes.NameIdentifier, appFromDb.Id)
                 };
 
                         var roles = await userManager.GetRolesAsync(appFromDb);
@@ -125,7 +126,10 @@ namespace mvcproj.Controllers
                         }
                         else
                         {
+                        
                             return RedirectToAction("Index", "Guest"); 
+                           // return RedirectToAction("Index", "Home"); 
+
                         }
                     }
                 }

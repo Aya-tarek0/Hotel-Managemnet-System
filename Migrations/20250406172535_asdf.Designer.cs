@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mvcproj.Models;
 
@@ -11,9 +12,11 @@ using mvcproj.Models;
 namespace mvcproj.Migrations
 {
     [DbContext(typeof(Reservecotexet))]
-    partial class ReservecotexetModelSnapshot : ModelSnapshot
+    [Migration("20250406172535_asdf")]
+    partial class asdf
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -367,22 +370,18 @@ namespace mvcproj.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ReceiverId")
+                    b.Property<string>("Receiver")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SenderId")
+                    b.Property<string>("Sender")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ReceiverId");
-
-                    b.HasIndex("SenderId");
 
                     b.ToTable("Messages");
                 });
@@ -641,25 +640,6 @@ namespace mvcproj.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("mvcproj.Models.Message", b =>
-                {
-                    b.HasOne("mvcproj.Models.ApplicationUser", "Receiver")
-                        .WithMany("ReceivedMessages")
-                        .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("mvcproj.Models.ApplicationUser", "Sender")
-                        .WithMany("SendMessages")
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Receiver");
-
-                    b.Navigation("Sender");
-                });
-
             modelBuilder.Entity("mvcproj.Models.Payment", b =>
                 {
                     b.HasOne("mvcproj.Models.Booking", "Booking")
@@ -709,10 +689,6 @@ namespace mvcproj.Migrations
                 {
                     b.Navigation("GuestProfile")
                         .IsRequired();
-
-                    b.Navigation("ReceivedMessages");
-
-                    b.Navigation("SendMessages");
 
                     b.Navigation("StaffProfile")
                         .IsRequired();

@@ -1,0 +1,23 @@
+﻿@using mvcproj.View_Models.MessagesViewModels
+@model IEnumerable<MessagesUserListViewModel>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Chats</h2>
+    <div class="list-group">
+        @foreach (var item in Model)
+        {
+            <a href="/Messages/Chat?selectedUserId=@item.id" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mr-3" style="width:60px; height:60px; font-size: 24px;">
+                        @item.UserName.Substring(0, 1).ToUpper()
+                    </div>
+                    <div>
+                        <h5 class="mb-1">@item.UserName</h5>
+                        <p class="mb-1 text-muted">@item.LastMessage</p>
+                    </div>
+                </div>
+                <button class="btn btn-info">Chat</button>
+            </a>
+        }
+    </div>
+</div>

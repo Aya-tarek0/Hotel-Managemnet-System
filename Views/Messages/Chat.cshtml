@@ -1,0 +1,193 @@
+﻿@using mvcproj.View_Models.MessagesViewModels
+@model ChatViewModel
+
+<style>
+    body {
+        background-color: #f5f7fa;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .chat-container {
+        max-width: 900px;
+        margin: 40px auto;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+    }
+
+    .receiver-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+        border-bottom: 1px solid #e1e1e1;
+        padding-bottom: 15px;
+    }
+
+        .receiver-header .first-letter {
+            background-color: #4a90e2;
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .receiver-header h3 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 22px;
+            color: #333;
+        }
+
+    .messages-box {
+        max-height: 450px;
+        overflow-y: auto;
+        margin-bottom: 25px;
+        padding-right: 10px;
+    }
+
+    .message {
+        padding: 12px 18px;
+        border-radius: 15px;
+        margin-bottom: 15px;
+        max-width: 70%;
+        word-wrap: break-word;
+        position: relative;
+        font-size: 15px;
+        line-height: 1.4;
+    }
+
+    .sent-message {
+        background-color: #d1f5d3;
+        margin-left: auto;
+        text-align: right;
+        border-top-right-radius: 0;
+    }
+
+    .received-message {
+        background-color: #f0f0f0;
+        margin-right: auto;
+        text-align: left;
+        border-top-left-radius: 0;
+    }
+
+    .message span {
+        display: block;
+        font-size: 11px;
+        color: #777;
+        margin-top: 5px;
+    }
+
+    .send-message-box {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .message-field {
+        flex: 1;
+        padding: 12px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        resize: none;
+    }
+
+    .send-btn {
+        padding: 12px 25px;
+        background-color: #4a90e2;
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+        .send-btn:hover {
+            background-color: #357ab8;
+        }
+</style>
+
+<div class="chat-container">
+    <div class="receiver-header">
+        <div class="first-letter">
+            @Model.RecieverUserName.Substring(0, 1).ToUpper()
+        </div>
+        <h3>@Model.RecieverUserName</h3>
+    </div>
+
+    <div class="messages-box">
+        @foreach (var item in Model.Messages)
+        {
+            if (item.isCurrentUserSentMeessage)
+            {
+                <div class="message sent-message">
+                    <p>@item.text</p>
+                    <span>@item.date</span>
+                </div>
+            }
+            else
+            {
+                <div class="message received-message">
+                    <p>@item.text</p>
+                    <span>@item.date</span>
+                </div>
+            }
+        }
+    </div>
+
+    <div class="send-message-box">
+        <textarea rows="3" class="message-field" placeholder="Write Your Message"></textarea>
+        <button class="send-btn">Send</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var connection = new signalR.HubConnectionBuilder().withUrl("/ChatHub").build();
+
+        connection.start().then(function () {
+            console.log("Connected");
+        }).catch(function (err) {
+            console.error(err.toString());
+        });
+
+        $(".send-btn").click(function () {
+            var receiverId = "@Model.RecieverId";
+            var message = $(".message-field").val();
+            connection.invoke("SendMessage", receiverId, message);
+            $(".message-field").val("").focus();
+        });
+
+        connection.on("ReceiveMessage", function (message, date, time, senderId) {
+            var msg = "";
+            if (senderId == "@Model.CurrentUserId") {
+                msg = `
+                    <div class="message sent-message">
+                        <p>${message}</p>
+                        <span>${time}</span>
+                    </div>
+                `;
+            } else {
+                msg = `
+                    <div class="message received-message">
+                        <p>${message}</p>
+                        <span>${time}</span>
+                    </div>
+                `;
+            }
+            $(".messages-box").append(msg);
+            $(".messages-box").scrollTop($(".messages-box")[0].scrollHeight);
+        });
+
+        $(function () {
+            $(".messages-box").scrollTop($(".messages-box")[0].scrollHeight);
+        });
+    </script>
+}

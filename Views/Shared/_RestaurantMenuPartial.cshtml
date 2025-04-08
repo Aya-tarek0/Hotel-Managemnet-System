@@ -9,24 +9,31 @@
             </div>
         </div>
         <div class="row">
-
-            @foreach (var item in Model.Take(6))
+            @if (Model != null && Model.Any())
             {
-                <div class="col-lg-6 col-xl-4 d-flex">
-                    <div class="pricing-entry rounded d-flex ftco-animate">
-                        <div class="img" style="background-image: url(/images/@item.ImageUrl);"></div>
-                        <div class="desc p-4">
-                            <div class="d-md-flex text align-items-start">
-                                <h3><span>@item.Name</span></h3>
-                                <span class="price">@item.Price</span>
-                            </div>
-                            <div class="d-block">
-                                <p>@item.Description</p>
+                @foreach (var item in Model.Take(6))
+                {
+                    <div class="col-lg-6 col-xl-4 d-flex">
+                        <div class="pricing-entry rounded d-flex ftco-animate">
+                            <div class="img" style="background-image: url(/images/@item.ImageUrl);"></div>
+                            <div class="desc p-4">
+                                <div class="d-md-flex text align-items-start">
+                                    <h3><span>@item.Name</span></h3>
+                                    <span class="price">@item.Price</span>
+                                </div>
+                                <div class="d-block">
+                                    <p>@item.Description</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                }
             }
+            else
+            {
+                <p>No restaurant menu items available.</p>
+            }
+
 
 
             <div class="col-md-12 text-center ftco-animate">

@@ -20,6 +20,9 @@ namespace mvcproj.Models
 
         public DbSet<Restaurant> restaurants { set; get; }
 
+        public DbSet<Message> Messages { get; set; }
+
+
 
 
     }

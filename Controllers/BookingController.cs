@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.Operations;
 using mvcproj.Models;
 using mvcproj.Reporisatory;
 using mvcproj.View_Models;
@@ -115,5 +116,72 @@ namespace mvcproj.Controllers
         }
 
         #endregion
+
+        #region GetAllBookingsForSpecificUser
+
+        [HttpGet("GetBookingsById/{userId}")]
+        public IActionResult GetBookingsById([FromRoute] string userId)
+        {
+            List<Booking> bookings = bookingRepository.GetBookingsByUserId(userId);
+            List<BookingViewModel> bookingViewModels = new List<BookingViewModel>();
+            foreach (Booking booking in bookings)
+            {
+                bookingViewModels.Add(new BookingViewModel()
+                {
+                    BookingID = booking.BookingID,
+                    UserId = booking.UserId,
+                    Guest = booking.Guest.Name,
+                    RoomNumber = booking.RoomNumber,
+                    CheckinDate = booking.CheckinDate,
+                    CheckoutDate = booking.CheckoutDate,
+                    TotalPrice = booking.TotalPrice,
+                });
+            }
+            return View("GetBookingsById", bookingViewModels);
+        }
+        #endregion
+
+        #region delete
+
+        public IActionResult delete(int id)
+        {
+            Booking book = bookingRepository.GetdetailsById(id);
+            BookingViewModel bookingveiw = new BookingViewModel()
+            {
+                BookingID = book.BookingID,
+                //UserId = book.UserId,
+                Guest = book.Guest?.Name,
+                RoomNumber = book.RoomNumber,
+                CheckinDate = book.CheckinDate,
+                CheckoutDate = book.CheckoutDate,
+                TotalPrice = book.TotalPrice,
+
+            };
+            return View("delete", bookingveiw);
+        }
+
+        public IActionResult ConfirmDelete(int id)
+        {
+            Booking book = bookingRepository.GetdetailsById(id);
+            
+          
+            if (book != null)
+            {
+                book.IsDeleted = true;
+                bookingRepository.Save();
+                
+                return RedirectToAction( "Index","Home");
+            }
+            else
+            {
+                return NotFound();
+            }
+
+            
+
+        }
+        #endregion
+
+
     }
 }
