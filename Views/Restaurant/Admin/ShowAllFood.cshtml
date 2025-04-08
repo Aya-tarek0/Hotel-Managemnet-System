@@ -45,7 +45,9 @@
                             <a asp-action="ShowDishDetails" asp-controller="Restaurant" asp-route-id="@dish.RestaurantId" class="btn btn-outline-info btn-sm d-flex align-items-center">
                                 🔍 Details
                             </a>
-                            <a asp-action="DeleteDish" asp-controller="Restaurant" asp-route-id="@dish.RestaurantId" class="btn btn-outline-danger btn-sm d-flex align-items-center">
+                            <a href="#"
+                               onclick="confirmDelete('@dish.RestaurantId')"
+                               class="btn btn-outline-danger btn-sm d-flex align-items-center">
                                 🗑️ Delete
                             </a>
                         </div>
@@ -56,3 +58,10 @@
     </table>
 
 </div>
+<script>
+    function confirmDelete(id) {
+        if (confirm("Delete This Dish?")) {
+            window.location.href = `/Restaurant/Delete/${id}`;
+        }
+    }
+</script>

@@ -10,7 +10,6 @@
             <li class="comment">
                 <div class="comment-body">
                     <h2>@comment.GuestName</h2>
-                    <p>@comment.GuestEmail</p>
                     <div class="meta">@comment.CreatedAt.ToString("MMM dd, yyyy hh:mm tt")</div>
                     <h3>@comment.CommentText</h3>
                     <p><a href="#" class="reply">Reply</a></p>
@@ -64,14 +63,13 @@
          });
 
     //3
-       hub.on("ReceiveComment", function (guestName, guestEmail, CreatedAt, commentText) {
+       hub.on("ReceiveComment", function (guestName, CreatedAt, commentText) {
         var commentList = document.querySelector(".comment-list");
         var newComment = document.createElement("li");
         newComment.classList.add("comment");
         newComment.innerHTML = `
             <div class="comment-body">
                 <h2>${guestName}</h2>
-                <p>${guestEmail}</p>
                 <div class="meta">${new Date(CreatedAt).toLocaleString()}</div>
                 <h3>${commentText}</h3>
                 <p><a href="#" class="reply">Reply</a></p>
@@ -82,11 +80,10 @@
 
      function SendComment(){
          var messageText = $("#message").val();
-          var guestName= "Areege";
-          var guestEmail ="a@gmail.com";
+          var guestName= "@User.Identity.Name";
           var CreatedAt = new Date().toISOString();
 
-         hub.invoke("NewComment", guestName, guestEmail, CreatedAt, messageText)
+         hub.invoke("NewComment", guestName,CreatedAt, messageText)
               .then(()=>{
                console.log("Comment sent successfully");
           })
