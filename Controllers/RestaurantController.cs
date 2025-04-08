@@ -71,7 +71,7 @@ namespace mvcproj.Controllers
 
                 restaurantRepository.Insert(restaurant);
                 restaurantRepository.Save();
-                return RedirectToAction("ShowAllFood");
+                return RedirectToAction("Admin/ShowAllFood");
             }
 
             return View("AddDish", restaurant);
@@ -83,16 +83,13 @@ namespace mvcproj.Controllers
         }
         public IActionResult UpdateDish(int id)
         {
-            // Get the existing restaurant from the repository
             Restaurant restaurant = restaurantRepository.GetById(id);
 
-            // If the restaurant does not exist, redirect to an error page or show a not found view
             if (restaurant == null)
             {
                 return NotFound();
             }
 
-            // Return the current restaurant data to the view for editing
             return View("UpdateDish", restaurant);
         }
 
@@ -144,7 +141,7 @@ namespace mvcproj.Controllers
             {
                 restaurantRepository.Delete(id);
                 restaurantRepository.Save();
-                return RedirectToAction("ShowAllFood");
+                return RedirectToAction("Admin/ShowAllFood");
             }
 
             return NotFound("not found");

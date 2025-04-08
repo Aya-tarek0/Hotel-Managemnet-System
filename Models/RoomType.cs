@@ -1,4 +1,6 @@
-﻿namespace mvcproj.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace mvcproj.Models
 {
     public class RoomType
     {
@@ -7,7 +9,8 @@
         public string? Name { get; set; }
         public string? Description { get; set; }
         public int ?PricePerNight { get; set; }
-        public int? Capacity { get; set; }
+        [Required]
+        public int Capacity { get; set; }
 
         public List<Room>? Rooms { get; set; }
     }

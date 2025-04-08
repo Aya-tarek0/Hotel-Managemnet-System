@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace mvcproj.Models
 {
@@ -14,8 +15,9 @@ namespace mvcproj.Models
         [ForeignKey("Room")]
         public int RoomNumber { get; set; }
 
-       
+        [Required]
         public DateTime CheckinDate { get; set; }
+        [Required]
         public DateTime CheckoutDate { get; set; }
         public int TotalPrice { get; set; }
         public bool IsDeleted { get; set; } // Soft delete flag

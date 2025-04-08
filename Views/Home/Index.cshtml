@@ -1,4 +1,5 @@
-﻿@model List<RoomType> 
+﻿@model HomeViewModel
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -51,35 +52,33 @@
                             <div class="col-md d-flex py-md-4">
                                 <div class="form-group align-self-stretch d-flex align-items-end">
                                     <div class="wrap align-self-stretch py-3 px-4">
-                                        <label for="#">Check-in Date</label>
-                                        <input name="checkIn" type="datetime" class="form-control checkin_date" placeholder="Check-in date">
+                                        <label for="checkIn">Check-in Date</label>
+                                        <input name="checkIn" type="datetime" class="form-control checkin_date" placeholder="Check-in date" required>
+                                        
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md d-flex py-md-4">
                                 <div class="form-group align-self-stretch d-flex align-items-end">
                                     <div class="wrap align-self-stretch py-3 px-4">
-                                        <label for="#">Check-out Date</label>
-                                        <input name="checkOut" type="datetime" class="form-control checkout_date" placeholder="Check-out date">
+                                        <label for="checkOut">Check-out Date</label>
+                                        <input name="checkOut" type="datetime" class="form-control checkout_date" placeholder="Check-out date" required>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md d-flex py-md-4">
                                 <div class="form-group align-self-stretch d-flex align-items-end">
                                     <div class="wrap align-self-stretch py-3 px-4">
-                                        <label for="#">Room</label>
+                                        <label for="roomTypeId">Room</label>
                                         <div class="form-field">
                                             <div class="select-wrap">
                                                 <div class="icon"><span class="ion-ios-arrow-down"></span></div>
                                                 <select name="roomTypeId" class="form-control">
                                                     <option value="">SelectRoomType</option>
-                                                    @foreach (var type in Model)
+                                                    @foreach (var type in Model.RoomTypes)
                                                     {
                                                         <option value="@type.RoomTypeId">@type.Name</option>
                                                     }
-                                                    @* <option value="1">Deluxe Room</option> *@
-                                                    @* <option value="2">Standard Room</option> *@
-                                                    @* <option value="3">Suite</option> *@
                                                     
                                                 </select>
                                             </div>
@@ -96,16 +95,12 @@
                                                 <div class="icon"><span class="ion-ios-arrow-down"></span></div>
                                                 <select name="capacity" id="" class="form-control">
                                                     <option value="">SelectNoguests</option>
-                                                    @for(int i =1; i<=10 ; i++)
+                                                    @for (int i = 1; i <= 10; i++)
                                                     {
-                                                        <option value="">@i guest</option>
+                                                        <option value="@i">@i guest</option>
+                                                        <span asp-validation-for="@Model.RoomTypes.Capacity"></span>
                                                     }
-                                                    @* <option value="">1 Adult</option> *@
-                                                    @* <option value="">2 Adult</option> *@
-                                                    @* <option value="">3 Adult</option> *@
-                                                    @* <option value="">4 Adult</option> *@
-                                                    @* <option value="">5 Adult</option> *@
-                                                    @* <option value="">6 Adult</option> *@
+                                                   
                                                 </select>
                                             </div>
                                         </div>
@@ -306,7 +301,7 @@
 
 
     @* //Restaurant  *@
-    <partial name="_RestaurantMenuPartial" model="Model" />
+    <partial name="_RestaurantMenuPartial" model="Model.Restaurants" />
 
 
     <section class="ftco-section">
