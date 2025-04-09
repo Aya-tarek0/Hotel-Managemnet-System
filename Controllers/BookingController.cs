@@ -13,13 +13,15 @@ namespace mvcproj.Controllers
     {
         private readonly IBookingRepository bookingRepository;
         private readonly IRoomTypeReporisatory roomTypeReporisatory;
+        private readonly IRoomReporisatory roomReporisatory;
         private readonly UserManager<ApplicationUser> user;
-        public BookingController(IBookingRepository bookingRepository,IRoomTypeReporisatory roomTypeReporisatory,UserManager<ApplicationUser> userManager)
+        public BookingController(IBookingRepository bookingRepository,IRoomTypeReporisatory roomTypeReporisatory,IRoomReporisatory roomReporisatory,UserManager<ApplicationUser> userManager)
         {
            user = userManager;
 
             this.bookingRepository = bookingRepository;
             this.roomTypeReporisatory = roomTypeReporisatory;
+            this.roomReporisatory = roomReporisatory;
         }
 
         #region GetAll
@@ -84,10 +86,28 @@ namespace mvcproj.Controllers
         #region AddBooking
 
         [Authorize]
-        public IActionResult Add()
+        public IActionResult Add(int roomId )
         {
             ViewBag.RoomTypes = new SelectList(roomTypeReporisatory.GetAll(), "RoomTypeId", "Name");
-            return View("Add");
+            Room room = roomReporisatory.GetById(roomId);
+           // RoomType roomType = roomTypeReporisatory.GetRoomByStatus(roomTypee);
+            if (room == null )
+            {
+                return NotFound();
+            }
+            else
+            {
+                ViewBag.RoomNumber = room.RoomID;
+               
+            }
+            
+            BookingViewModel RoomVM = new BookingViewModel()
+            {
+                RoomNumber = room.RoomID,
+               
+
+            };
+            return View("Add",RoomVM);
         }
         public IActionResult SaveAdd(BookingViewModel bookingVM)
         {

@@ -8,5 +8,7 @@ namespace mvcproj.Reporisatory
         public Booking GetdetailsById(int id);
 
         public List<Booking> GetBookingsByUserId(string userId);
+
+       // public int GetRoomId (int id);
     }
 }
