@@ -1,51 +1,5 @@
-﻿@* @model mvcproj.View_Models.BookingViewModel
+﻿@model mvcproj.View_Models.BookingViewModel
 
-@{
-    ViewData["Title"] = "Add Booking";
-
-}
-
-<h2>Add Booking</h2>
-
-<form asp-action="SaveAdd" method="post">
-    <div class="form-group">
-        <label asp-for="UserId" class="control-label"></label>
-        <input asp-for="UserId" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="RoomNumber" class="control-label"></label>
-        <input asp-for="RoomNumber" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="CheckinDate" class="control-label"></label>
-        <input asp-for="CheckinDate" type="date" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="CheckoutDate" class="control-label"></label>
-        <input asp-for="CheckoutDate" type="date" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label for="RoomTypeId">Room Type</label>
-        <select asp-for="RoomType.RoomTypeId" class="form-control" asp-items="ViewBag.RoomTypes">
-            <option value="">-- Select Room Type --</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="TotalPrice" class="control-label"></label>
-        <input asp-for="TotalPrice" class="form-control" readonly />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Add Booking</button>
-</form>
- *@
-
-
-@model mvcproj.View_Models.BookingViewModel
 
 @{
     ViewData["Title"] = "Add Booking";
@@ -64,8 +18,10 @@ Layout = "_RoomsLayout";
                     <!-- Room Number -->
                     <div class="col-md-12">
                         <div class="form-group mb-3">
-                            <label asp-for="RoomNumber" class="fw-bold"></label>
-                            <input asp-for="RoomNumber" class="form-control" placeholder="Enter Room Number" required />
+                            
+                                <label asp-for="RoomNumber">RoomNumber</label>
+                                <input asp-for="RoomNumber" class="form-control" readonly />
+                           
                         </div>
                     </div>
                 </div>
@@ -92,13 +48,17 @@ Layout = "_RoomsLayout";
                     <!-- Room Type Dropdown -->
                     <div class="col-md-6">
                         <div class="form-group mb-3">
-                            <label for="RoomTypeId" class="fw-bold">Room Type</label>
+                            <label for="RoomTypeId" class="fw-bold">Room Type</label> 
                             <select asp-for="RoomType.RoomTypeId" class="form-control" asp-items="ViewBag.RoomTypes" required>
                                 <option value="">-- Select Room Type --</option>
                             </select>
                         </div>
                     </div>
 
+@* 
+                    <label for="RoomStatus">Room Status</label>
+                    <input type="text" id="RoomStatus" class="form-control" value="@Model.Room" readonly />
+ *@
                     <!-- Total Price (Read-only) -->
                     @*  <div class="col-md-6">
                     <div class="form-group mb-3">

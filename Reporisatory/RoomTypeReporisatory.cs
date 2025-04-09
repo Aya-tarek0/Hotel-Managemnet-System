@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using mvcproj.Models;
 
 namespace mvcproj.Reporisatory
@@ -55,6 +56,11 @@ namespace mvcproj.Reporisatory
         {
             context.Update(obj);
             Save();
+        }
+        public RoomType GetRoomByStatus(string status)
+        {
+          return  context.RoomTypes.
+                FirstOrDefault(r => r.Name == status);
         }
     }
 }

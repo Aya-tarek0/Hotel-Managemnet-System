@@ -86,10 +86,12 @@
                                 <h3 class="text-dark font-weight-bold mb-3" style="letter-spacing: 1px;"> Description :</h3>
                                 <p class="text-muted" style="font-size: 18px; font-style: italic;">@Model.Description</p>
                             </div>
-
-                            <div>
-                                <a class="btn btn-success" href="/Booking/Add">Book Now</a>
-                            </div>
+                          
+                                <div>
+                                <a class="btn btn-success" asp-controller="Booking" asp-action="Add" asp-route-roomId="@Model.RoomID" >Book Now</a>
+                                </div>
+                        
+                            
 
                         </div>
 
