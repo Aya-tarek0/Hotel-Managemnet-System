@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using mvcproj.Models;
 using mvcproj.Reporisatory;
 
@@ -68,19 +69,24 @@ namespace mvcproj.Controllers
 
                     restaurant.ImageUrl = "/uploads/" + uniqueFileName;
                 }
+                List<Restaurant> restmenu = restaurantRepository.GetAll();
 
                 restaurantRepository.Insert(restaurant);
                 restaurantRepository.Save();
-                return RedirectToAction("Admin/ShowAllFood");
+                return View("Admin/ShowAllFood",restmenu);
             }
 
             return View("AddDish", restaurant);
         }
 
+        [Authorize(Roles = "Admin")]
+
         public IActionResult AddDish()
         {
             return View();
         }
+        [Authorize(Roles = "Admin")]
+
         public IActionResult UpdateDish(int id)
         {
             Restaurant restaurant = restaurantRepository.GetById(id);
@@ -125,14 +131,33 @@ namespace mvcproj.Controllers
                     {
                         restaurant.ImageUrl = restaurant.ImageUrl ?? restaurantUpdated.ImageUrl;
                     }
+                    List<Restaurant> restmenu= restaurantRepository.GetAll();
+                    
                     restaurantRepository.Update(restaurant);
                     restaurantRepository.Save();
-                    return RedirectToAction("ShowAllFood", "Restaurant");
+                    return View /*RedirectToAction*/("Admin/ShowAllFood", restmenu/*, "Restaurant"*/);
                 }
             }
 
             return View("UpdateDish", restaurantUpdated);
         }
+        [Authorize(Roles = "Admin")]
+        public IActionResult Details(int id)
+        {
+            var restaurant = restaurantRepository.GetById(id);
+
+            if (restaurant == null)
+            {
+                return NotFound();
+            }
+
+            return View("Admin/Details",restaurant); 
+        }
+
+
+
+
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             Restaurant res = restaurantRepository.GetById(id);
@@ -140,8 +165,12 @@ namespace mvcproj.Controllers
             if (res != null)
             {
                 restaurantRepository.Delete(id);
+               
+
                 restaurantRepository.Save();
-                return RedirectToAction("Admin/ShowAllFood");
+                List<Restaurant> restmenu = restaurantRepository.GetAll();
+
+                return View("Admin/ShowAllFood",restmenu);
             }
 
             return NotFound("not found");

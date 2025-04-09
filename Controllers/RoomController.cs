@@ -225,20 +225,50 @@ namespace mvcproj.Controllers
             Room room = roomRepo.GetRoomDetailsById(id);
             if (room != null)
             {
-                ShowRoomDetailsWithCommentsViewModel RoomViewModel = new ShowRoomDetailsWithCommentsViewModel()
+                //ShowRoomDetailsWithCommentsViewModel RoomViewModel = new ShowRoomDetailsWithCommentsViewModel()
+                //{
+                //    RoomID = room.RoomID,
+                //    HotelID = room.HotelID,
+                //    HotelName = room.Hotel?.Name,
+                //    TypeID = room.TypeID,
+                //    ImageUrl = room.image,
+                //    RoomStatus = room.Status,
+                //    RoomTypeName = room.RoomType?.Name,
+                //    Description = room.RoomType?.Description,
+                //    PricePerNight = room.RoomType?.PricePerNight,
+                //    Capacity = room.RoomType?.Capacity
+                //};
+                if (room != null)
                 {
-                    RoomID = room.RoomID,
-                    HotelID = room.HotelID,
-                    HotelName = room.Hotel?.Name,
-                    TypeID = room.TypeID,
-                    ImageUrl = room.image,
-                    RoomStatus = room.Status,
-                    RoomTypeName = room.RoomType?.Name,
-                    Description = room.RoomType?.Description,
-                    PricePerNight = room.RoomType?.PricePerNight,
-                    Capacity = room.RoomType?.Capacity
-                };
-                return View("Delete", RoomViewModel);
+                    roomRepo.Delete(id);
+                    roomRepo.Save();
+                    List<Room> rooms = roomRepo.GetAll();
+                    List<ShowRoomDetailsWithCommentsViewModel> roomslist = new List<ShowRoomDetailsWithCommentsViewModel>();
+                    foreach(Room r in rooms)
+                    {
+                        roomslist.Add(new ShowRoomDetailsWithCommentsViewModel()
+                        {
+                            RoomID = r.RoomID,
+                            HotelID = room.HotelID,
+                            HotelName = room.Hotel?.Name,
+                            TypeID = room.TypeID,
+                            ImageUrl = room.image,
+                            RoomStatus = room.Status,
+                            RoomTypeName = room.RoomType?.Name,
+                            Description = room.RoomType?.Description,
+                            PricePerNight = room.RoomType?.PricePerNight,
+                            Capacity = room.RoomType?.Capacity
+
+
+                        });
+                        
+                        
+
+                    }
+                    
+                    return View("Index", roomslist);
+                }
+                
             }
             return NotFound("Room doesn't Exist");
         }

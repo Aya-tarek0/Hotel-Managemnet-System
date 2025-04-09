@@ -1,0 +1,48 @@
+﻿
+@* @{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1> *@
+
+@model mvcproj.Models.Restaurant
+
+@{
+    ViewData["Title"] = "Dish Details";
+    Layout = "_sidebar";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="row g-0">
+            <div class="col-md-5">
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <img src="@Model.ImageUrl" class="img-fluid rounded-start w-100 h-100 object-fit-cover" alt="Dish Image" />
+                }
+                else
+                {
+                    <img src="~/images/placeholder.png" class="img-fluid rounded-start w-100 h-100 object-fit-cover" alt="No Image Available" />
+                }
+            </div>
+            <div class="col-md-7">
+                <div class="card-body p-4">
+                    <h2 class="card-title fw-bold">@Model.Name</h2>
+                    <p class="card-text text-muted">@Model.Description</p>
+                    <p class="card-text">
+                        <span class="fs-5 fw-semibold">Price:</span>
+                        <span class="text-success fs-4 fw-bold">$@Model.Price</span>
+                    </p>
+                    <div class="mt-4">
+                        <a asp-action="ShowAllFood" asp-controller="Restaurant" class="btn btn-outline-primary">
+                            <i class="fa fa-arrow-left me-1"></i> Back to Menu
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

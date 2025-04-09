@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -141,7 +142,10 @@ namespace mvcproj.Controllers
         }
         #endregion
 
+
         #region Register Admin
+        [Authorize(Roles = "Admin")]
+
         [HttpGet]
         public IActionResult RegisterAdmin()
         {
