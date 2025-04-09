@@ -45,68 +45,69 @@
         <div class="container">
             <div class="row no-gutters">
                 <div class="col-lg-12">
-                    <!-- #region check availability --> 
-
-                    <form asp-action="GetAvailableRooms" asp-controller="Room" class="booking-form aside-stretch">
+                    <!-- #region check availability -->
+                    <form asp-action="GetAvailableRooms" asp-controller="Room" class="booking-form aside-stretch" id="availabilityForm">
                         <div class="row">
                             <div class="col-md d-flex py-md-4">
                                 <div class="form-group align-self-stretch d-flex align-items-end">
                                     <div class="wrap align-self-stretch py-3 px-4">
                                         <label for="checkIn">Check-in Date</label>
-                                        <input name="checkIn" type="datetime" class="form-control checkin_date" placeholder="Check-in date" required>
-                                        
+                                        <input name="checkIn" type="text" class="form-control checkin_date" placeholder="check-in Date"
+                                               value="@(Model.CheckinDate.HasValue ? Model.CheckinDate.Value.ToString("yyyy-MM-dd") : "")" required />
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-md d-flex py-md-4">
                                 <div class="form-group align-self-stretch d-flex align-items-end">
                                     <div class="wrap align-self-stretch py-3 px-4">
                                         <label for="checkOut">Check-out Date</label>
-                                        <input name="checkOut" type="datetime" class="form-control checkout_date" placeholder="Check-out date" required>
+                                        <input name="checkOut" type="text" class="form-control checkout_date" placeholder="check-out Date"
+                                               value="@(Model.CheckoutDate.HasValue ? Model.CheckoutDate.Value.ToString("yyyy-MM-dd") : "")" required />
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-md d-flex py-md-4">
                                 <div class="form-group align-self-stretch d-flex align-items-end">
                                     <div class="wrap align-self-stretch py-3 px-4">
-                                        <label for="roomTypeId">Room</label>
+                                        <label for="roomTypeId">Room Type</label>
                                         <div class="form-field">
                                             <div class="select-wrap">
                                                 <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                                <select name="roomTypeId" class="form-control">
-                                                    <option value="">SelectRoomType</option>
+                                                <select name="roomTypeId" class="form-control" required>
+                                                    <option value="">Select Room Type</option>
                                                     @foreach (var type in Model.RoomTypes)
                                                     {
                                                         <option value="@type.RoomTypeId">@type.Name</option>
                                                     }
-                                                    
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-md d-flex py-md-4">
                                 <div class="form-group align-self-stretch d-flex align-items-end">
                                     <div class="wrap align-self-stretch py-3 px-4">
-                                        <label for="#">Guests</label>
+                                        <label for="capacity">Guests</label>
                                         <div class="form-field">
                                             <div class="select-wrap">
                                                 <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                                <select name="capacity" id="" class="form-control">
-                                                    <option value="">SelectNoguests</option>
+                                                <select name="capacity" class="form-control" required>
+                                                    <option value="">Number of Guests</option>
                                                     @for (int i = 1; i <= 10; i++)
                                                     {
-                                                        <option value="@i">@i guest</option>
-                                                        <span asp-validation-for="@Model.RoomTypes.Capacity"></span>
+                                                        <option value="@i">@i @(i == 1 ? "guest" : "guests")</option>
                                                     }
-                                                   
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-md d-flex">
                                 <button type="submit" class="btn btn-primary py-5 py-md-3 px-4 align-self-stretch d-block">
                                     Check Availability <small>Best Price Guaranteed!</small>
@@ -114,6 +115,7 @@
                             </div>
                         </div>
                     </form>
+
 
                     <!-- #endregion -->
 
@@ -493,7 +495,7 @@
     <script src="~/js/jquery.magnific-popup.min.js"></script>
     <script src="~/js/aos.js"></script>
     <script src="~/js/jquery.animateNumber.min.js"></script>
-    <script src="~/js/bootstrap-datepicker.js"></script>
+   
     <script src="~/js/scrollax.min.js"></script>
 
     <!-- تحميل Google Maps API بشكل صحيح -->
@@ -510,6 +512,25 @@
             }
         };
     </script>
+    @section Scripts {
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+            $(function () {
+                $(".checkin_date, .checkout_date").datepicker({
+                    dateFormat: "yy-mm-dd", 
+                    minDate: 0,
+                    onSelect: function (selectedDate) {
+                        if ($(this).hasClass("checkin_date")) {
+                            $(".checkout_date").datepicker("option", "minDate", selectedDate);
+                        }
+                    }
+                });
+            });
+        </script>
+    }
+
+
 
     <!-- كود جوجل ماب -->
     <script src="~/js/google-map.js"></script>

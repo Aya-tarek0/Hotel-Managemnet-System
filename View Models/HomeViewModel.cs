@@ -7,5 +7,7 @@ namespace mvcproj.View_Models
         public List<RoomType> RoomTypes { get; set; }
         public List<Restaurant> Restaurants { get; set; }
         public List<Booking> Bookings { get; set; }
+        public DateTime? CheckinDate { get; set; }
+        public DateTime? CheckoutDate { get; set; }
     }
 }

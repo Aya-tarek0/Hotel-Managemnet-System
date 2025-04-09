@@ -67,29 +67,18 @@ namespace mvcproj.Reporisatory
 
         public List<Room> CheckAvailability(DateTime checkIn, DateTime checkOut, int roomTypeId, int capacity)
         {
-            // طباعة التواريخ اللي المستخدم بيطلبها
-            Console.WriteLine($"طلب من: {checkIn} إلى {checkOut}");
-
-            List<Room> availableRooms = context.Rooms
+            if (checkOut <= checkIn)
+            {
+                throw new ArgumentException("Check-out date must be after check-in date");
+            }
+            var availableRooms = context.Rooms
                 .Include(r => r.RoomType)
                 .Include(r => r.Bookings)
-                .Where(r => r.TypeID == roomTypeId)
-                .Where(r => r.RoomType.Capacity >= capacity)
-                .Where(r => !r.Bookings.Any(b =>
-                    b.CheckinDate < checkOut &&
-                    b.CheckoutDate > checkIn
-                )).ToList();
-
-            // بعد ما تجيب الغرف المتاحة، اعملي Loop على كل الغرف واطبعي الحجوزات الخاصة بيها
-            foreach (var room in availableRooms)
-            {
-                Console.WriteLine($"Room ID: {room.RoomID}");
-
-                foreach (var booking in room.Bookings)
-                {
-                    Console.WriteLine($"    حجز موجود من {booking.CheckinDate} إلى {booking.CheckoutDate}");
-                }
-            }
+                .Where(r => r.RoomID == roomTypeId && r.RoomType.Capacity >= capacity &&
+                !r.Bookings.Any(b => !b.IsDeleted &&
+                 b.CheckoutDate.Date > checkIn &&
+                 b.CheckinDate.Date < checkOut))
+                .ToList();
 
             return availableRooms;
         }

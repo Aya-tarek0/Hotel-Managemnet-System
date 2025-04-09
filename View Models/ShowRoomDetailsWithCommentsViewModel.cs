@@ -16,6 +16,8 @@ namespace mvcproj.View_Models
         public int? PricePerNight { get; set; }
         public int? Capacity { get; set; }
         public string? HotelName { get; set; }
+        public DateTime? CheckinDate { get; set; }
+        public DateTime? CheckoutDate { get; set; }
 
         public List<CommentsWithRoomIDViewModel> Comments { get; set; }
 
