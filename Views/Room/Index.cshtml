@@ -54,7 +54,7 @@
                             <a asp-action="UpdatRoomInformation" asp-controller="Room" asp-route-id="@item.RoomID" class="btn btn-outline-primary btn-sm d-flex align-items-center mx-1">
                                 ✏️ Update
                             </a>
-                            <a asp-action="ShowRoomDetails" asp-controller="Room" asp-route-id="@item.RoomID" class="btn btn-outline-info btn-sm d-flex align-items-center mx-1">
+                            <a asp-action="Details" asp-controller="Room" asp-route-id="@item.RoomID" class="btn btn-outline-info btn-sm d-flex align-items-center mx-1">
                                 🔍 Details
                             </a>
                             <a asp-action="Delete" asp-controller="Room" asp-route-id="@item.RoomID" onclick="confirmDelete('@item.RoomID')" class="btn btn-outline-danger btn-sm d-flex align-items-center mx-1">

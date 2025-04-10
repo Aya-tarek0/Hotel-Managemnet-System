@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -290,7 +291,7 @@ namespace mvcproj.Controllers
 
         #endregion
 
-        #region chack availability
+            #region chack availability
 
         [HttpPost]
         public IActionResult GetAvailableRooms(
@@ -363,6 +364,20 @@ namespace mvcproj.Controllers
             }
         }
         #endregion
+
+        // GET: Room/Details/5
+        [Authorize(Roles = "Admin")]
+        public IActionResult Details(int id)
+        {
+            var room = roomRepo.GetRoomDetailsById(id); // Assuming GetById fetches the room by ID from the repository
+            if (room == null)
+            {
+                return NotFound(); // Return 404 if room not found
+            }
+
+            return View("RoomDetialsForAdmin", room); // Return the room details to the view
+        }
+
 
     }
 }

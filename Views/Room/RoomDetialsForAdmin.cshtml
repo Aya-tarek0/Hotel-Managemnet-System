@@ -1,0 +1,42 @@
+﻿@model mvcproj.Models.Room
+
+@{
+    ViewData["Title"] = "Room Details";
+	Layout = "_sidebar"; 
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="card">
+    <div class="card-header">
+        <h3>Room ID: @Model.RoomID</h3>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-2">Hotel</dt>
+            <dd class="col-sm-10">@Model.Hotel?.Name</dd>
+
+            <dt class="col-sm-2">Room Type</dt>
+            <dd class="col-sm-10">@Model.RoomType?.Name</dd>
+
+            <dt class="col-sm-2">Status</dt>
+            <dd class="col-sm-10">@Model.Status</dd>
+
+            <dt class="col-sm-2">Image</dt>
+            <dd class="col-sm-10">
+                @if (!string.IsNullOrEmpty(Model.image))
+                {
+                    <img src="~/uploads/@Model.image" alt="Room Image" class="img-fluid" style="max-width: 300px;" />
+                }
+                else
+                {
+                    <p>No image available</p>
+                }
+            </dd>
+        </dl>
+    </div>
+    <div class="card-footer">
+       
+        <a href="@Url.Action("Index", "Room")" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>
