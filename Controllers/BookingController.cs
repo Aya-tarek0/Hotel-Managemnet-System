@@ -86,33 +86,87 @@ namespace mvcproj.Controllers
         #region AddBooking
 
         [Authorize]
-        public IActionResult Add(int roomId )
+        public IActionResult Add(int roomId)
         {
-            ViewBag.RoomTypes = new SelectList(roomTypeReporisatory.GetAll(), "RoomTypeId", "Name");
-            Room room = roomReporisatory.GetById(roomId);
-           // RoomType roomType = roomTypeReporisatory.GetRoomByStatus(roomTypee);
-            if (room == null )
+            //ViewBag.RoomTypes = new SelectList(roomTypeReporisatory.GetAll(), "RoomTypeId", "Name");
+
+            Room room = roomReporisatory.GetById(roomId); // make sure this includes RoomType
+            if (room == null || room.RoomType == null)
             {
                 return NotFound();
-            }
-            else
-            {
-                ViewBag.RoomNumber = room.RoomID;
-               
-            }
             
-            BookingViewModel RoomVM = new BookingViewModel()
-            {
-                RoomNumber = room.RoomID,
-               
+            }
 
-            };
-            return View("Add",RoomVM);
+            if(room.Status.Equals("Available"))
+            {
+
+                //DateTime checkOut = DateTime.Now;
+                //DateTime checkIn = DateTime.Now;
+
+                int bookId=0;
+                foreach (var item in room.Bookings)
+                {
+                    if(item.RoomNumber == roomId)
+                    {
+                        bookId = item.BookingID;
+                        
+                    }
+                    
+                    //checkIn = item.CheckinDate;
+                    //checkOut = item.CheckoutDate;
+                }
+
+                //int days = (checkOut - checkIn).Days;
+                //int pricePerNight = room.RoomType.PricePerNight ?? 0;
+                //int totalPrice = bookingRepository.CalcTotalPrice(days, pricePerNight);
+
+                BookingViewModel RoomVM = new BookingViewModel()
+                {
+                    RoomNumber = room.RoomID,
+                  
+                     RoomType = room.RoomType, // full RoomType object
+                     BookingID = bookId
+                     , RoomTypeId = room.RoomType.TypeID,
+                     PricePerNight = room.RoomType.PricePerNight ?? 0
+                };
+                return View("Add", RoomVM);
+            }
+
+           
+            return Content("Room is not available for booking.");
+
         }
+
+        //public IActionResult Add(int roomId, string roomType,DateTime checkOut,DateTime checkIn)
+        //{
+
+        //    ViewBag.RoomTypes = new SelectList(roomTypeReporisatory.GetAll(), "RoomTypeId", "Name");
+        //    Room room = roomReporisatory.GetById(roomId);
+        //   // RoomType roomType = roomTypeReporisatory.GetRoomByStatus(roomTypee);
+        //    if (room == null )
+        //    {
+        //        return NotFound();
+        //    }
+        //    else
+        //    {
+        //        ViewBag.RoomNumber = room.RoomID;
+
+        //    }
+
+        //    BookingViewModel RoomVM = new BookingViewModel()
+        //    {
+        //        RoomNumber = room.RoomID,
+        //        CheckinDate = checkIn,
+        //        CheckoutDate = checkOut,
+        //        Room = roomType
+
+        //    };
+        //    return View("Add",RoomVM);
+        //}
         public IActionResult SaveAdd(BookingViewModel bookingVM)
         {
 
-            RoomType roomType = roomTypeReporisatory.GetById(bookingVM.RoomType.RoomTypeId);
+            RoomType roomType = roomTypeReporisatory.GetById(bookingVM.RoomType.TypeID);
             
 
             int noOfDays = (bookingVM.CheckoutDate.GetValueOrDefault() - bookingVM.CheckinDate.GetValueOrDefault()).Days;
@@ -126,7 +180,7 @@ namespace mvcproj.Controllers
                 RoomNumber = bookingVM.RoomNumber??0,
                 CheckinDate = bookingVM.CheckinDate??DateTime.Now,
                 CheckoutDate = bookingVM.CheckoutDate??DateTime.Now,
-                TotalPrice = bookingRepository.CalcTotalPrice( noOfDays,roomType?.PricePerNight.GetValueOrDefault() ?? 0)
+                TotalPrice = bookingRepository.CalcTotalPrice( noOfDays,bookingVM.PricePerNight)
                 
             };
           

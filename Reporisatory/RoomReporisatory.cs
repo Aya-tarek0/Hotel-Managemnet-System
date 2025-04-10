@@ -27,7 +27,10 @@ namespace mvcproj.Reporisatory
 
         public Room GetById(int id)
         {
-            Room room = context.Rooms.FirstOrDefault(r => r.RoomID == id);
+            Room room = context.Rooms
+                .Include(r => r.RoomType) 
+                .Include(r => r.Bookings)
+                .FirstOrDefault(r => r.RoomID == id);
             return room;
         }
 
