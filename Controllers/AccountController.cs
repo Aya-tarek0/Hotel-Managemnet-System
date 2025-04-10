@@ -144,7 +144,6 @@ namespace mvcproj.Controllers
 
 
         #region Register Admin
-        [Authorize(Roles = "Admin")]
 
         [HttpGet]
         public IActionResult RegisterAdmin()
