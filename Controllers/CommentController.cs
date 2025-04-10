@@ -37,11 +37,10 @@ namespace mvcproj.Controllers
 
             try
             {
-                // جلب المستخدم الحالي
                 var user = await _userManager.GetUserAsync(User);
                 if (user == null)
                 {
-                    return Unauthorized(); // إذا لم يكن المستخدم مسجّل الدخول
+                    return Unauthorized(); 
                 }
 
                 var comment = new Comment

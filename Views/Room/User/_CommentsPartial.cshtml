@@ -1,49 +1,36 @@
 ﻿@model List<CommentsWithRoomIDViewModel>
 
+<div class="container pt-5 mt-5">
 
-<div class="pt-5 mt-5">
-    @* show comments  *@
-    <h3 class="mb-5">Comments</h3>
-    <ul class="comment-list">    
+    <h3 class="mb-4 border-bottom pb-2">Comments</h3>
+    <ul class="comment-list">
         @foreach (var comment in Model)
         {
-            <li class="comment">
+            <li class="comment mb-4 p-3 rounded shadow-sm border">
                 <div class="comment-body">
-                    <h2>@comment.GuestName</h2>
-                    <h5>@comment.GuestEmail</h5>
-                    <div class="meta">@comment.CreatedAt.ToString("MMM dd, yyyy hh:mm tt") </div>
-                    <h3>@comment.CommentText</h3>
-                    <hr />
+                    <h5 class="text-primary mb-1">@comment.GuestName</h5>
+                    <small class="text-muted d-block mb-1">@comment.GuestEmail</small>
+                    <small class="text-muted d-block mb-2">@comment.CreatedAt.ToString("MMM dd, yyyy hh:mm tt")</small>
+                    <p class="lead">@comment.CommentText</p>
                 </div>
             </li>
         }
     </ul>
 
+    <div class="comment-form-wrap pt-5">
+        <h3 class="mb-4 border-bottom pb-2">Leave a Comment</h3>
 
-    <!-- END comment-list -->
+        <div class="form-group">
+            <label for="message" class="font-weight-bold">Message</label>
+            <textarea id="message" cols="30" rows="5" class="form-control shadow-sm" placeholder="Write your comment here..."></textarea>
+        </div>
 
-    <!-- write new comment  -->
-
-    <div class="comment-form-wrap pt-5" >
-        <h3 class="mb-5">Leave a comment</h3>
-
-        @* <input type="hidden" id="roomID" value="@Model.FirstOrDefault()?.RoomID"> *@
-
-            <div class="form-group">
-                <label for="message">Message</label>
-                <textarea id="message" cols="30" rows="10" class="form-control"></textarea>
-            </div>
-
-            <div class="form-group">
-            <input type="submit" value="Send Comment" class="btn py-3 px-4 btn-primary " onclick="SendComment()">
-            </div>
-      
+        <div class="form-group">
+            <input type="submit" value="Send Comment" class="btn btn-primary px-4 py-2" onclick="SendComment()">
+        </div>
     </div>
-
 </div>
 
-
- <p>Room ID from Razor: @Model.FirstOrDefault()?.RoomID</p> 
 
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -65,21 +52,33 @@
          });
 
     //3
-       hub.on("ReceiveComment", function (guestName,email, CreatedAt, commentText) {
+    hub.on("ReceiveComment", function (guestName, email, CreatedAt, commentText) {
         var commentList = document.querySelector(".comment-list");
         var newComment = document.createElement("li");
-        newComment.classList.add("comment");
+        newComment.classList.add("comment", "mb-4", "p-3", "rounded", "shadow-sm", "border", "position-relative");
+
         newComment.innerHTML = `
             <div class="comment-body">
-                <h2>${guestName}</h2>
-                <h5>${email}</h2>
-                <div class="meta">${new Date(CreatedAt).toLocaleString()}</div>
-                <h3>${commentText}</h3>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="text-primary mb-1">${guestName}</h5>
+                    <span class="badge bg-danger text-white">New</span>
+                </div>
+                <small class="text-muted d-block mb-1">${email}</small>
+                <small class="text-muted d-block mb-2">${new Date(CreatedAt).toLocaleString()}</small>
+                <p class="lead">${commentText}</p>
             </div>
         `;
+
         commentList.appendChild(newComment);
-        console.log(email);  
+
+        setTimeout(() => {
+            const badge = newComment.querySelector(".badge");
+            if (badge) badge.remove();
+        }, 10000);
+
+        console.log(email);
     });
+
 
         function getRoomIDFromURL() {
         var urlParts = window.location.pathname.split('/');
@@ -121,9 +120,4 @@
             }
         });
     }
-
-
-     
-
-
 </script>
