@@ -27,17 +27,19 @@
 						<a asp-action="Index" asp-controller="Room"><span class="fa fa-home mr-3"></span> All Rooms</a>
 					</li>
 					<li>
+						<a asp-action="AddRoom" asp-controller="Room">
+							<span class=" fa fa-plus mr-3"></span>
+
+							Add Room
+						</a>
+					</li>
+
+					<li>
 						<a asp-action="Index" asp-controller="Messages">
 							<span class="fa fa-suitcase me-3 mr-3"></span>  Chat
 						</a>
 					</li>
-					<li >
-						<a asp-action="AddRoom" asp-controller="Room">
-							<span class=" fa fa-plus mr-3"></span>
-
-                    Add Room						</a>
-					</li>
-
+	
 					<li>
 						<a asp-action="RegisterAdmin" asp-controller="Account">
 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-plus me-2" viewBox="0 0 16 16">
