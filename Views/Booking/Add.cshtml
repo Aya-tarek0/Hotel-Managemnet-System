@@ -1,87 +1,68 @@
 ﻿@model mvcproj.View_Models.BookingViewModel
 
-
 @{
-    ViewData["Title"] = "Add Booking";
-    
-Layout = "_RoomsLayout";
+    ViewData["Title"] = "Booking Details";
 }
-@if (User.Identity.IsAuthenticated)
-{
-    <div class="container mt-4">
-        <div class="card shadow-lg p-4">
-            <h2 class="text-center mb-4">🛏️ Add New Booking</h2>
+<form asp-action="SaveAdd" method="post" enctype="multipart/form-data">
 
-            <form asp-action="SaveAdd" method="post">
-                <div class="row">
-
-                    <!-- Room Number -->
-                    <div class="col-md-12">
-                        <div class="form-group mb-3">
-                            
-                                <label asp-for="RoomNumber">RoomNumber</label>
-                                <input asp-for="RoomNumber" class="form-control" readonly />
-                           
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <!-- Check-in Date -->
+    <div class="container mt-5">
+        <div class="card shadow-lg rounded-4 border-0">
+            <div class="card-header bg-success text-white rounded-top-4">
+                <h3 class="mb-0">Confirm Your Booking</h3>
+            </div>
+            <div class="card-body">
+                <div class="row g-4">
                     <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <label asp-for="CheckinDate" class="fw-bold"></label>
-                            <input asp-for="CheckinDate" type="date" class="form-control" required />
-                        </div>
+                        <label class="form-label fw-semibold" asp-for="@Model.RoomNumber">Room Number</label>
+                        <input class="form-control" value="@Model.RoomNumber" asp-for="@Model.RoomNumber" readonly />
                     </div>
 
-                    <!-- Check-out Date -->
                     <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <label asp-for="CheckoutDate" class="fw-bold"></label>
-                            <input asp-for="CheckoutDate" type="date" class="form-control" required />
-                        </div>
+                        <label class="form-label fw-semibold" asp-for="@Model.RoomTypeId">Room Type id</label>
+                        <input class="form-control" value="@Model.RoomTypeId" readonly asp-for="@Model.RoomTypeId" />
                     </div>
-                </div>
 
-                <div class="row">
-                    <!-- Room Type Dropdown -->
                     <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <label for="RoomTypeId" class="fw-bold">Room Type</label> 
-                            <select asp-for="RoomType.RoomTypeId" class="form-control" asp-items="ViewBag.RoomTypes" required>
-                                <option value="">-- Select Room Type --</option>
-                            </select>
-                        </div>
+                        <label class="form-label fw-semibold" asp-for="@Model.RoomType.Name">Room Type</label>
+                        <input class="form-control" value="@Model.RoomType?.Name" readonly asp-for="@Model.RoomType.Name" />
                     </div>
 
-@* 
-                    <label for="RoomStatus">Room Status</label>
-                    <input type="text" id="RoomStatus" class="form-control" value="@Model.Room" readonly />
- *@
-                    <!-- Total Price (Read-only) -->
-                    @*  <div class="col-md-6">
-                    <div class="form-group mb-3">
-                        <label asp-for="TotalPrice" class="fw-bold"></label>
-                        <input asp-for="TotalPrice" class="form-control bg-light" readonly />
-                    </div>
+                    @*   <div class="col-12">
+                    <label class="form-label fw-semibold">Description</label>
+                    <textarea class="form-control" readonly rows="2">@Model.RoomType?.Description</textarea>
                 </div> *@
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold" asp-for="@Model.RoomType.Capacity">Capacity</label>
+                        <input class="form-control" value="@Model.RoomType?.Capacity" asp-for="@Model.RoomType.Capacity" readonly />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold" asp-for="@Model.PricePerNight">Price per Night</label>
+                        <input class="form-control" value="@Model.RoomType?.PricePerNight" asp-for="@Model.PricePerNight" readonly />
+                    </div>
+
+                
+                
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold" asp-for="@Model.CheckinDate">Check-in Date</label>
+                        <input  class="form-control" type="date" value="@Model.CheckinDate" asp-for="@Model.CheckinDate" required />
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold" asp-for="@Model.CheckoutDate">Check-out Date</label>
+                        <input class="form-control" type="date" value="@Model.CheckoutDate" asp-for="@Model.CheckoutDate" required />
+
+                    </div>
                 </div>
 
-                <!-- Submit & Back Buttons -->
-                <div class="text-center mt-4">
-
-                    <button type="submit" class="btn btn-primary px-4">➕ Add Booking</button>
-                    @*  <a asp-action="ShowRoomDetails" asp-asp-controller="Room" asp-route="@Model.RoomNumber" class="btn btn-secondary px-4 ms-2">🔙 Back</a> *@
-                    <a onclick="history.back()" class="btn btn-secondary px-4 ms-2">🔙 Back</a>
-
+                <div class="mt-4 text-end">
+                    <a class="btn btn-secondary me-2" asp-action="details" asp-controller="Booking" asp-route-id="@Model.BookingID">Back</a>
+                    <button class="btn btn-success" type="submit" @* asp-controller="Booking" asp-action="SaveAdd" asp-route-roomId="@Model.RoomNumber" asp-route-checkIn="@Model.CheckinDate" asp-route-checkOut="@Model.CheckoutDate" *@>Confirm Booking</button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-}
-else
-{
-    <a asp-action="Login" asp-controller="Account" class="btn btn-warning">Login First</a>
-}
+</form>
 
