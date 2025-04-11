@@ -69,10 +69,11 @@ namespace mvcproj.Controllers
 
                     restaurant.ImageUrl = "/uploads/" + uniqueFileName;
                 }
-                List<Restaurant> restmenu = restaurantRepository.GetAll();
 
                 restaurantRepository.Insert(restaurant);
                 restaurantRepository.Save();
+                List<Restaurant> restmenu = restaurantRepository.GetAll();
+
                 return View("Admin/ShowAllFood",restmenu);
             }
 
@@ -165,16 +166,14 @@ namespace mvcproj.Controllers
             if (res != null)
             {
                 restaurantRepository.Delete(id);
-               
-
                 restaurantRepository.Save();
-                List<Restaurant> restmenu = restaurantRepository.GetAll();
 
-                return View("Admin/ShowAllFood",restmenu);
+                return RedirectToAction("ShowAllFood");
             }
 
-            return NotFound("not found");
+            return NotFound("Restaurant not found");
         }
+
 
 
     }
