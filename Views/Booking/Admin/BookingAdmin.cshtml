@@ -1,0 +1,106 @@
+﻿@* 
+@{
+    ViewData["Title"] = "BookingAdmin";
+}
+
+<h1>BookingAdmin</h1>
+
+@model List<BookingViewModel>
+
+@{
+    ViewBag.Title = "Admin Booking View";
+}
+
+<h2>Bookings</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Booking ID</th>
+            <th>User ID</th>
+            <th>Guest Name</th>
+            <th>Room Number</th>
+            <th>Check-in Date</th>
+            <th>Check-out Date</th>
+            <th>Total Price</th>
+            <th>Room Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var booking in Model)
+        {
+            <tr>
+                <td>@booking.BookingID</td>
+                <td>@booking.UserId</td>
+                <td>@booking.Guest</td>
+                <td>@booking.RoomNumber</td>
+                <td>
+                    @(booking.CheckinDate.HasValue ? booking.CheckinDate.Value.ToString("yyyy-MM-dd") : "N/A")
+                </td>
+                <td>
+                    @(booking.CheckoutDate.HasValue ? booking.CheckoutDate.Value.ToString("yyyy-MM-dd") : "N/A")
+                </td>
+                <td>@booking.TotalPrice</td>
+                <td>@booking.Room</td>
+            </tr>
+        }
+    </tbody>
+</table> *@
+@model List<BookingViewModel>
+@{
+    ViewData["Title"] = "Booking Management - Admin";
+    Layout = "_sidebar";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-center text-primary">Booking Management</h2>
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-hover table-bordered shadow-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Booking ID</th>
+                    <th scope="col">User ID</th>
+                    <th scope="col">Guest Name</th>
+                    <th scope="col">Room Number</th>
+                    <th scope="col">Check-in Date</th>
+                    <th scope="col">Check-out Date</th>
+                    <th scope="col">Total Price</th>
+                    <th scope="col">Room Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var booking in Model)
+                {
+                    <tr class="align-middle">
+                        <td>@booking.BookingID</td>
+                        <td>@booking.UserId</td>
+                        <td>@booking.Guest</td>
+                        <td>@booking.RoomNumber</td>
+                        <td>
+                            @(booking.CheckinDate.HasValue ? booking.CheckinDate.Value.ToString("yyyy-MM-dd") : "<span class=\"text-muted\">N/A</span>")
+                        </td>
+                        <td>
+                            @(booking.CheckoutDate.HasValue ? booking.CheckoutDate.Value.ToString("yyyy-MM-dd") : "<span class=\"text-muted\">N/A</span>")
+                        </td>
+                        <td>@booking.TotalPrice</td>
+                        <td>
+                            <span class="badge @(booking.Room == "Available" ? "bg-success" : "bg-danger")">
+                                @booking.Room
+                            </span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info text-center" role="alert">
+            No bookings found.
+        </div>
+    }
+</div>
+
+

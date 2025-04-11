@@ -47,8 +47,27 @@ namespace mvcproj.Controllers
 
               
             }
+            string userType = GetUserType();
+            if (userType == "Admin")
+            {
+                return View("Admin/BookingAdmin", bookingViewModelList);
 
-            return View("Index", bookingViewModelList);
+
+            }
+            else
+            {
+
+                return View("Index", bookingViewModelList);
+            }
+        }
+        private string GetUserType()
+        {
+            if (User.IsInRole("Admin"))
+                return "Admin";
+            if (User.IsInRole("Guest"))
+                return "Guest";
+
+            return "User";
         }
 
 
