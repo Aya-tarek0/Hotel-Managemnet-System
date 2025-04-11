@@ -247,26 +247,26 @@ namespace mvcproj.Controllers
                     List<ShowRoomDetailsWithCommentsViewModel> roomslist = new List<ShowRoomDetailsWithCommentsViewModel>();
                     foreach(Room r in rooms)
                     {
-                        roomslist.Add(new ShowRoomDetailsWithCommentsViewModel()
-                        {
-                            RoomID = r.RoomID,
-                            HotelID = room.HotelID,
-                            HotelName = room.Hotel?.Name,
-                            TypeID = room.TypeID,
-                            ImageUrl = room.image,
-                            RoomStatus = room.Status,
-                            RoomTypeName = room.RoomType?.Name,
-                            Description = room.RoomType?.Description,
-                            PricePerNight = room.RoomType?.PricePerNight,
-                            Capacity = room.RoomType?.Capacity
-
-
-                        });
                         
-                        
+                            roomslist.Add(new ShowRoomDetailsWithCommentsViewModel()
+                            {
+                                RoomID = r.RoomID,
+                                HotelID = r.HotelID,
+                                HotelName = r.Hotel?.Name,
+                                TypeID = r.TypeID,
+                                ImageUrl = r.image,
+                                RoomStatus = r.Status,
+                                RoomTypeName = r.RoomType?.Name,
+                                Description = r.RoomType?.Description,
+                                PricePerNight = r.RoomType?.PricePerNight,
+                                Capacity = r.RoomType?.Capacity
+                            });
+                        }
 
-                    }
+
+
                     
+
                     return View("Index", roomslist);
                 }
                 
@@ -274,20 +274,7 @@ namespace mvcproj.Controllers
             return NotFound("Room doesn't Exist");
         }
 
-        public IActionResult SaveDelete(int id)
-        {
-            Room room = roomRepo.GetById(id);
-            if (room != null)
-            {
-                room.IsDeleted = true;
-                roomRepo.Save();
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                return NotFound("Room doesn't Exist");
-            }
-        }
+
 
         #endregion
 
@@ -295,33 +282,33 @@ namespace mvcproj.Controllers
 
         [HttpPost]
         public IActionResult GetAvailableRooms(
-            [FromForm] string checkIn,
-            [FromForm] string checkOut,
+            //[FromForm] string checkIn,
+            //[FromForm] string checkOut,
             [FromForm] int roomTypeId,
             [FromForm] int capacity)
         {
             try
             {
-                var dateFormats = new[] { "yyyy-MM-dd", "MM/dd/yyyy", "dd/MM/yyyy" };
+                //var dateFormats = new[] { "yyyy-MM-dd", "MM/dd/yyyy", "dd/MM/yyyy" };
 
-                if (!DateTime.TryParseExact(checkIn, dateFormats, CultureInfo.InvariantCulture,
-                    DateTimeStyles.None, out DateTime checkInDate))
-                {
-                    return Json(new { success = false, message = "Invalid check-in date format. Please use yyyy-MM-dd format." });
-                }
+                //if (!DateTime.TryParseExact(checkIn, dateFormats, CultureInfo.InvariantCulture,
+                //    DateTimeStyles.None, out DateTime checkInDate))
+                //{
+                //    return Json(new { success = false, message = "Invalid check-in date format. Please use yyyy-MM-dd format." });
+                //}
 
-                if (!DateTime.TryParseExact(checkOut, dateFormats, CultureInfo.InvariantCulture,
-                    DateTimeStyles.None, out DateTime checkOutDate))
-                {
-                    return Json(new { success = false, message = "Invalid check-out date format. Please use yyyy-MM-dd format." });
-                }
+                //if (!DateTime.TryParseExact(checkOut, dateFormats, CultureInfo.InvariantCulture,
+                //    DateTimeStyles.None, out DateTime checkOutDate))
+                //{
+                //    return Json(new { success = false, message = "Invalid check-out date format. Please use yyyy-MM-dd format." });
+                //}
 
-                if (checkOutDate <= checkInDate)
-                {
-                    return Json(new { success = false, message = "Check-out date must be after check-in date" });
-                }
+                //if (checkOutDate <= checkInDate)
+                //{
+                //    return Json(new { success = false, message = "Check-out date must be after check-in date" });
+                //}
 
-                var availableRooms = roomRepo.CheckAvailability(checkInDate, checkOutDate, roomTypeId, capacity);
+                var availableRooms = roomRepo.CheckAvailability(roomTypeId, capacity);
 
                 var roomViewModels = availableRooms.Select(room => new ShowRoomDetailsWithCommentsViewModel
                 {
@@ -332,8 +319,6 @@ namespace mvcproj.Controllers
                     HotelID = room.HotelID,
                     PricePerNight = room.RoomType?.PricePerNight ?? 0,
                     RoomStatus = room.Status,
-                    CheckinDate = checkInDate,
-                    CheckoutDate = checkOutDate,
                 }).ToList();
 
                 if (!roomViewModels.Any())
@@ -349,8 +334,8 @@ namespace mvcproj.Controllers
                             HotelID = 0,
                             PricePerNight = 0,
                             RoomStatus = "No available rooms",
-                            CheckinDate = checkInDate,
-                            CheckoutDate = checkOutDate
+                            //CheckinDate = checkInDate,
+                            //CheckoutDate = checkOutDate
                        }
                    };
                     return View("_AllRoomsUser", emptyRoom);

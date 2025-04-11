@@ -68,19 +68,30 @@ namespace mvcproj.Reporisatory
                 .FirstOrDefault();
         }
 
-        public List<Room> CheckAvailability(DateTime checkIn, DateTime checkOut, int roomTypeId, int capacity)
+        //public List<Room> CheckAvailability(DateTime checkIn, DateTime checkOut, int roomTypeId, int capacity)
+        //{
+        //    if (checkOut <= checkIn)
+        //    {
+        //        throw new ArgumentException("Check-out date must be after check-in date");
+        //    }
+        //    var availableRooms = context.Rooms
+        //        .Include(r => r.RoomType)
+        //        .Include(r => r.Bookings)
+        //        .Where(r => r.TypeID == roomTypeId && r.RoomType.Capacity >= capacity &&
+        //        !r.Bookings.Any(b => !b.IsDeleted &&
+        //         b.CheckoutDate.Date > checkIn &&
+        //         b.CheckinDate.Date < checkOut))
+        //        .ToList();
+
+        //    return availableRooms;
+        //}
+
+        public List<Room> CheckAvailability(int roomTypeId, int capacity)
         {
-            if (checkOut <= checkIn)
-            {
-                throw new ArgumentException("Check-out date must be after check-in date");
-            }
             var availableRooms = context.Rooms
                 .Include(r => r.RoomType)
                 .Include(r => r.Bookings)
-                .Where(r => r.RoomID == roomTypeId && r.RoomType.Capacity >= capacity &&
-                !r.Bookings.Any(b => !b.IsDeleted &&
-                 b.CheckoutDate.Date > checkIn &&
-                 b.CheckinDate.Date < checkOut))
+                .Where(r => r.TypeID == roomTypeId && r.RoomType.Capacity >= capacity)
                 .ToList();
 
             return availableRooms;
