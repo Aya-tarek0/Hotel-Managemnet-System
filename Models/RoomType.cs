@@ -8,7 +8,7 @@ namespace mvcproj.Models
         public int TypeID { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
-        public int ?PricePerNight { get; set; }
+        public int PricePerNight { get; set; }
         [Required]
         public int Capacity { get; set; }
 

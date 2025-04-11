@@ -13,11 +13,12 @@ namespace mvcproj.View_Models
         //[ForeignKey("Room")]
         public int? RoomNumber { get; set; }
         public RoomType RoomType { get; set; }
-        public int? RoomTypeId { get; set; }
+        public int RoomTypeId { get; set; }
         public DateTime? CheckinDate { get; set; }
         public DateTime? CheckoutDate { get; set; }
         public int? TotalPrice { get; set; }
         public int PricePerNight { get; set; }
+        public int Capacity { get; set; }
         public string? Room { get; set; }
 
     }

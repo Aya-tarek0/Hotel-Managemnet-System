@@ -48,6 +48,14 @@ namespace mvcproj.Reporisatory
                 
                 .FirstOrDefault();
         }
+
+        public List<Booking> GetBookingsByRoomId(int roomId)
+        {
+            return context.Bookings
+                          .Where(b => b.RoomNumber == roomId)
+                          .ToList();
+        }
+
         public void Insert(Booking obj)
         {
             context.Add(obj);

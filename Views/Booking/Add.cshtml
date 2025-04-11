@@ -9,7 +9,7 @@
     <div class="container mt-5">
         <div class="card shadow-lg rounded-4 border-0">
             <div class="card-header bg-info text-white rounded-top-4">
-                 <h3 class="mb-0" style="background-color">Confirm Your Booking</h3> 
+                 <h3 class="mb-0" style="color:white">Confirm Your Booking</h3> 
             </div>
             <div class="card-body">
                 <div class="row g-4">
@@ -24,8 +24,8 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label fw-semibold" asp-for="@Model.RoomType.Name">Room Type</label>
-                        <input class="form-control" value="@Model.RoomType?.Name" readonly asp-for="@Model.RoomType.Name" />
+                        <label class="form-label fw-semibold" @* asp-for="@Model.RoomType.Name" *@>Room Type</label>
+                        <input class="form-control" value="@Model.RoomType?.Name" readonly @* asp-for="@Model.RoomType.Name" *@ />
                     </div>
 
                     @*   <div class="col-12">
@@ -34,13 +34,13 @@
                 </div> *@
 
                     <div class="col-md-4">
-                        <label class="form-label fw-semibold" asp-for="@Model.RoomType.Capacity">Capacity</label>
-                        <input class="form-control" value="@Model.RoomType?.Capacity" asp-for="@Model.RoomType.Capacity" readonly />
+                        <label class="form-label fw-semibold" @* asp-for="@Model.RoomType.Capacity" *@>Capacity</label>
+                        <input class="form-control" value="@Model.RoomType?.Capacity"@*  asp-for="@Model.RoomType.Capacity" *@ readonly />
                     </div>
 
                     <div class="col-md-4">
-                        <label class="form-label fw-semibold" asp-for="@Model.PricePerNight">Price per Night</label>
-                        <input class="form-control" value="@Model.RoomType?.PricePerNight" asp-for="@Model.PricePerNight" readonly />
+                        <label class="form-label fw-semibold" @* asp-for="@Model.PricePerNight" *@>Price per Night</label>
+                        <input class="form-control" value="@Model.RoomType?.PricePerNight" @* asp-for="@Model.PricePerNight" *@ readonly />
                     </div>
 
                 
@@ -48,13 +48,13 @@
                     <div class="col-md-6">
                         <label class="form-label fw-semibold" asp-for="@Model.CheckinDate">Check-in Date</label>
                         <input  class="form-control" type="date" value="@Model.CheckinDate" asp-for="@Model.CheckinDate" required />
-
+                        <span asp-validation-for="CheckinDate" class="text-danger"></span>
                     </div>
 
                     <div class="col-md-6">
                         <label class="form-label fw-semibold" asp-for="@Model.CheckoutDate">Check-out Date</label>
                         <input class="form-control" type="date" value="@Model.CheckoutDate" asp-for="@Model.CheckoutDate" required />
-
+                        <span asp-validation-for="CheckoutDate" class="text-danger"></span>
                     </div>
                 </div>
 

@@ -120,6 +120,7 @@ namespace mvcproj.Controllers
                 //int pricePerNight = room.RoomType.PricePerNight ?? 0;
                 //int totalPrice = bookingRepository.CalcTotalPrice(days, pricePerNight);
 
+
                 BookingViewModel RoomVM = new BookingViewModel()
                 {
                     RoomNumber = room.RoomID,
@@ -127,7 +128,9 @@ namespace mvcproj.Controllers
                      RoomType = room.RoomType, // full RoomType object
                      BookingID = bookId
                      , RoomTypeId = room.RoomType.TypeID,
-                     PricePerNight = room.RoomType.PricePerNight ?? 0
+                     PricePerNight = room.RoomType.PricePerNight,
+                    Capacity = room.RoomType.Capacity,
+
                 };
                 return View("Add", RoomVM);
             }
@@ -166,17 +169,41 @@ namespace mvcproj.Controllers
         public IActionResult SaveAdd(BookingViewModel bookingVM)
         {
 
-            RoomType roomType = roomTypeReporisatory.GetById(bookingVM.RoomType.TypeID);
-            
+            RoomType roomType = roomTypeReporisatory.GetById(bookingVM.RoomTypeId);
 
-            int noOfDays = (bookingVM.CheckoutDate.GetValueOrDefault() - bookingVM.CheckinDate.GetValueOrDefault()).Days;
+
+            // Get existing bookings for the selected room
+            var existingBookings = bookingRepository.GetBookingsByRoomId(bookingVM.RoomNumber ?? 0);
+            int noOfDays = 0;
+            // Check for overlapping dates
+            bool isOverlapping = existingBookings.Any(b =>
+                bookingVM.CheckinDate < b.CheckoutDate &&
+                bookingVM.CheckoutDate > b.CheckinDate
+            );
+
+            if (isOverlapping)
+            {
+                ModelState.AddModelError("CheckinDate", "Selected dates overlap with an existing booking, Please check another date");
+
+                // Optional: Refill RoomType in case of re-rendering the view
+                bookingVM.RoomType = roomType;
+                bookingVM.PricePerNight = roomType.PricePerNight;
+                ////  Recalculate total price so it appears correctly in the form
+                //if (bookingVM.CheckinDate.HasValue && bookingVM.CheckoutDate.HasValue)
+                //{
+                //    noOfDays = (bookingVM.CheckoutDate.Value - bookingVM.CheckinDate.Value).Days;
+                //    bookingVM.TotalPrice = bookingRepository.CalcTotalPrice(noOfDays, bookingVM.PricePerNight);
+                //}
+                return View("Add", bookingVM);
+            }
+
+            bookingVM.PricePerNight = roomType.PricePerNight;
+            noOfDays = (bookingVM.CheckoutDate.GetValueOrDefault() - bookingVM.CheckinDate.GetValueOrDefault()).Days;
             var userId = user.GetUserId(User);
 
             Booking booking = new Booking()
             {
                 UserId = userId,
-
-               
                 RoomNumber = bookingVM.RoomNumber??0,
                 CheckinDate = bookingVM.CheckinDate??DateTime.Now,
                 CheckoutDate = bookingVM.CheckoutDate??DateTime.Now,
