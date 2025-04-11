@@ -247,26 +247,26 @@ namespace mvcproj.Controllers
                     List<ShowRoomDetailsWithCommentsViewModel> roomslist = new List<ShowRoomDetailsWithCommentsViewModel>();
                     foreach(Room r in rooms)
                     {
-                        roomslist.Add(new ShowRoomDetailsWithCommentsViewModel()
-                        {
-                            RoomID = r.RoomID,
-                            HotelID = room.HotelID,
-                            HotelName = room.Hotel?.Name,
-                            TypeID = room.TypeID,
-                            ImageUrl = room.image,
-                            RoomStatus = room.Status,
-                            RoomTypeName = room.RoomType?.Name,
-                            Description = room.RoomType?.Description,
-                            PricePerNight = room.RoomType?.PricePerNight,
-                            Capacity = room.RoomType?.Capacity
-
-
-                        });
                         
-                        
+                            roomslist.Add(new ShowRoomDetailsWithCommentsViewModel()
+                            {
+                                RoomID = r.RoomID,
+                                HotelID = r.HotelID,
+                                HotelName = r.Hotel?.Name,
+                                TypeID = r.TypeID,
+                                ImageUrl = r.image,
+                                RoomStatus = r.Status,
+                                RoomTypeName = r.RoomType?.Name,
+                                Description = r.RoomType?.Description,
+                                PricePerNight = r.RoomType?.PricePerNight,
+                                Capacity = r.RoomType?.Capacity
+                            });
+                        }
 
-                    }
+
+
                     
+
                     return View("Index", roomslist);
                 }
                 
@@ -274,20 +274,7 @@ namespace mvcproj.Controllers
             return NotFound("Room doesn't Exist");
         }
 
-        public IActionResult SaveDelete(int id)
-        {
-            Room room = roomRepo.GetById(id);
-            if (room != null)
-            {
-                room.IsDeleted = true;
-                roomRepo.Save();
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                return NotFound("Room doesn't Exist");
-            }
-        }
+
 
         #endregion
 
