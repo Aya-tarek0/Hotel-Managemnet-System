@@ -349,14 +349,9 @@ namespace mvcproj.Controllers
                             HotelID = 0,
                             PricePerNight = 0,
                             RoomStatus = "No available rooms",
-<<<<<<< HEAD
                             //CheckinDate = checkInDate,
                             //CheckoutDate = checkOutDate
-                            //
-=======
-                            CheckinDate = checkInDate,
-                            CheckoutDate = checkOutDate
->>>>>>> 301fb66c26b595e96bcf0bf1dbe68866cb78b8dd
+
                        }
                    };
                     return View("_AllRoomsUser", emptyRoom);
