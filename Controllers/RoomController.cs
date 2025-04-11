@@ -336,6 +336,7 @@ namespace mvcproj.Controllers
                             RoomStatus = "No available rooms",
                             //CheckinDate = checkInDate,
                             //CheckoutDate = checkOutDate
+                            //
                        }
                    };
                     return View("_AllRoomsUser", emptyRoom);

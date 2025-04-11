@@ -85,6 +85,7 @@ namespace mvcproj.Reporisatory
 
         //    return availableRooms;
         //}
+        //
 
         public List<Room> CheckAvailability(int roomTypeId, int capacity)
         {
