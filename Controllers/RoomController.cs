@@ -346,6 +346,7 @@ namespace mvcproj.Controllers
                             PricePerNight = 0,
                             RoomStatus = "No available rooms",
 
+
                             //CheckinDate = checkInDate,
                             //CheckoutDate = checkOutDate
                             //
