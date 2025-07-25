@@ -66,7 +66,7 @@ A complete hotel management platform with:
 ---
 
 ## 🤝 Team Members
--**Aya Tarek**
+- **Aya Tarek**
 - **Alaa Ragab**
 - **Alaa Mohamed**
 - **Areege Ashraf**
